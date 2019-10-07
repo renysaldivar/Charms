@@ -13,9 +13,11 @@
  GREATERTHAN   : '>' ;
  LPARENTHESES  : '(' ;
  RPARENTHESES  : ')' ;
+ SEMICOLON     : ';' ;
  LCURLY        : '{' ;
  RCURLY        : '}' ;
  INT           : 'int' ;
+ VOID          : 'void' ;
  BOOL          : 'bool' ;
  CHAR          : 'char' ;
  IF            : 'if' ;
