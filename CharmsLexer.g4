@@ -13,9 +13,9 @@
  GREATERTHAN  : '>' ;
  LPARENTHESES : '(' ;
  RPARENTHESES : ')' ;
- SEMICOLON    : ';' ;
  LCURLY       : '{' ;
  RCURLY       : '}' ;
+ SEMICOLON    : ';' ;
  INT          : 'int' ;
  VOID         : 'void' ;
  BOOL         : 'bool' ;
