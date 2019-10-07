@@ -15,7 +15,9 @@
  RPARENTHESES  : ')' ;
  LCURLY        : '{' ;
  RCURLY        : '}' ;
+ SEMICOLON     : ';' ;
  INT           : 'int' ;
+ VOID          : 'void' ;
  BOOL          : 'bool' ;
  CHAR          : 'char' ;
  IF            : 'if' ;
