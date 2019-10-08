@@ -48,7 +48,7 @@
  w          : expression w2 | CTE_STRING w2 ;
  w2         : COMMA w | /* epsilon */ ;
 
- var_cte    : ID | CTE_INT | func_call ;
+ var_cte    : ID | CTE_INT ;
 
  func_call  : fc exp;
  fc         : RETURN | /* epsilon */ ;
