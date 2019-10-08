@@ -21,6 +21,8 @@
  VOID         : 'void' ;
  BOOL         : 'bool' ;
  CHAR         : 'char' ;
+ CTE_INT      : [1-9][0-9]* ;
+ CTE_STRING   : [A-Za-z]+ ;
  IF           : 'if' ;
  ELSE         : 'else' ;
  WHILE        : 'while' ;
