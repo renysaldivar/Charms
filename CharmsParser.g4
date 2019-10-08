@@ -32,8 +32,8 @@
  exp        : term e1 ;
  e1         : PLUS exp | MINUS exp | /* epsilon */ ;
 
- factor     : LPARENTHESES expression RPARENTHESIS | f var_cte ;
- f          : PLUS | MINUS | /* epsilon */ ;
+ factor     : LPARENTHESES expression RPARENTHESIS | fa var_cte ;
+ fa         : PLUS | MINUS | /* epsilon */ ;
 
  term       : factor t ;
  t          : TIMES factor | DIVIDE factor | /* epsilon */ ;
