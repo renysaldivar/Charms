@@ -38,7 +38,8 @@
  term       : factor t ;
  t          : TIMES factor | DIVIDE factor | /* epsilon */ ;
 
- condition	: IF LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ELSE LCURLY section RCURLY ;
+ condition	: IF LPARENTHESES expression RPARENTHESES LCURLY section RCURLY c ;
+ c 			: ELSE LCURLY section RCURLY | /* epsilon */ ;
 
  loop       : WHILE LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ;
 
