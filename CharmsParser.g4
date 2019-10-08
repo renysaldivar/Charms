@@ -7,8 +7,8 @@
  options { tokenVocab = CharmsLexer; }
 
  program    : p section ;
- p          : vars p1 | func ;
- p1			    : func | /* epsilon */ ;
+ p          : vars p1 | function ;
+ p1			    : function | /* epsilon */ ;
 
  vars       : type v ;
  v 			    : ID v1 SEMICOLON v2 ;
@@ -20,7 +20,7 @@
  f1			    : type ID f2 | /* epsilon */ ;
  f2			    : COMMA type ID f2 | /* epsilon */ ;
 
- section    : assignment section | condition section | write section | read section | loop section | funcCall section | /* epsilon */ ;
+ section    : assignment section | condition section | write section | read section | loop section | func_call section | /* epsilon */ ;
 
  type       : INT | BOOL | CHAR ;
 
@@ -32,7 +32,7 @@
  exp        : term e1 ;
  e1         : PLUS exp | MINUS exp | /* epsilon */ ;
 
- factor     : LPARENTHESES expression RPARENTHESIS | f varcte ;
+ factor     : LPARENTHESES expression RPARENTHESIS | f var_cte ;
  f          : PLUS | MINUS | /* epsilon */ ;
 
  term       : factor t ;
