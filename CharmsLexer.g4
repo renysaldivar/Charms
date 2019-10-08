@@ -16,6 +16,7 @@
  LCURLY       : '{' ;
  RCURLY       : '}' ;
  SEMICOLON    : ';' ;
+ COMMA		  : ',' ;
  INT          : 'int' ;
  VOID         : 'void' ;
  BOOL         : 'bool' ;
@@ -26,5 +27,6 @@
  PRINT        : 'print' ;
  READ         : 'read' ;
  RETURN       : 'return' ;
+ FUNCTION	  : 'function' ;
  ID           : [a-zA-Z]+ ;
  WHITESPACE   : [ \t\r\n]+ -> skip ;
