@@ -40,3 +40,14 @@
  condition	: IF LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ELSE LCURLY section RCURLY ;
 
  loop       : WHILE LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ;
+
+ read       : READ LPARENTHESES ID RPARENTHESES ;
+
+ write      : PRINT LPARENTHESES w RPARENTHESES SEMICOLON ;
+ w          : expression w2 | CTE_STRING w2 ;
+ w2         : COMMA w | /* epsilon */ ;
+
+ var_cte    : ID | CTE_INT | func_call ;
+
+ func_call  : fc exp;
+ fc         : RETURN | /* epsilon */ ;
