@@ -11,8 +11,9 @@
  p1			    : func | /* epsilon */ ;
 
  vars       : type v ;
- v 			    : ID v1 SEMICOLON ;
+ v 			    : ID v1 SEMICOLON v2 ;
  v1			    : COMMA ID v1 | /* epsilon */ ;
+ v2         : vars | /* epsilon */ ;
 
  function	  : FUNCTION f ID LPARENTHESES f1 RPARENTHESES LCURLY section RCURLY ;
  f 			    : VOID | type ;
