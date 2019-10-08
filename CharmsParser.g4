@@ -32,7 +32,7 @@
  exp        : term e1 ;
  e1         : PLUS exp | MINUS exp | /* epsilon */ ;
 
- factor     : LPARENTHESES expression RPARENTHESIS | fa var_cte ;
+ factor     : LPARENTHESES expression RPARENTHESES | fa var_cte ;
  fa         : PLUS | MINUS | /* epsilon */ ;
 
  term       : factor t ;
