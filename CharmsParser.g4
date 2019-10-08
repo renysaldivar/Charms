@@ -7,22 +7,22 @@
  options { tokenVocab = CharmsLexer; }
 
  program    : p section ;
- p          : vars p1 | function ;
+ p          : p_vars p1 | function ;
  p1			    : function | /* epsilon */ ;
 
- vars       : type v ;
+ p_vars     : type_id v ;
  v 			    : ID v1 SEMICOLON v2 ;
  v1			    : COMMA ID v1 | /* epsilon */ ;
- v2         : vars | /* epsilon */ ;
+ v2         : p_vars | /* epsilon */ ;
 
  function	  : FUNCTION f ID LPARENTHESES f1 RPARENTHESES LCURLY section RCURLY ;
- f 			    : VOID | type ;
- f1			    : type ID f2 | /* epsilon */ ;
- f2			    : COMMA type ID f2 | /* epsilon */ ;
+ f 			    : VOID | type_id ;
+ f1			    : type_id ID f2 | /* epsilon */ ;
+ f2			    : COMMA type_id ID f2 | /* epsilon */ ;
 
  section    : assignment section | condition section | write section | read section | loop section | func_call section | /* epsilon */ ;
 
- type       : INT | BOOL | CHAR ;
+ type_id    : INT | BOOL | CHAR ;
 
  assignment	: ID EQUAL expression SEMICOLON ;
 
