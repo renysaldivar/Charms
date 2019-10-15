@@ -8,9 +8,13 @@
  MINUS        : '-' ;
  TIMES        : '*' ;
  DIVIDE       : '/' ;
- EQUAL        : '=' ;
+ ASSIGN	  	  : '=' ;
+ EQUAL        : '==' ;
+ NOTEQUAL	  : '!=' ;
  LESSTHAN     : '<' ;
  GREATERTHAN  : '>' ;
+ AND		  : '&&' ;
+ OR			  : '||' ;
  LPARENTHESES : '(' ;
  RPARENTHESES : ')' ;
  LCURLY       : '{' ;
