@@ -13,14 +13,14 @@
  NOTEQUAL     : '!=' ;
  LESSTHAN     : '<' ;
  GREATERTHAN  : '>' ;
- AND	        : '&&' ;
- OR	          : '||' ;
+ AND_SYMBOL	  : '&&' ;
+ OR_SYMBOL	   : '||' ;
  LPARENTHESES : '(' ;
  RPARENTHESES : ')' ;
  LCURLY       : '{' ;
  RCURLY       : '}' ;
  SEMICOLON    : ';' ;
- COMMA	      : ',' ;
+ COMMA	       : ',' ;
  INT          : 'int' ;
  VOID         : 'void' ;
  BOOL         : 'bool' ;
