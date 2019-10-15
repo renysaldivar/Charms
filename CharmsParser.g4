@@ -24,7 +24,7 @@
 
  type_id    : INT | BOOL | CHAR ;
 
- assignment	: ID EQUAL expression SEMICOLON ;
+ assignment	: ID ASSIGN expression SEMICOLON ;
 
  expression : exp e ;
  e 			    : GREATERTHAN exp | LESSTHAN exp | /* epsilon */ ;
