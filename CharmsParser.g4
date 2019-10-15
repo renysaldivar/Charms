@@ -8,26 +8,26 @@
 
  program    : p section ;
  p          : p_vars p1 | function ;
- p1			    : function | /* epsilon */ ;
+ p1	    : function | /* epsilon */ ;
 
  p_vars     : type_id v ;
- v 			    : ID v1 SEMICOLON v2 ;
- v1			    : COMMA ID v1 | /* epsilon */ ;
+ v 	    : ID v1 SEMICOLON v2 ;
+ v1	    : COMMA ID v1 | /* epsilon */ ;
  v2         : p_vars | /* epsilon */ ;
 
- function	  : FUNCTION f ID LPARENTHESES f1 RPARENTHESES LCURLY section RCURLY ;
- f 			    : VOID | type_id ;
- f1			    : type_id ID f2 | /* epsilon */ ;
- f2			    : COMMA type_id ID f2 | /* epsilon */ ;
+ function   : FUNCTION f ID LPARENTHESES f1 RPARENTHESES LCURLY section RCURLY ;
+ f 	    : VOID | type_id ;
+ f1	    : type_id ID f2 | /* epsilon */ ;
+ f2	    : COMMA type_id ID f2 | /* epsilon */ ;
 
  section    : assignment section | condition section | write section | read section | loop section | func_call section | /* epsilon */ ;
 
  type_id    : INT | BOOL | CHAR ;
 
- assignment	: ID ASSIGN expression SEMICOLON ;
+ assignment : ID ASSIGN expression SEMICOLON ;
 
  expression : exp e ;
- e 			    : GREATERTHAN exp | LESSTHAN exp | /* epsilon */ ;
+ e 	    : GREATERTHAN exp | LESSTHAN exp | /* epsilon */ ;
 
  exp        : term e1 ;
  e1         : PLUS exp | MINUS exp | /* epsilon */ ;
@@ -38,7 +38,7 @@
  term       : factor t ;
  t          : TIMES factor | DIVIDE factor | /* epsilon */ ;
 
- condition	: IF LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ELSE LCURLY section RCURLY ;
+ condition  : IF LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ELSE LCURLY section RCURLY ;
 
  loop       : WHILE LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ;
 
