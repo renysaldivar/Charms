@@ -13,8 +13,8 @@
  NOTEQUAL     : '!=' ;
  LESSTHAN     : '<' ;
  GREATERTHAN  : '>' ;
- AND	      : '&&' ;
- OR	      : '||' ;
+ AND	        : '&&' ;
+ OR	          : '||' ;
  LPARENTHESES : '(' ;
  RPARENTHESES : ')' ;
  LCURLY       : '{' ;
@@ -25,8 +25,6 @@
  VOID         : 'void' ;
  BOOL         : 'bool' ;
  CHAR         : 'char' ;
- CTE_INT      : [1-9][0-9]* ;
- CTE_STRING   : [A-Za-z]+ ;
  IF           : 'if' ;
  ELSE         : 'else' ;
  WHILE        : 'while' ;
@@ -35,4 +33,6 @@
  RETURN       : 'return' ;
  FUNCTION     : 'function' ;
  ID           : [a-zA-Z]+ ;
+ CTE_INT      : [1-9][0-9]* ;
+ CTE_STRING   : [A-Za-z]+ ;
  WHITESPACE   : [ \t\r\n]+ -> skip ;
