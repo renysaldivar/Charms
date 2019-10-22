@@ -7,35 +7,36 @@ from Variable import Variable
 from VariableTable import VariableTable
 import sys
 
-varType = None
-varId = None
-varScope = "global"
-
 class CharmsPrintListener(CharmsParserListener):
-	def enterType_id(self, ctx):
-		if ctx.INT() == "int":
-			varType = "int"
-		elif ctx.CHAR() == "char":
-			varType = "char"
-		elif ctx.BOOL() == "bool":
-			varType = "bool"
+	def exitType_id(self, ctx):
+		global varType
+		# print(ctx.INT())
+		# if ctx.INT() == "int":
+		# 	varType = "int"
+		# elif ctx.CHAR() == "char":
+		# 	varType = "char"
+		# elif ctx.BOOL() == "bool":
+		# 	varType = "bool"
+		varType = ctx.INT()
 
-	def enterV(self, ctx):
+	def exitV(self, ctx):
+		global varId
 		varId = ctx.ID()
 
 	def exitP_vars(self, ctx):
-		varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
-		varTable.insertVariable(varId, varType, varScope)
+		varTable.insertVariable(varId, varType, "global")
+		varTable.printTable()
 
 def main(argv):
-    #input = FileStream(argv[1])
-    lexer = CharmsLexer(StdinStream())
-    stream = CommonTokenStream(lexer)
-    parser = CharmsParser(stream)
-    printer = CharmsPrintListener()
-    walker = ParseTreeWalker()
-    tree = parser.program()
-    walker.walk(printer, tree)
+	global varTable
+	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+	lexer = CharmsLexer(StdinStream())
+	stream = CommonTokenStream(lexer)
+	parser = CharmsParser(stream)
+	printer = CharmsPrintListener()
+	walker = ParseTreeWalker()
+	tree = parser.program()
+	walker.walk(printer, tree)
     #print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':
