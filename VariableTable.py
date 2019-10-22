@@ -26,4 +26,4 @@ class VariableTable:
 
 	def printTable(self):
 		for var in self.vars:
-			print(var)
+			print(var, self.vars[var].varType)

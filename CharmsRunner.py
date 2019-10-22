@@ -10,14 +10,14 @@ import sys
 class CharmsPrintListener(CharmsParserListener):
 	def exitType_id(self, ctx):
 		global varType
-		# print(ctx.INT())
-		# if ctx.INT() == "int":
-		# 	varType = "int"
-		# elif ctx.CHAR() == "char":
-		# 	varType = "char"
-		# elif ctx.BOOL() == "bool":
-		# 	varType = "bool"
-		varType = ctx.INT()
+		if ctx.INT():
+			varType = "int"
+		elif ctx.CHAR():
+			varType = "char"
+		elif ctx.BOOL():
+			varType = "bool"
+		else:
+			varType = "hola"
 
 	def exitV(self, ctx):
 		global varId
