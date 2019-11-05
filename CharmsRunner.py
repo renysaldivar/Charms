@@ -19,18 +19,18 @@ class CharmsPrintListener(CharmsParserListener):
 		else:
 			Exception("{} is not a valid data type".format(varType))
 
-	def enterV(self, ctx):
+	def addVar(self, ctx):
 		global varId
-		varId = ctx.ID()
-		if varId is not None:
+		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
+		if varId != "None":
 			varTable.insertVariable(varId, varType, "global")
 			varTable.printTable()
 
+	def enterV(self, ctx):
+		self.addVar(ctx)
+
 	def enterV1(self, ctx):
-		varId = ctx.ID()
-		if varId is not None:
-			varTable.insertVariable(varId, varType, "global")
-			varTable.printTable()
+		self.addVar(ctx)
 
 def main(argv):
 	global varTable
