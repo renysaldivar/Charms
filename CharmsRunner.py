@@ -17,15 +17,20 @@ class CharmsPrintListener(CharmsParserListener):
 		elif ctx.BOOL():
 			varType = "bool"
 		else:
-			varType = "hola"
+			Exception("{} is not a valid data type".format(varType))
 
-	def exitV(self, ctx):
+	def enterV(self, ctx):
 		global varId
 		varId = ctx.ID()
+		if varId is not None:
+			varTable.insertVariable(varId, varType, "global")
+			varTable.printTable()
 
-	def exitP_vars(self, ctx):
-		varTable.insertVariable(varId, varType, "global")
-		varTable.printTable()
+	def enterV1(self, ctx):
+		varId = ctx.ID()
+		if varId is not None:
+			varTable.insertVariable(varId, varType, "global")
+			varTable.printTable()
 
 def main(argv):
 	global varTable
@@ -37,7 +42,7 @@ def main(argv):
 	walker = ParseTreeWalker()
 	tree = parser.program()
 	walker.walk(printer, tree)
-    #print(Trees.toStringTree(tree, None, parser))
+	#print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':
     main(sys.argv)

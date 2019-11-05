@@ -12,7 +12,6 @@ class VariableTable:
 			Exception("{} does not exist in the directory".format(varId))
 
 	def insertVariable(self, varId, varType, varScope):
-		# print("hello world")
 		if varId in self.vars.keys():
 			print("Variables not added successfully!")
 			Exception("{} already exists in the directory".format(varId))

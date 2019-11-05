@@ -1,0 +1,15 @@
+bool b, a;
+char c;
+int x;
+
+x = (10 + 5);
+y = -21;
+
+if (-2 < 7)
+{
+	 print(Hola);
+}
+else
+{
+	x = 5;
+}
