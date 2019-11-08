@@ -90,6 +90,11 @@ class CharmsPrintListener(CharmsParserListener):
 			print(stackOperators)
 
 	def exitFactor(self, ctx):
+		operator = str(ctx.RPARENTHESES())
+		if operator != "None":
+			stackOperators.pop()
+			print("stackOperators")
+			print(stackOperators)
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
 				right_operand = stackOperands.pop()
