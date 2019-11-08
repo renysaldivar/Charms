@@ -34,13 +34,11 @@ class CharmsPrintListener(CharmsParserListener):
 		# print("stackTypes:")
 		# print(stackTypes)
 
-	def exitE1(self, ctx):
+	def enterE1(self, ctx):
 		operator = ctx.PLUS() or ctx.MINUS()
 		operator = str(operator)
 		if operator != "None":
 			stackOperators.append(operator)
-		# print("stackOperator:")
-		# print(stackOperators)
 
 	def exitT(self, ctx):
 		operator = ctx.TIMES() or ctx.DIVIDE()
@@ -49,6 +47,25 @@ class CharmsPrintListener(CharmsParserListener):
 			stackOperators.append(operator)
 		# print("stackOperator:")
 		# print(stackOperators)
+
+	def exitTerm(self, ctx):
+		if len(stackOperators) > 0:
+			if stackOperators[-1] == '+' or stackOperators[-1] == '-':
+				right_operand = stackOperands.pop()
+				right_type = stackTypes.pop()
+				left_operand = stackOperands.pop()
+				left_type = stackTypes.pop()
+				operator = stackOperators.pop()
+				# print("right_operand")
+				# print(right_operand)
+				# print("right_type")
+				# print(right_type)
+				# print("left_operand")
+				# print(left_operand)
+				# print("left_type")
+				# print(left_type)
+				# print("operator")
+				# print(operator)
 
 	def addVar(self, ctx):
 		global varId

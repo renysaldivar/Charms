@@ -1,7 +1,9 @@
 # Example 1
-int a, b, c;
+int a, b, c, d;
 
 a = b + c;
+
+d = 2 - a;
 
 # Example 2
 
