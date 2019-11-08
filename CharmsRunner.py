@@ -3,6 +3,7 @@ from antlr4.tree.Trees import Trees
 from CharmsLexer import CharmsLexer
 from CharmsParserListener import CharmsParserListener
 from CharmsParser import CharmsParser
+from Quad import Quad
 from Variable import Variable
 from VariableTable import VariableTable
 import sys
@@ -19,12 +20,26 @@ class CharmsPrintListener(CharmsParserListener):
 		else:
 			Exception("{} is not a valid data type".format(varType))
 
+	def exitVar_cte(self, ctx):
+		myId = str(ctx.ID())
+		myCTE_INT = str(ctx.CTE_INT())
+		if myId != "None":
+			stackOperands.append(myId)
+			stackTypes.append(varTable.getVariableType(myId))
+		else:
+			stackOperands.append(int(myCTE_INT))
+			stackTypes.append("int")
+		# print("stackOperands:")
+		# print(stackOperands)
+		# print("stackTypes:")
+		# print(stackTypes)
+
 	def addVar(self, ctx):
 		global varId
 		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
 		if varId != "None":
 			varTable.insertVariable(varId, varType, "global")
-			varTable.printTable()
+			# varTable.printTable()
 
 	def enterV(self, ctx):
 		self.addVar(ctx)
@@ -34,6 +49,15 @@ class CharmsPrintListener(CharmsParserListener):
 
 def main(argv):
 	global varTable
+	global stackOperands
+	global stackOperators
+	global stackTypes
+	global queueQuads
+	stackOperands = []
+	stackOperators = []
+	stackTypes = []
+	queueQuads = []
+
 	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
 	lexer = CharmsLexer(StdinStream())
 	stream = CommonTokenStream(lexer)
