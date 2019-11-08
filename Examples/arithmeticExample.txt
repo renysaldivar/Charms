@@ -30,3 +30,8 @@ a = b * c;
 int a, b, c;
 
 a = b / c;
+
+# Example 6
+int a, b, c;
+
+a = (2 + 5);

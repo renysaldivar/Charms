@@ -82,6 +82,13 @@ class CharmsPrintListener(CharmsParserListener):
 				else:
 					Exception("Type mismatch")
 
+	def enterFactor(self, ctx):
+		operator = str(ctx.LPARENTHESES())
+		if operator != "None":
+			stackOperators.append(operator)
+			print("stackOperators")
+			print(stackOperators)
+
 	def exitFactor(self, ctx):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
