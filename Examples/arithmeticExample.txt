@@ -16,3 +16,15 @@ int a, b, c, d;
 a = 2 + 1;
 
 d = a + b + c;
+
+# Example 4
+
+int a, b, c;
+
+a = b * c;
+
+# Example 5
+
+int a, b, c;
+
+a = b / c;

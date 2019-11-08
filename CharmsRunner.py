@@ -42,6 +42,14 @@ class CharmsPrintListener(CharmsParserListener):
 		# print("stackOperator:")
 		# print(stackOperators)
 
+	def exitT(self, ctx):
+		operator = ctx.TIMES() or ctx.DIVIDE()
+		operator = str(operator)
+		if operator != "None":
+			stackOperators.append(operator)
+		# print("stackOperator:")
+		# print(stackOperators)
+
 	def addVar(self, ctx):
 		global varId
 		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
