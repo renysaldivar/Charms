@@ -41,7 +41,7 @@ class CharmsPrintListener(CharmsParserListener):
 		if operator != "None":
 			stackOperators.append(operator)
 
-	def exitT(self, ctx):
+	def enterT(self, ctx):
 		operator = ctx.TIMES() or ctx.DIVIDE()
 		operator = str(operator)
 		if operator != "None":
@@ -58,6 +58,16 @@ class CharmsPrintListener(CharmsParserListener):
 				left_type = stackTypes.pop()
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
+				# print("right_operand")
+				# print(right_operand)
+				# print("right_type")
+				# print(right_type)
+				# print("left_operand")
+				# print(left_operand)
+				# print("left_type")
+				# print(left_type)
+				# print("operator")
+				# print(operator)
 				if result_type == "int":
 					global tCount
 					tCount +=1
@@ -71,6 +81,16 @@ class CharmsPrintListener(CharmsParserListener):
 					# 	quad.printQuad()
 				else:
 					Exception("Type mismatch")
+
+	def exitFactor(self, ctx):
+		if len(stackOperators) > 0:
+			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
+				right_operand = stackOperands.pop()
+				right_type = stackTypes.pop()
+				left_operand = stackOperands.pop()
+				left_type = stackTypes.pop()
+				operator = stackOperators.pop()
+				result_type = arithmeticOperators(operator, right_type, left_type)
 				# print("right_operand")
 				# print(right_operand)
 				# print("right_type")
@@ -81,6 +101,19 @@ class CharmsPrintListener(CharmsParserListener):
 				# print(left_type)
 				# print("operator")
 				# print(operator)
+				if result_type == "int":
+					global tCount
+					tCount +=1
+					result = "t"+str(tCount)
+					quad = Quad(operator, left_operand, right_operand, result)
+					queueQuads.append(quad)
+					stackOperands.append(result)
+					stackTypes.append(result_type)
+					# print("queueQuads")
+					# for quad in queueQuads:
+					# 	quad.printQuad()
+				else:
+					Exception("Type mismatch")
 
 	def addVar(self, ctx):
 		global varId
