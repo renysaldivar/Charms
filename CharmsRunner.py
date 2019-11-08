@@ -34,6 +34,14 @@ class CharmsPrintListener(CharmsParserListener):
 		# print("stackTypes:")
 		# print(stackTypes)
 
+	def exitE1(self, ctx):
+		operator = ctx.PLUS() or ctx.MINUS()
+		operator = str(operator)
+		if operator != "None":
+			stackOperators.append(operator)
+		# print("stackOperator:")
+		# print(stackOperators)
+
 	def addVar(self, ctx):
 		global varId
 		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
@@ -66,7 +74,7 @@ def main(argv):
 	walker = ParseTreeWalker()
 	tree = parser.program()
 	walker.walk(printer, tree)
-	#print(Trees.toStringTree(tree, None, parser))
+	# print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':
     main(sys.argv)
