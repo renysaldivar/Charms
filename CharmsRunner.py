@@ -4,6 +4,7 @@ from CharmsLexer import CharmsLexer
 from CharmsParserListener import CharmsParserListener
 from CharmsParser import CharmsParser
 from Quad import Quad
+from SemanticCube import arithmeticOperators
 from Variable import Variable
 from VariableTable import VariableTable
 import sys
@@ -56,6 +57,20 @@ class CharmsPrintListener(CharmsParserListener):
 				left_operand = stackOperands.pop()
 				left_type = stackTypes.pop()
 				operator = stackOperators.pop()
+				result_type = arithmeticOperators(operator, right_type, left_type)
+				if result_type == "int":
+					global tCount
+					tCount +=1
+					result = "t"+str(tCount)
+					quad = Quad(operator, left_operand, right_operand, result)
+					queueQuads.append(quad)
+					stackOperands.append(result)
+					stackTypes.append(result_type)
+					# print("queueQuads")
+					# for quad in queueQuads:
+					# 	quad.printQuad()
+				else:
+					Exception("Type mismatch")
 				# print("right_operand")
 				# print(right_operand)
 				# print("right_type")
@@ -81,11 +96,13 @@ class CharmsPrintListener(CharmsParserListener):
 		self.addVar(ctx)
 
 def main(argv):
+	global tCount
 	global varTable
 	global stackOperands
 	global stackOperators
 	global stackTypes
 	global queueQuads
+	tCount = 0
 	stackOperands = []
 	stackOperators = []
 	stackTypes = []
