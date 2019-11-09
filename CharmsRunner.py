@@ -5,6 +5,8 @@ from CharmsParserListener import CharmsParserListener
 from CharmsParser import CharmsParser
 from Quad import Quad
 from SemanticCube import arithmeticOperators
+from SemanticCube import relationalOperators
+from SemanticCube import assignmentOperator
 from Variable import Variable
 from VariableTable import VariableTable
 import sys
@@ -83,8 +85,8 @@ class CharmsPrintListener(CharmsParserListener):
 		operator = str(ctx.LPARENTHESES())
 		if operator != "None":
 			stackOperators.append(operator)
-			print("stackOperators")
-			print(stackOperators)
+			# print("stackOperators")
+			# print(stackOperators)
 
 	def exitFactor(self, ctx):
 		operator = str(ctx.RPARENTHESES())
@@ -150,7 +152,7 @@ class CharmsPrintListener(CharmsParserListener):
 				left_operand = stackOperands.pop()
 				left_type = stackTypes.pop()
 				operator = stackOperators.pop()
-				result_type = arithmeticOperators(operator, right_type, left_type)
+				result_type = relationalOperators(operator, right_type, left_type)
 				# print("right_operand")
 				# print(right_operand)
 				# print("right_type")
@@ -161,7 +163,7 @@ class CharmsPrintListener(CharmsParserListener):
 				# print(left_type)
 				# print("operator")
 				# print(operator)
-				if result_type == "int":
+				if result_type == "bool":
 					global tCount
 					tCount +=1
 					result = "t"+str(tCount)
@@ -169,9 +171,40 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 					stackOperands.append(result)
 					stackTypes.append(result_type)
-					# print("queueQuads")
-					# for quad in queueQuads:
-					# 	quad.printQuad()
+				else:
+					Exception("Type mismatch")
+
+	def enterAssignment(self, ctx):
+		operator = str(ctx.ASSIGN())
+		if operator != "None":
+			assignmentId = str(ctx.ID())
+			stackOperators.append(operator)
+			stackOperands.append(assignmentId)
+			stackTypes.append(varTable.getVariableType(assignmentId))
+
+	def exitAssignment(self, ctx):
+		if len(stackOperators) > 0:
+			if stackOperators[-1] == '=':
+				right_operand = stackOperands.pop()
+				right_type = stackTypes.pop()
+				left_operand = stackOperands.pop()
+				left_type = stackTypes.pop()
+				operator = stackOperators.pop()
+				result_type = assignmentOperator(operator, right_type, left_type)
+				# print("right_operand")
+				# print(right_operand)
+				# print("right_type")
+				# print(right_type)
+				# print("left_operand")
+				# print(left_operand)
+				# print("left_type")
+				# print(left_type)
+				# print("operator")
+				# print(operator)
+				if result_type == "true":
+					result = ""
+					quad = Quad(operator, left_operand, right_operand, result)
+					queueQuads.append(quad)
 				else:
 					Exception("Type mismatch")
 

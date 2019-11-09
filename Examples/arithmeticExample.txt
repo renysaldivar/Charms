@@ -78,3 +78,9 @@ if (b < d)
 {
   a = 4;
 }
+
+# Example 11
+int a, b;
+
+a = 1;
+b = a + 5 * 4;
