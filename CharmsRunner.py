@@ -140,6 +140,14 @@ class CharmsPrintListener(CharmsParserListener):
 	def enterV1(self, ctx):
 		self.addVar(ctx)
 
+	def enterE(self, ctx):
+		operator = ctx.GREATERTHAN() or ctx.LESSTHAN()
+		operator = str(operator)
+		if operator != "None":
+			stackOperators.append(operator)
+		# print("stackOperator:")
+		# print(stackOperators)
+
 def main(argv):
 	global tCount
 	global varTable
