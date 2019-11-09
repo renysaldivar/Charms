@@ -76,9 +76,6 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 					stackOperands.append(result)
 					stackTypes.append(result_type)
-					# print("queueQuads")
-					# for quad in queueQuads:
-					# 	quad.printQuad()
 				else:
 					Exception("Type mismatch")
 
@@ -121,9 +118,6 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 					stackOperands.append(result)
 					stackTypes.append(result_type)
-					# print("queueQuads")
-					# for quad in queueQuads:
-					# 	quad.printQuad()
 				else:
 					Exception("Type mismatch")
 
@@ -202,6 +196,8 @@ def main(argv):
 	walker = ParseTreeWalker()
 	tree = parser.program()
 	walker.walk(printer, tree)
+	for quad in queueQuads:
+		quad.printQuad()
 	# print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':

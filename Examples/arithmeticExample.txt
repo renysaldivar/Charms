@@ -42,3 +42,39 @@ int a, b, c;
 if (-2 < 7)
 {
 }
+
+# Example 8
+int a, b, c, d;
+a = 1;
+c = 4;
+b = a + c;
+d = 5 + 2;
+
+if (b < d)
+{
+  a = 4;
+}
+
+# Example 9
+int a, b, c, d;
+a = 1;
+c = 4;
+b = a + c * d;
+d = 5 + 2;
+
+if (b < d)
+{
+  a = 4;
+}
+
+# Example 10
+int a, b, c, d;
+a = 1;
+c = 4;
+b = (a + c) * d;
+d = 5 + 2;
+
+if (b < d)
+{
+  a = 4;
+}
