@@ -102,3 +102,8 @@ int a, b;
 
 a = 1;
 print((2 + 1) * a);
+
+# Example 15
+int a;
+
+read(a);

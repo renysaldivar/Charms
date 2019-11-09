@@ -233,6 +233,34 @@ class CharmsPrintListener(CharmsParserListener):
 				quad = Quad(operator, left_operand, right_operand, result)
 				queueQuads.append(quad)
 
+	def enterRead(self, ctx):
+		operator = str(ctx.READ())
+		if operator != "None":
+			assignmentId = str(ctx.ID())
+			stackOperators.append(operator)
+			stackOperands.append(assignmentId)
+
+	def exitRead(self, ctx):
+		if len(stackOperators) > 0:
+			if stackOperators[-1] == 'read':
+				left_operand = stackOperands.pop()
+				right_operand = ""
+				operator = stackOperators.pop()
+				# print("right_operand")
+				# print(right_operand)
+				# print("right_type")
+				# print(right_type)
+				# print("left_operand")
+				# print(left_operand)
+				# print("left_type")
+				# print(left_type)
+				# print("operator")
+				# print(operator)
+				result = ""
+				quad = Quad(operator, left_operand, right_operand, result)
+				queueQuads.append(quad)
+
+
 def main(argv):
 	global tCount
 	global varTable
