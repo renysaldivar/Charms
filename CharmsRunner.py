@@ -92,8 +92,8 @@ class CharmsPrintListener(CharmsParserListener):
 		operator = str(ctx.RPARENTHESES())
 		if operator != "None":
 			stackOperators.pop()
-			print("stackOperators")
-			print(stackOperators)
+			# print("stackOperators")
+			# print(stackOperators)
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
 				right_operand = stackOperands.pop()
@@ -207,6 +207,31 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 				else:
 					Exception("Type mismatch")
+
+	def enterWrite(self, ctx):
+		operator = str(ctx.PRINT())
+		if operator != "None":
+			stackOperators.append(operator)
+
+	def exitWrite(self, ctx):
+		if len(stackOperators) > 0:
+			if stackOperators[-1] == 'print':
+				left_operand = stackOperands.pop()
+				right_operand = ""
+				operator = stackOperators.pop()
+				# print("right_operand")
+				# print(right_operand)
+				# print("right_type")
+				# print(right_type)
+				# print("left_operand")
+				# print(left_operand)
+				# print("left_type")
+				# print(left_type)
+				# print("operator")
+				# print(operator)
+				result = ""
+				quad = Quad(operator, left_operand, right_operand, result)
+				queueQuads.append(quad)
 
 def main(argv):
 	global tCount

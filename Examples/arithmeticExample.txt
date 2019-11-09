@@ -84,3 +84,21 @@ int a, b;
 
 a = 1;
 b = a + 5 * 4;
+
+# Example 12
+int a, b;
+
+a = 1;
+print(a);
+
+# Example 13
+int a, b;
+
+a = 1;
+print(2 + 1);
+
+# Example 14
+int a, b;
+
+a = 1;
+print((2 + 1) * a);
