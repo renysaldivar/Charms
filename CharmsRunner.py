@@ -148,6 +148,39 @@ class CharmsPrintListener(CharmsParserListener):
 		# print("stackOperator:")
 		# print(stackOperators)
 
+	def exitE(self, ctx):
+		if len(stackOperators) > 0:
+			if stackOperators[-1] == '<' or stackOperators[-1] == '>':
+				right_operand = stackOperands.pop()
+				right_type = stackTypes.pop()
+				left_operand = stackOperands.pop()
+				left_type = stackTypes.pop()
+				operator = stackOperators.pop()
+				result_type = arithmeticOperators(operator, right_type, left_type)
+				# print("right_operand")
+				# print(right_operand)
+				# print("right_type")
+				# print(right_type)
+				# print("left_operand")
+				# print(left_operand)
+				# print("left_type")
+				# print(left_type)
+				# print("operator")
+				# print(operator)
+				if result_type == "int":
+					global tCount
+					tCount +=1
+					result = "t"+str(tCount)
+					quad = Quad(operator, left_operand, right_operand, result)
+					queueQuads.append(quad)
+					stackOperands.append(result)
+					stackTypes.append(result_type)
+					# print("queueQuads")
+					# for quad in queueQuads:
+					# 	quad.printQuad()
+				else:
+					Exception("Type mismatch")
+
 def main(argv):
 	global tCount
 	global varTable
