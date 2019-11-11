@@ -74,6 +74,8 @@ class CharmsPrintListener(CharmsParserListener):
 					global tCount
 					tCount +=1
 					result = "t"+str(tCount)
+					global qCount
+					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
@@ -116,6 +118,8 @@ class CharmsPrintListener(CharmsParserListener):
 					global tCount
 					tCount +=1
 					result = "t"+str(tCount)
+					global qCount
+					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
@@ -167,6 +171,8 @@ class CharmsPrintListener(CharmsParserListener):
 					global tCount
 					tCount +=1
 					result = "t"+str(tCount)
+					global qCount
+					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
@@ -203,6 +209,8 @@ class CharmsPrintListener(CharmsParserListener):
 				# print(operator)
 				if result_type == "true":
 					result = ""
+					global qCount
+					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 				else:
@@ -230,6 +238,8 @@ class CharmsPrintListener(CharmsParserListener):
 				# print("operator")
 				# print(operator)
 				result = ""
+				global qCount
+				qCount += 1
 				quad = Quad(operator, left_operand, right_operand, result)
 				queueQuads.append(quad)
 
@@ -257,9 +267,43 @@ class CharmsPrintListener(CharmsParserListener):
 				# print("operator")
 				# print(operator)
 				result = ""
+				global qCount
+				qCount += 1
 				quad = Quad(operator, left_operand, right_operand, result)
 				queueQuads.append(quad)
 
+	def enterLoop(self, ctx):
+		stackJumps.append(qCount+1)
+		global executionSource
+		executionSource = "loop"
+
+	def exitLoop(self, ctx):
+		end = stackJumps.pop()
+		operator = "goto"
+		left_operand = stackJumps.pop()
+		right_operand = ""
+		result = ""
+		global qCount
+		qCount += 1
+		quad = Quad(operator, left_operand, right_operand, result)
+		queueQuads.append(quad)
+		queueQuads[end-1].rightOperand = qCount+1
+
+	def enterSection(self, ctx):
+		global executionSource
+		if executionSource == "loop":
+			exp_type = stackTypes.pop()
+			if exp_type == "bool":
+				operator = "gotoF"
+				left_operand = stackOperands.pop()
+				right_operand = ""
+				result = ""
+				global qCount
+				qCount += 1
+				quad = Quad(operator, left_operand, right_operand, result)
+				queueQuads.append(quad)
+				stackJumps.append(qCount)
+				executionSource = ""
 
 def main(argv):
 	global tCount
@@ -267,12 +311,18 @@ def main(argv):
 	global stackOperands
 	global stackOperators
 	global stackTypes
+	global stackJumps
 	global queueQuads
+	global executionSource
+	global qCount # quadruple count
 	tCount = 0
+	qCount = 0
 	stackOperands = []
 	stackOperators = []
 	stackTypes = []
+	stackJumps = []
 	queueQuads = []
+	executionSource = ""
 
 	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
 	lexer = CharmsLexer(StdinStream())

@@ -1,0 +1,26 @@
+# Example 1
+int a, b, c;
+
+while(a < b)
+{
+	b = 1 + 2;	
+}
+
+# Example 2
+int a, b, c;
+
+if(a < b)
+{
+	
+}
+
+# Example 3
+int a, b, c, e;
+a = b + c;
+
+while(a > b * c)
+{
+	a = b - c;
+	b = b + e;
+}
+c = a + b;
