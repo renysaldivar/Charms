@@ -1,0 +1,21 @@
+# Example 1
+int a, b, c, d;
+
+if(a + b > c * d)
+{
+	a = b + c;
+}
+b = c * a;
+
+# Example 2
+int a, b, c, d;
+
+if(a + b > c * d)
+{
+	a = b * c;
+}
+else
+{
+	b = a - c;
+}
+b = c * a;

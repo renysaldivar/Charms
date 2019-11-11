@@ -291,7 +291,7 @@ class CharmsPrintListener(CharmsParserListener):
 
 	def enterSection(self, ctx):
 		global executionSource
-		if executionSource == "loop":
+		if executionSource == "loop" or executionSource == "condition":
 			exp_type = stackTypes.pop()
 			if exp_type == "bool":
 				operator = "gotoF"
@@ -305,6 +305,29 @@ class CharmsPrintListener(CharmsParserListener):
 				stackJumps.append(qCount)
 				executionSource = ""
 
+	def enterCondition(self, ctx):
+		global executionSource
+		executionSource = "condition"
+
+	def enterC(self, ctx):
+		operator = str(ctx.ELSE())
+		if operator == "else":
+			global qCount
+			qCount += 1
+			operator = "goto"
+			left_operand = ""
+			right_operand = ""
+			result = ""
+			quad = Quad(operator, left_operand, right_operand, result)
+			queueQuads.append(quad)
+			false = stackJumps.pop()
+			stackJumps.append(qCount)
+			queueQuads[false-1].rightOperand = qCount+1
+
+	def exitC(self, ctx):
+		end = stackJumps.pop()
+		queueQuads[end-1].leftOperand = qCount+1
+
 def main(argv):
 	global tCount
 	global varTable
@@ -313,7 +336,7 @@ def main(argv):
 	global stackTypes
 	global stackJumps
 	global queueQuads
-	global executionSource
+	global executionSource # to indicate if "Section" block is being called from a condition or loop
 	global qCount # quadruple count
 	tCount = 0
 	qCount = 0
