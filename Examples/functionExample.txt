@@ -1,0 +1,15 @@
+# Example 1
+int a, b, c, d;
+
+function void uno()
+{
+	a = b + c;
+}
+
+# Example 2
+int a, b, c, d, e;
+
+function void uno(int c, int d, int e)
+{
+	a = b + c;
+}

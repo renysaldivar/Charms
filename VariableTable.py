@@ -30,3 +30,7 @@ class VariableTable:
 	def printTable(self):
 		for var in self.vars:
 			print(var, self.vars[var].varType)
+
+	def clearVariableTable(self):
+		self.vars = {}
+		self.keywords = ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"]

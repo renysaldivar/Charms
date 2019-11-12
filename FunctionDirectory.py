@@ -3,12 +3,12 @@ from Function import Function
 class FunctionDirectory:
 	def __init__(self):
 		self.dictionary = {
-			"global": Function({}, 'void'),
-            "print": Function({}, 'void'),
-            "read": Function({}, 'void'),
-            "selectHouse": Function({'cte_string'}, 'void'),
-            "performSpell": Function({}, 'void'),
-            "addScore": Function( {'int'}, 'void')
+			"global": Function(0, 0, {}, 'void'),
+			"print": Function(0, 0, {}, 'void'),
+			"read": Function(0, 0, {}, 'void'),
+			"selectHouse": Function(0, 1, {'cte_string'}, 'void'),
+			"performSpell": Function(0, 0, {}, 'void'),
+			"addScore": Function(0, 1, {'int'}, 'void')
 		}
 
 	def getFunc(funcId):
@@ -17,19 +17,23 @@ class FunctionDirectory:
 		else:
 			self.dictionary[funcId]
 
-	def insertFunc(funcId, func):
+	def insertFunc(self, funcId, func):
 		if funcId in self.dictionary:
 			Exception("{} already exists in the directory".format(funcId))
 		else:
-			self.dictionary[funcId] = Function(func.funcParams, func.funcReturnType)
+			self.dictionary[funcId] = Function(func.quadCount, func.numParams, func.funcParams, func.funcReturnType)
 
 	def clearDictionary():
 		self.dictionary.clear()
 		self.dictionary = {
-			"global": Function({}, 'void'),
-            "print": Function({}, 'void'),
-            "read": Function({}, 'void'),
-            "selectHouse": Function({'cte_string'}, 'void'),
-            "performSpell": Function({}, 'void'),
-            "addScore": Function( {'int'}, 'void')
+			"global": Function(0, 0, {}, 'void'),
+			"print": Function(0, 0, {}, 'void'),
+			"read": Function(0, 0, {}, 'void'),
+			"selectHouse": Function(0, 1, {'cte_string'}, 'void'),
+			"performSpell": Function(0, 0, {}, 'void'),
+			"addScore": Function(0, 1, {'int'}, 'void')
 		}
+
+	def printDirectory(self):
+		for func in self.dictionary:
+			print(func)

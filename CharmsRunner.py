@@ -9,6 +9,8 @@ from SemanticCube import relationalOperators
 from SemanticCube import assignmentOperator
 from Variable import Variable
 from VariableTable import VariableTable
+from Function import Function
+from FunctionDirectory import FunctionDirectory
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
@@ -304,6 +306,10 @@ class CharmsPrintListener(CharmsParserListener):
 				queueQuads.append(quad)
 				stackJumps.append(qCount)
 				executionSource = ""
+		if executionSource == "function":
+			functionDirectory.dictionary[functionName].quadCount = qCount
+			executionSource = ""
+
 
 	def enterCondition(self, ctx):
 		global executionSource
@@ -328,9 +334,56 @@ class CharmsPrintListener(CharmsParserListener):
 		end = stackJumps.pop()
 		queueQuads[end-1].leftOperand = qCount+1
 
+	def enterFunction(self, ctx):
+		global executionSource
+		executionSource = "function"
+		global functionName
+		functionName = str(ctx.ID())
+		if functionName != "None":
+			function = Function(0, 0, [], "")
+			functionDirectory.insertFunc(functionName, function)
+			# functionDirectory.printDirectory()
+
+	def enterF1(self, ctx):
+		global localVarTable
+		localVarTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+		global varId
+		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
+		if varId != "None":
+			localVarTable.insertVariable(varId, varType, "global")
+			global pCount
+			pCount += 1
+		# localVarTable.printTable()
+
+	def enterF2(self, ctx):
+		global localVarTable
+		localVarTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+		global varId
+		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
+		if varId != "None":
+			localVarTable.insertVariable(varId, varType, "global")
+			global pCount
+			pCount += 1
+
+	def exitF2(self, ctx):
+		# insert into DirFunc the number of parameters defined (pCount)
+		functionDirectory.dictionary[functionName].numParams = pCount
+
+	def exitFunction(self, ctx):
+		localVarTable.clearVariableTable()
+		operator = "ENDPROC"
+		left_operand = ""
+		right_operand = ""
+		result = ""
+		global qCount
+		qCount += 1
+		quad = Quad(operator, left_operand, right_operand, result)
+		queueQuads.append(quad)
+
 def main(argv):
 	global tCount
 	global varTable
+	global functionDirectory
 	global stackOperands
 	global stackOperators
 	global stackTypes
@@ -338,8 +391,10 @@ def main(argv):
 	global queueQuads
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
 	global qCount # quadruple count
+	global pCount # parameter count (for functions)
 	tCount = 0
 	qCount = 0
+	pCount = 0
 	stackOperands = []
 	stackOperators = []
 	stackTypes = []
@@ -348,6 +403,7 @@ def main(argv):
 	executionSource = ""
 
 	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+	functionDirectory = FunctionDirectory()
 	lexer = CharmsLexer(StdinStream())
 	stream = CommonTokenStream(lexer)
 	parser = CharmsParser(stream)
