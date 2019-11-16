@@ -20,11 +20,12 @@
  f1			    : type_id ID f2 | /* epsilon */ ;
  f2			    : COMMA type_id ID f2 | /* epsilon */ ;
 
- section    : assignment section | condition section | write section | read section | loop section | func_call section | /* epsilon */ ;
+ section    : assignment section | condition section | write section | read section | loop section | function_return | function_call section | /* epsilon */ ;
 
  type_id    : INT | BOOL | CHAR ;
 
- assignment	: ID ASSIGN expression SEMICOLON ;
+ assignment	: ID ASSIGN a SEMICOLON ;
+ a : expression | function_call ;
 
  expression : exp e ;
  e 			    : GREATERTHAN exp | LESSTHAN exp | /* epsilon */ ;
@@ -51,5 +52,9 @@
 
  var_cte    : ID | CTE_INT ;
 
- func_call  : fc exp;
- fc         : RETURN | /* epsilon */ ;
+ function_return	: RETURN exp SEMICOLON ;
+
+ function_call		: ID LPARENTHESES arguments RPARENTHESES fc;
+ arguments			: exp more_args ;
+ more_args			: COMMA exp more_args | /* epsilon */ ;
+ fc 				: SEMICOLON | /* epsilon */ ;
