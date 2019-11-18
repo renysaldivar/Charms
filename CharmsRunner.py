@@ -11,6 +11,7 @@ from Variable import Variable
 from VariableTable import VariableTable
 from Function import Function
 from FunctionDirectory import FunctionDirectory
+from ParameterTable import ParameterTable
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
@@ -193,10 +194,10 @@ class CharmsPrintListener(CharmsParserListener):
 	def exitAssignment(self, ctx):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '=':
-				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
 				left_type = stackTypes.pop()
+				right_operand = stackOperands.pop()
+				right_type = stackTypes.pop()
 				operator = stackOperators.pop()
 				result_type = assignmentOperator(operator, right_type, left_type)
 				# print("right_operand")
@@ -307,7 +308,7 @@ class CharmsPrintListener(CharmsParserListener):
 				stackJumps.append(qCount)
 				executionSource = ""
 		if executionSource == "function":
-			functionDirectory.dictionary[functionName].quadCount = qCount
+			functionDirectory.dictionary[functionName].startPosition = qCount
 			executionSource = ""
 
 
@@ -340,39 +341,47 @@ class CharmsPrintListener(CharmsParserListener):
 		global functionName
 		functionName = str(ctx.ID())
 		if functionName != "None":
-			function = Function(0, 0, [], "")
+			global parameterTable
+			parameterTable = ParameterTable({})
+			function = Function(0, parameterTable, "")
 			functionDirectory.insertFunc(functionName, function)
 			# functionDirectory.printDirectory()
 
+	def enterF(self, ctx):
+		returnType = str(ctx.VOID())
+		if returnType == "None":
+			returnType = varType
+		functionDirectory.dictionary[functionName].funcReturnType = varType
+
 	def enterF1(self, ctx):
-		global localVarTable
-		localVarTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
-		global varId
-		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
-		if varId != "None":
-			localVarTable.insertVariable(varId, varType, "global")
-			global pCount
-			pCount += 1
-		# localVarTable.printTable()
+		parameterId = str(ctx.ID())
+		if parameterId != "None":
+			parameterType = varType
+			parameterTable.insertParameter(parameterId, parameterType)
+			# print("ParameterTableF1:")
+			# parameterTable.printTable()
 
 	def enterF2(self, ctx):
-		global localVarTable
-		localVarTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
-		global varId
-		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
-		if varId != "None":
-			localVarTable.insertVariable(varId, varType, "global")
-			global pCount
-			pCount += 1
-
-	def exitF2(self, ctx):
-		# insert into DirFunc the number of parameters defined (pCount)
-		functionDirectory.dictionary[functionName].numParams = pCount
+		parameterId = str(ctx.ID())
+		if parameterId != "None":
+			parameterType = varType
+			parameterTable.insertParameter(parameterId, parameterType)
+			# print("ParameterTableF2:")
+			# parameterTable.printTable()
 
 	def exitFunction(self, ctx):
-		localVarTable.clearVariableTable()
 		operator = "ENDPROC"
 		left_operand = ""
+		right_operand = ""
+		result = ""
+		global qCount
+		qCount += 1
+		quad = Quad(operator, left_operand, right_operand, result)
+		queueQuads.append(quad)
+
+	def exitFunction_return(self, ctx):
+		operator = "RETURN"
+		left_operand = stackOperands.pop()
 		right_operand = ""
 		result = ""
 		global qCount
