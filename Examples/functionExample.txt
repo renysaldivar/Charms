@@ -13,3 +13,12 @@ function void uno(int c, int d, int e)
 {
 	a = b + c;
 }
+
+#EXAMPLE hoja
+
+int i, j, b;
+function int dos(int b)
+{
+	b = b*i+j;
+	return(b*2);
+}
