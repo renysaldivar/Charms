@@ -6,9 +6,9 @@
 
  options { tokenVocab = CharmsLexer; }
 
- program    : p section ;
- p          : p_vars p1 | function ;
- p1			    : function | /* epsilon */ ;
+ program    : p p1 ;
+ p          : p_vars | /* epsilon */ ;
+ p1			    : function p1 | /* epsilon */ ;
 
  p_vars     : type_id v ;
  v 			    : ID v1 SEMICOLON v2 ;
@@ -20,11 +20,12 @@
  f1			    : type_id ID f2 | /* epsilon */ ;
  f2			    : COMMA type_id ID f2 | /* epsilon */ ;
 
- section    : assignment section | condition section | write section | read section | loop section | func_call section | /* epsilon */ ;
+ section    : assignment section | condition section | write section | read section | loop section | function_return | function_call section | /* epsilon */ ;
 
  type_id    : INT | BOOL | CHAR ;
 
- assignment	: ID ASSIGN expression SEMICOLON ;
+ assignment	: ID ASSIGN a SEMICOLON ;
+ a : expression | function_call ;
 
  expression : exp e ;
  e 			    : GREATERTHAN exp | LESSTHAN exp | /* epsilon */ ;
@@ -46,10 +47,15 @@
  read       : READ LPARENTHESES ID RPARENTHESES ;
 
  write      : PRINT LPARENTHESES w RPARENTHESES SEMICOLON ;
- w          : expression w2 | CTE_STRING w2 ;
+ w          : w1 w2;
+ w1         : expression | CTE_STRING | function_call ;
  w2         : COMMA w | /* epsilon */ ;
 
  var_cte    : ID | CTE_INT ;
 
- func_call  : fc exp;
- fc         : RETURN | /* epsilon */ ;
+ function_return	: RETURN exp SEMICOLON ;
+
+ function_call		: ID LPARENTHESES arguments RPARENTHESES fc;
+ arguments			: exp more_args ;
+ more_args			: COMMA exp more_args | /* epsilon */ ;
+ fc 				: SEMICOLON | /* epsilon */ ;

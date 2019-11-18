@@ -19,6 +19,11 @@ def logicalOperators(operator, type1, type2):
         return 'bool'
     raise TypeError(TYPE_ERROR.format(operator, type1, type2))
 
+def assignmentOperator(operator, type1, type2):
+    if type1 == type2:
+        return 'true'
+    raise TypeError(TYPE_ERROR.format(operator, type1, type2))
+
 def validOperation(operator, type1, type2):
     if operator == '+' or operator == '-' or operator == '*' or operator == '/':
         return arithmeticOperators(operator, type1, type2)
@@ -26,4 +31,6 @@ def validOperation(operator, type1, type2):
         return relationalOperators(operator, type1, type2)
     if operator == '&&' or operator == '||':
         return logicalOperators(operator, type1, type2)
+    if operator == '=':
+        return assignmentOperator(operator, type1, type2)
     Exception("{} does not exist".format(operator))
