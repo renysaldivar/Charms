@@ -15,6 +15,16 @@ from ParameterTable import ParameterTable
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
+	def enterProgram(self, ctx):
+		operator = "goto"
+		left_operand = ""
+		right_operand = ""
+		result = ""
+		global qCount
+		qCount += 1
+		quad = Quad(operator, left_operand, right_operand, result)
+		queueQuads.append(quad)
+
 	def exitType_id(self, ctx):
 		global varType
 		if ctx.INT():
@@ -35,10 +45,6 @@ class CharmsPrintListener(CharmsParserListener):
 		else:
 			stackOperands.append(int(myCTE_INT))
 			stackTypes.append("int")
-		# print("stackOperands:")
-		# print(stackOperands)
-		# print("stackTypes:")
-		# print(stackTypes)
 
 	def enterE1(self, ctx):
 		operator = ctx.PLUS() or ctx.MINUS()
@@ -51,8 +57,6 @@ class CharmsPrintListener(CharmsParserListener):
 		operator = str(operator)
 		if operator != "None":
 			stackOperators.append(operator)
-		# print("stackOperator:")
-		# print(stackOperators)
 
 	def exitTerm(self, ctx):
 		if len(stackOperators) > 0:
@@ -63,16 +67,6 @@ class CharmsPrintListener(CharmsParserListener):
 				left_type = stackTypes.pop()
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
-				# print("right_operand")
-				# print(right_operand)
-				# print("right_type")
-				# print(right_type)
-				# print("left_operand")
-				# print(left_operand)
-				# print("left_type")
-				# print(left_type)
-				# print("operator")
-				# print(operator)
 				if result_type == "int":
 					global tCount
 					tCount +=1
@@ -90,15 +84,11 @@ class CharmsPrintListener(CharmsParserListener):
 		operator = str(ctx.LPARENTHESES())
 		if operator != "None":
 			stackOperators.append(operator)
-			# print("stackOperators")
-			# print(stackOperators)
 
 	def exitFactor(self, ctx):
 		operator = str(ctx.RPARENTHESES())
 		if operator != "None":
 			stackOperators.pop()
-			# print("stackOperators")
-			# print(stackOperators)
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
 				right_operand = stackOperands.pop()
@@ -107,16 +97,6 @@ class CharmsPrintListener(CharmsParserListener):
 				left_type = stackTypes.pop()
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
-				# print("right_operand")
-				# print(right_operand)
-				# print("right_type")
-				# print(right_type)
-				# print("left_operand")
-				# print(left_operand)
-				# print("left_type")
-				# print(left_type)
-				# print("operator")
-				# print(operator)
 				if result_type == "int":
 					global tCount
 					tCount +=1
@@ -135,7 +115,6 @@ class CharmsPrintListener(CharmsParserListener):
 		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
 		if varId != "None":
 			varTable.insertVariable(varId, varType, "global")
-			# varTable.printTable()
 
 	def enterV(self, ctx):
 		self.addVar(ctx)
@@ -160,16 +139,6 @@ class CharmsPrintListener(CharmsParserListener):
 				left_type = stackTypes.pop()
 				operator = stackOperators.pop()
 				result_type = relationalOperators(operator, right_type, left_type)
-				# print("right_operand")
-				# print(right_operand)
-				# print("right_type")
-				# print(right_type)
-				# print("left_operand")
-				# print(left_operand)
-				# print("left_type")
-				# print(left_type)
-				# print("operator")
-				# print(operator)
 				if result_type == "bool":
 					global tCount
 					tCount +=1
@@ -200,16 +169,6 @@ class CharmsPrintListener(CharmsParserListener):
 				right_type = stackTypes.pop()
 				operator = stackOperators.pop()
 				result_type = assignmentOperator(operator, right_type, left_type)
-				# print("right_operand")
-				# print(right_operand)
-				# print("right_type")
-				# print(right_type)
-				# print("left_operand")
-				# print(left_operand)
-				# print("left_type")
-				# print(left_type)
-				# print("operator")
-				# print(operator)
 				if result_type == "true":
 					result = ""
 					global qCount
@@ -219,32 +178,15 @@ class CharmsPrintListener(CharmsParserListener):
 				else:
 					Exception("Type mismatch")
 
-	def enterWrite(self, ctx):
-		operator = str(ctx.PRINT())
-		if operator != "None":
-			stackOperators.append(operator)
-
-	def exitWrite(self, ctx):
-		if len(stackOperators) > 0:
-			if stackOperators[-1] == 'print':
-				left_operand = stackOperands.pop()
-				right_operand = ""
-				operator = stackOperators.pop()
-				# print("right_operand")
-				# print(right_operand)
-				# print("right_type")
-				# print(right_type)
-				# print("left_operand")
-				# print(left_operand)
-				# print("left_type")
-				# print(left_type)
-				# print("operator")
-				# print(operator)
-				result = ""
-				global qCount
-				qCount += 1
-				quad = Quad(operator, left_operand, right_operand, result)
-				queueQuads.append(quad)
+	def exitW1(self, ctx):
+		left_operand = stackOperands.pop()
+		right_operand = ""
+		operator = "PRINT"
+		result = ""
+		global qCount
+		qCount += 1
+		quad = Quad(operator, left_operand, right_operand, result)
+		queueQuads.append(quad)
 
 	def enterRead(self, ctx):
 		operator = str(ctx.READ())
@@ -259,16 +201,6 @@ class CharmsPrintListener(CharmsParserListener):
 				left_operand = stackOperands.pop()
 				right_operand = ""
 				operator = stackOperators.pop()
-				# print("right_operand")
-				# print(right_operand)
-				# print("right_type")
-				# print(right_type)
-				# print("left_operand")
-				# print(left_operand)
-				# print("left_type")
-				# print(left_type)
-				# print("operator")
-				# print(operator)
 				result = ""
 				global qCount
 				qCount += 1
@@ -333,41 +265,42 @@ class CharmsPrintListener(CharmsParserListener):
 
 	def exitC(self, ctx):
 		end = stackJumps.pop()
-		queueQuads[end-1].leftOperand = qCount+1
+		queueQuads[end-1].result = qCount+1
 
 	def enterFunction(self, ctx):
+		global tCount
+		tCount = 0
 		global executionSource
 		executionSource = "function"
 		global functionName
 		functionName = str(ctx.ID())
+		if functionName == 'main':
+			firstQuad = queueQuads[0]
+			firstQuad.result = qCount+1
 		if functionName != "None":
 			global parameterTable
 			parameterTable = ParameterTable({})
 			function = Function(0, parameterTable, "")
 			functionDirectory.insertFunc(functionName, function)
-			# functionDirectory.printDirectory()
 
 	def enterF(self, ctx):
 		returnType = str(ctx.VOID())
 		if returnType == "None":
 			returnType = varType
-		functionDirectory.dictionary[functionName].funcReturnType = varType
+			varTable.insertVariable(functionName, varType, "global")
+		functionDirectory.dictionary[functionName].funcReturnType = returnType
 
 	def enterF1(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
 			parameterType = varType
 			parameterTable.insertParameter(parameterId, parameterType)
-			# print("ParameterTableF1:")
-			# parameterTable.printTable()
 
 	def enterF2(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
 			parameterType = varType
 			parameterTable.insertParameter(parameterId, parameterType)
-			# print("ParameterTableF2:")
-			# parameterTable.printTable()
 
 	def exitFunction(self, ctx):
 		operator = "ENDPROC"
@@ -378,6 +311,7 @@ class CharmsPrintListener(CharmsParserListener):
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
+		functionDirectory.dictionary[functionName].parameterTable = parameterTable
 
 	def exitFunction_return(self, ctx):
 		operator = "RETURN"
@@ -388,6 +322,68 @@ class CharmsPrintListener(CharmsParserListener):
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
+
+	def enterFunction_call(self, ctx):
+		global functionId
+		functionId = str(ctx.ID())
+		if functionId in functionDirectory.dictionary:
+			operator = "ERA"
+			left_operand = functionId
+			right_operand = ""
+			result = ""
+			global qCount
+			qCount += 1
+			global pCount
+			pCount = 1
+			quad = Quad(operator, left_operand, right_operand, result)
+			queueQuads.append(quad)
+
+	def enterMore_args(self, ctx):
+		global pCount
+		argument = stackOperands.pop()
+		argumentType = stackTypes.pop()
+		funcCallParamTable = functionDirectory.dictionary[functionId].parameterTable
+		funcCallParamsList = list(funcCallParamTable.parameters)
+		key = funcCallParamsList[pCount-1]
+		if argumentType == funcCallParamTable.parameters[key].parameterType:
+			operator = "PARAMETER"
+			left_operand = argument
+			right_operand = ""
+			result = "parameter"+str(pCount);
+			global qCount
+			qCount += 1
+			quad = Quad(operator, left_operand, right_operand, result)
+			queueQuads.append(quad)
+		else:
+			Exception("Type mismatch")
+		pCount += 1
+
+	def exitArguments(self, ctx):
+		parameterTableSize = len(parameterTable.parameters)
+		if pCount != parameterTableSize:
+			Exception("Argument size is different from function parameter size")
+
+	def enterFc(self, ctx):
+		operator = "GOSUB"
+		left_operand = functionId
+		right_operand = ""
+		result = ""
+		global qCount
+		qCount += 1
+		quad = Quad(operator, left_operand, right_operand, result)
+		queueQuads.append(quad)
+		funcReturnType = functionDirectory.dictionary[functionId].funcReturnType
+		if funcReturnType != "void":
+			operator = "="
+			left_operand = functionId
+			right_operand = ""
+			global tCount
+			tCount +=1
+			result = "t"+str(tCount)
+			qCount += 1
+			quad = Quad(operator, left_operand, right_operand, result)
+			queueQuads.append(quad)
+			stackOperands.append(result)
 
 def main(argv):
 	global tCount

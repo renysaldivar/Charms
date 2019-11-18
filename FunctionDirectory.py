@@ -5,7 +5,7 @@ class FunctionDirectory:
 		self.dictionary = {
 		}
 
-	def getFunc(funcId):
+	def getFunc(self, funcId):
 		if funcId not in self.dictionary:
 			Exception("{} does not exist in the directory".format(funcId))
 		else:

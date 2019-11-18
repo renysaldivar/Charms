@@ -6,9 +6,9 @@
 
  options { tokenVocab = CharmsLexer; }
 
- program    : p section ;
- p          : p_vars p1 | function ;
- p1			    : function | /* epsilon */ ;
+ program    : p p1 ;
+ p          : p_vars | /* epsilon */ ;
+ p1			    : function p1 | /* epsilon */ ;
 
  p_vars     : type_id v ;
  v 			    : ID v1 SEMICOLON v2 ;
@@ -47,7 +47,8 @@
  read       : READ LPARENTHESES ID RPARENTHESES ;
 
  write      : PRINT LPARENTHESES w RPARENTHESES SEMICOLON ;
- w          : expression w2 | CTE_STRING w2 ;
+ w          : w1 w2;
+ w1         : expression | CTE_STRING | function_call ;
  w2         : COMMA w | /* epsilon */ ;
 
  var_cte    : ID | CTE_INT ;
