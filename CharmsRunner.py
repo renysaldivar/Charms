@@ -12,6 +12,7 @@ from VariableTable import VariableTable
 from Function import Function
 from FunctionDirectory import FunctionDirectory
 from ParameterTable import ParameterTable
+from VirtualMachine import VirtualMachine
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
@@ -43,8 +44,13 @@ class CharmsPrintListener(CharmsParserListener):
 			stackOperands.append(myId)
 			stackTypes.append(varTable.getVariableType(myId))
 		else:
-			stackOperands.append(int(myCTE_INT))
+			constantInt = int(myCTE_INT)
+			stackOperands.append(constantInt)
 			stackTypes.append("int")
+			global constIntAddr
+			if constantInt not in constants['int']:
+				constants['int'][constantInt] = constIntAddr
+				constIntAddr = constIntAddr + 1
 
 	def enterE1(self, ctx):
 		operator = ctx.PLUS() or ctx.MINUS()
@@ -397,6 +403,8 @@ def main(argv):
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
 	global qCount # quadruple count
 	global pCount # parameter count (for functions)
+	global constants
+	global constIntAddr
 	tCount = 0
 	qCount = 0
 	pCount = 0
@@ -406,6 +414,8 @@ def main(argv):
 	stackJumps = []
 	queueQuads = []
 	executionSource = ""
+	constIntAddr = 0
+	constants = {'int': {}}
 
 	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
 	functionDirectory = FunctionDirectory()
@@ -416,6 +426,7 @@ def main(argv):
 	walker = ParseTreeWalker()
 	tree = parser.program()
 	walker.walk(printer, tree)
+	virtualMachine = VirtualMachine(queueQuads, functionDirectory, constants)
 	for quad in queueQuads:
 		quad.printQuad()
 	# print(Trees.toStringTree(tree, None, parser))
