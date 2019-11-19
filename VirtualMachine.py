@@ -74,5 +74,5 @@ class VirtualMachine:
 
 	def printMemory(self, scope):
 		index = self.getIndexFromScope(scope)
-		currentMemory = self.memoryStack[3]
+		currentMemory = self.memoryStack[index]
 		print(currentMemory)
