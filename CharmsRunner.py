@@ -9,6 +9,8 @@ from SemanticCube import relationalOperators
 from SemanticCube import assignmentOperator
 from Variable import Variable
 from VariableTable import VariableTable
+from TempVariable import TempVariable
+from TempVariableTable import TempVariableTable
 from Constant import Constant
 from ConstantTable import ConstantTable
 from Function import Function
@@ -76,9 +78,9 @@ class CharmsPrintListener(CharmsParserListener):
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
 				if result_type == "int":
-					global tCount
-					tCount +=1
-					result = "t"+str(tCount)
+					global tempVarIntAddr
+					result = "ti"+str(tempVarIntAddr+1)
+					tempVarIntAddr += 1
 					global qCount
 					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
@@ -106,9 +108,9 @@ class CharmsPrintListener(CharmsParserListener):
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
 				if result_type == "int":
-					global tCount
-					tCount +=1
-					result = "t"+str(tCount)
+					global tempVarIntAddr
+					result = "ti"+str(tempVarIntAddr+1)
+					tempVarIntAddr += 1
 					global qCount
 					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
@@ -159,9 +161,9 @@ class CharmsPrintListener(CharmsParserListener):
 				operator = stackOperators.pop()
 				result_type = relationalOperators(operator, right_type, left_type)
 				if result_type == "bool":
-					global tCount
-					tCount +=1
-					result = "t"+str(tCount)
+					global tempVarBoolAddr
+					result = "tb"+str(tempVarBoolAddr+1)
+					tempVarBoolAddr += 1
 					global qCount
 					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
@@ -287,18 +289,18 @@ class CharmsPrintListener(CharmsParserListener):
 		queueQuads[end-1].result = qCount+1
 
 	def enterFunction(self, ctx):
-		global tCount
-		tCount = 0
 		global executionSource
-		executionSource = "function"
 		global functionName
+		executionSource = "function"
 		functionName = str(ctx.ID())
 		if functionName == 'main':
 			firstQuad = queueQuads[0]
 			firstQuad.result = qCount+1
 		if functionName != "None":
 			global parameterTable
+			global tempVariableTable
 			parameterTable = ParameterTable({})
+			tempVariableTable = TempVariableTable({})
 			function = Function(0, parameterTable, "")
 			functionDirectory.insertFunc(functionName, function)
 
@@ -355,14 +357,23 @@ class CharmsPrintListener(CharmsParserListener):
 				parameterCharAddr = parameterCharAddr + 1
 
 	def exitFunction(self, ctx):
+		global qCount
+		global tempVarIntAddr
+		global tempVarBoolAddr
+		global tempVarCharAddr
+		global parameterIntAddr
+		global parameterBoolAddr
+		global parameterCharAddr
 		operator = "ENDPROC"
 		left_operand = ""
 		right_operand = ""
 		result = ""
-		global qCount
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
+		tempVarIntAddr = 0
+		tempVarBoolAddr = 0
+		tempVarCharAddr = 0
 		parameterIntAddr = 0
 		parameterBoolAddr = 0
 		parameterCharAddr = 0
@@ -432,16 +443,15 @@ class CharmsPrintListener(CharmsParserListener):
 			operator = "="
 			left_operand = functionId
 			right_operand = ""
-			global tCount
-			tCount +=1
-			result = "t"+str(tCount)
+			global tempVarIntAddr
+			result = "ti"+str(tempVarIntAddr+1)
+			tempVarIntAddr += 1
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
 			stackOperands.append(result)
 
 def main(argv):
-	global tCount
 	global stackOperands
 	global stackOperators
 	global stackTypes
@@ -459,11 +469,13 @@ def main(argv):
 	global varIntAddr
 	global varBoolAddr
 	global varCharAddr
+	global tempVarIntAddr
+	global tempVarBoolAddr
+	global tempVarCharAddr
 	global parameterIntAddr
 	global parameterBoolAddr
 	global parameterCharAddr
 
-	tCount = 0
 	qCount = 0
 	pCount = 0
 	stackOperands = []
@@ -478,6 +490,9 @@ def main(argv):
 	varIntAddr = 0
 	varBoolAddr = 0
 	varCharAddr = 0
+	tempVarIntAddr = 0
+	tempVarBoolAddr = 0
+	tempVarCharAddr = 0
 	parameterIntAddr = 0
 	parameterBoolAddr = 0
 	parameterCharAddr = 0
