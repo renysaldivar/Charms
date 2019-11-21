@@ -307,15 +307,15 @@ class CharmsPrintListener(CharmsParserListener):
 			returnType = varType
 			if returnType == 'int':
 				global varIntAddr
-				varTable.insertVariable(varId, varType, "global", varIntAddr)
+				varTable.insertVariable(functionName, varType, "global", varIntAddr)
 				varIntAddr = varIntAddr + 1
 			elif returnType == 'bool':
 				global varBoolAddr
-				varTable.insertVariable(varId, varType, "global", varBoolAddr)
+				varTable.insertVariable(functionName, varType, "global", varBoolAddr)
 				varBoolAddr = varBoolAddr + 1
 			else:
 				global varCharAddr
-				returnType.insertVariable(varId, varType, "global", varCharAddr)
+				returnType.insertVariable(functionName, varType, "global", varCharAddr)
 				varCharAddr = varCharAddr + 1
 		functionDirectory.dictionary[functionName].funcReturnType = returnType
 
