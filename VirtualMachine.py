@@ -15,15 +15,16 @@ class VirtualMachine:
 	TEMPBOOL = 300
 	TEMPCHAR = 600
 	CONSTINT = 0
-	
-	def __init__(self, quadruples, functionDirectory, constants):
+
+	def __init__(self, quadruples, functionDirectory, constantTable, varTable):
 		self.quadruples = quadruples
 		self.functionDirectory = functionDirectory
-		self.constants = constants
+		self.constantTable = constantTable
+		self.varTable = varTable
 
-		for type, variables in constants.items():
-			for value, addr in variables.items():
-				self.setValue(addr, int(value), type, 'const')
+		# for type, variables in constants.items():
+		# 	for value, addr in variables.items():
+		# 		self.setValue(addr, int(value), type, 'const')
 
 		# self.printMemory('const')
 
@@ -34,7 +35,7 @@ class VirtualMachine:
 				currentMemory[self.GLOBALINT + addr] = value
 			elif type == 'bool':
 				currentMemory[self.GLOBALBOOL + addr] = value
-			else: 
+			else:
 				currentMemory[self.GLOBALCHAR + addr] = value
 		elif scope == 'local':
 			currentMemory = self.memoryStack[1]

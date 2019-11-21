@@ -9,6 +9,8 @@ from SemanticCube import relationalOperators
 from SemanticCube import assignmentOperator
 from Variable import Variable
 from VariableTable import VariableTable
+from Constant import Constant
+from ConstantTable import ConstantTable
 from Function import Function
 from FunctionDirectory import FunctionDirectory
 from ParameterTable import ParameterTable
@@ -48,9 +50,8 @@ class CharmsPrintListener(CharmsParserListener):
 			stackOperands.append(constantInt)
 			stackTypes.append("int")
 			global constIntAddr
-			if constantInt not in constants['int']:
-				constants['int'][constantInt] = constIntAddr
-				constIntAddr = constIntAddr + 1
+			constantTable.insertConstant(constantInt, 'int', constIntAddr)
+			constIntAddr = constIntAddr + 1
 
 	def enterE1(self, ctx):
 		operator = ctx.PLUS() or ctx.MINUS()
@@ -440,8 +441,6 @@ class CharmsPrintListener(CharmsParserListener):
 
 def main(argv):
 	global tCount
-	global varTable
-	global functionDirectory
 	global stackOperands
 	global stackOperators
 	global stackTypes
@@ -450,14 +449,19 @@ def main(argv):
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
 	global qCount # quadruple count
 	global pCount # parameter count (for functions)
-	global constants
+
+	# Memory address
+	global functionDirectory
+	global constantTable
+	global varTable
 	global constIntAddr
-	global parameterIntAddr
-	global parameterBoolAddr
-	global parameterCharAddr
 	global varIntAddr
 	global varBoolAddr
 	global varCharAddr
+	global parameterIntAddr
+	global parameterBoolAddr
+	global parameterCharAddr
+
 	tCount = 0
 	qCount = 0
 	pCount = 0
@@ -467,17 +471,20 @@ def main(argv):
 	stackJumps = []
 	queueQuads = []
 	executionSource = ""
+
+	# Memory address
 	constIntAddr = 0
-	constants = {'int': {}}
-	parameterIntAddr = 0
-	parameterBoolAddr = 0
-	parameterCharAddr = 0
 	varIntAddr = 0
 	varBoolAddr = 0
 	varCharAddr = 0
+	parameterIntAddr = 0
+	parameterBoolAddr = 0
+	parameterCharAddr = 0
 
-	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
 	functionDirectory = FunctionDirectory()
+	constantTable = ConstantTable({})
+	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+
 	lexer = CharmsLexer(StdinStream())
 	stream = CommonTokenStream(lexer)
 	parser = CharmsParser(stream)
@@ -485,7 +492,7 @@ def main(argv):
 	walker = ParseTreeWalker()
 	tree = parser.program()
 	walker.walk(printer, tree)
-	virtualMachine = VirtualMachine(queueQuads, functionDirectory, constants)
+	virtualMachine = VirtualMachine(queueQuads, functionDirectory, constantTable, varTable)
 	for quad in queueQuads:
 		quad.printQuad()
 	# print(Trees.toStringTree(tree, None, parser))
