@@ -304,7 +304,7 @@ class CharmsPrintListener(CharmsParserListener):
 			function = Function(0, parameterTable, tempVariableTable, "")
 			functionDirectory.insertFunc(functionName, function)
 
-	def enterF(self, ctx):
+	def exitF(self, ctx):
 		returnType = str(ctx.VOID())
 		if returnType == "None":
 			returnType = varType
