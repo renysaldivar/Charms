@@ -31,6 +31,7 @@ function void main()
 
 # Example hoja completo
 int i, j, a, b;
+bool z;
 
 function void uno(int a)
 {
@@ -48,11 +49,17 @@ function int dos(int b)
 	return(b*2);
 }
 
+function bool tres(bool z)
+{
+	return z;
+}
+
 function void main()
 {
 	i = 2;
 	j = i*2-1;
 	uno(j);
+	print(tres(z));
 	print(i, dos(i+j));
 }
 

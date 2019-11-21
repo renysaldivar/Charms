@@ -443,9 +443,14 @@ class CharmsPrintListener(CharmsParserListener):
 			operator = "="
 			left_operand = functionId
 			right_operand = ""
-			global tempVarIntAddr
-			result = "ti"+str(tempVarIntAddr+1)
-			tempVarIntAddr += 1
+			if funcReturnType == 'int':
+				global tempVarIntAddr
+				result = "ti"+str(tempVarIntAddr+1)
+				tempVarIntAddr += 1
+			else: #bool
+				global tempVarBoolAddr
+				result = "tb"+str(tempVarBoolAddr+1)
+				tempVarBoolAddr += 1
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
