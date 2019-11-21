@@ -80,6 +80,7 @@ class CharmsPrintListener(CharmsParserListener):
 				if result_type == "int":
 					global tempVarIntAddr
 					result = "ti"+str(tempVarIntAddr+1)
+					tempVariableTable.insertTempVariable(result, 'int', tempVarIntAddr)
 					tempVarIntAddr += 1
 					global qCount
 					qCount += 1
@@ -110,6 +111,7 @@ class CharmsPrintListener(CharmsParserListener):
 				if result_type == "int":
 					global tempVarIntAddr
 					result = "ti"+str(tempVarIntAddr+1)
+					tempVariableTable.insertTempVariable(result, 'int', tempVarIntAddr)
 					tempVarIntAddr += 1
 					global qCount
 					qCount += 1
@@ -163,6 +165,7 @@ class CharmsPrintListener(CharmsParserListener):
 				if result_type == "bool":
 					global tempVarBoolAddr
 					result = "tb"+str(tempVarBoolAddr+1)
+					tempVariableTable.insertTempVariable(result, 'bool', tempVarBoolAddr)
 					tempVarBoolAddr += 1
 					global qCount
 					qCount += 1
@@ -378,6 +381,7 @@ class CharmsPrintListener(CharmsParserListener):
 		parameterBoolAddr = 0
 		parameterCharAddr = 0
 		functionDirectory.dictionary[functionName].parameterTable = parameterTable
+		functionDirectory.dictionary[functionName].tempVariableTable = tempVariableTable
 
 	def exitFunction_return(self, ctx):
 		operator = "RETURN"
@@ -446,10 +450,12 @@ class CharmsPrintListener(CharmsParserListener):
 			if funcReturnType == 'int':
 				global tempVarIntAddr
 				result = "ti"+str(tempVarIntAddr+1)
+				tempVariableTable.insertTempVariable(result, 'int', tempVarIntAddr)
 				tempVarIntAddr += 1
 			else: #bool
 				global tempVarBoolAddr
 				result = "tb"+str(tempVarBoolAddr+1)
+				tempVariableTable.insertTempVariable(result, 'bool', tempVarBoolAddr)
 				tempVarBoolAddr += 1
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
