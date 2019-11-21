@@ -301,7 +301,7 @@ class CharmsPrintListener(CharmsParserListener):
 			global tempVariableTable
 			parameterTable = ParameterTable({})
 			tempVariableTable = TempVariableTable({})
-			function = Function(0, parameterTable, "")
+			function = Function(0, parameterTable, tempVariableTable, "")
 			functionDirectory.insertFunc(functionName, function)
 
 	def enterF(self, ctx):
