@@ -55,3 +55,32 @@ function void main()
 	uno(j);
 	print(i, dos(i+j));
 }
+
+# Example hoja completo con bool
+int i, j, a, b;
+bool x;
+char y;
+
+function void uno(bool x)
+{
+	i = a*2;
+	if(i<a+4)
+	{
+		uno(a+1);
+	}
+	print(i);
+}
+
+function int dos(char y)
+{
+	b=b*i+j;
+	return(b*2);
+}
+
+function void main()
+{
+	i = 2;
+	j = i*2-1;
+	uno(x);
+	print(i, dos(y));
+}

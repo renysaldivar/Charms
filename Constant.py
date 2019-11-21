@@ -4,3 +4,6 @@ class Constant:
     def __init__(self, constantType, constantAddress):
         self.constantType = constantType # int
         self.constantAddress = constantAddress # memory address
+
+    def updateAddress(self, newAddress):
+        self.constantAddress = newAddress

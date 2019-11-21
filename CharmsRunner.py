@@ -322,7 +322,7 @@ class CharmsPrintListener(CharmsParserListener):
 	def enterF1(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
-			parameterType = varType
+			parameterType = varTable.vars[parameterId].varType
 			if parameterType == 'int':
 				global parameterIntAddr
 				parameterTable.insertParameter(parameterId, parameterType, parameterIntAddr)
@@ -339,7 +339,7 @@ class CharmsPrintListener(CharmsParserListener):
 	def enterF2(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
-			parameterType = varType
+			parameterType = varTable.vars[parameterId].varType
 			if parameterType == 'int':
 				global parameterIntAddr
 				parameterTable.insertParameter(parameterId, parameterType, parameterIntAddr)
@@ -493,8 +493,8 @@ def main(argv):
 	tree = parser.program()
 	walker.walk(printer, tree)
 	virtualMachine = VirtualMachine(queueQuads, functionDirectory, constantTable, varTable)
-	for quad in queueQuads:
-		quad.printQuad()
+	# for quad in queueQuads:
+	# 	quad.printQuad()
 	# print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':

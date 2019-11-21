@@ -5,3 +5,6 @@ class Variable:
 		self.varType = varType # int, char, bool
 		self.varScope = varScope # local or global
 		self.varAddress = varAddress # memory address
+
+	def updateAddress(self, newAddress):
+		self.varAddress = newAddress
