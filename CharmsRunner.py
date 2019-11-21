@@ -120,7 +120,18 @@ class CharmsPrintListener(CharmsParserListener):
 		global varId
 		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
 		if varId != "None":
-			varTable.insertVariable(varId, varType, "global")
+			if varType == 'int':
+				global varIntAddr
+				varTable.insertVariable(varId, varType, "global", varIntAddr)
+				varIntAddr = varIntAddr + 1
+			elif varType == 'bool':
+				global varBoolAddr
+				varTable.insertVariable(varId, varType, "global", varBoolAddr)
+				varBoolAddr = varBoolAddr + 1
+			else:
+				global varCharAddr
+				varTable.insertVariable(varId, varType, "global", varCharAddr)
+				varCharAddr = varCharAddr + 1
 
 	def enterV(self, ctx):
 		self.addVar(ctx)
@@ -293,20 +304,53 @@ class CharmsPrintListener(CharmsParserListener):
 		returnType = str(ctx.VOID())
 		if returnType == "None":
 			returnType = varType
-			varTable.insertVariable(functionName, varType, "global")
+			if returnType == 'int':
+				global varIntAddr
+				varTable.insertVariable(varId, varType, "global", varIntAddr)
+				varIntAddr = varIntAddr + 1
+			elif returnType == 'bool':
+				global varBoolAddr
+				varTable.insertVariable(varId, varType, "global", varBoolAddr)
+				varBoolAddr = varBoolAddr + 1
+			else:
+				global varCharAddr
+				returnType.insertVariable(varId, varType, "global", varCharAddr)
+				varCharAddr = varCharAddr + 1
 		functionDirectory.dictionary[functionName].funcReturnType = returnType
 
 	def enterF1(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
 			parameterType = varType
-			parameterTable.insertParameter(parameterId, parameterType)
+			if parameterType == 'int':
+				global parameterIntAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterIntAddr)
+				parameterIntAddr = parameterIntAddr + 1
+			elif parameterType == 'bool':
+				global parameterBoolAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterBoolAddr)
+				parameterBoolAddr = parameterBoolAddr + 1
+			else:
+				global parameterCharAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterCharAddr)
+				parameterCharAddr = parameterCharAddr + 1
 
 	def enterF2(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
 			parameterType = varType
-			parameterTable.insertParameter(parameterId, parameterType)
+			if parameterType == 'int':
+				global parameterIntAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterIntAddr)
+				parameterIntAddr = parameterIntAddr + 1
+			elif parameterType == 'bool':
+				global parameterBoolAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterBoolAddr)
+				parameterBoolAddr = parameterBoolAddr + 1
+			else:
+				global parameterCharAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterCharAddr)
+				parameterCharAddr = parameterCharAddr + 1
 
 	def exitFunction(self, ctx):
 		operator = "ENDPROC"
@@ -317,6 +361,9 @@ class CharmsPrintListener(CharmsParserListener):
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
+		parameterIntAddr = 0
+		parameterBoolAddr = 0
+		parameterCharAddr = 0
 		functionDirectory.dictionary[functionName].parameterTable = parameterTable
 
 	def exitFunction_return(self, ctx):
@@ -405,6 +452,12 @@ def main(argv):
 	global pCount # parameter count (for functions)
 	global constants
 	global constIntAddr
+	global parameterIntAddr
+	global parameterBoolAddr
+	global parameterCharAddr
+	global varIntAddr
+	global varBoolAddr
+	global varCharAddr
 	tCount = 0
 	qCount = 0
 	pCount = 0
@@ -416,6 +469,12 @@ def main(argv):
 	executionSource = ""
 	constIntAddr = 0
 	constants = {'int': {}}
+	parameterIntAddr = 0
+	parameterBoolAddr = 0
+	parameterCharAddr = 0
+	varIntAddr = 0
+	varBoolAddr = 0
+	varCharAddr = 0
 
 	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
 	functionDirectory = FunctionDirectory()
