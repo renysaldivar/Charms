@@ -47,8 +47,12 @@ class VirtualMachine:
 			tempVariableTable = function.tempVariableTable
 			self.updateTemporalMemoryStack(tempVariableTable)
 
+		# Convert quadruples
 		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
 		printQuadruples(quadruples)
+
+		# Print memory stack
+		self.printMemoryStack()
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
@@ -159,3 +163,9 @@ class VirtualMachine:
 		index = self.getIndexFromScope(scope)
 		currentMemory = self.memoryStack[index]
 		print(currentMemory)
+
+	def printMemoryStack(self):
+		memoryList = ['global', 'local', 'temp', 'const']
+		for memory in memoryList:
+			print(memory+" memory")
+			self.printMemory(memory)
