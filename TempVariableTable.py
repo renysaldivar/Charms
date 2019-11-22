@@ -12,6 +12,5 @@ class TempVariableTable:
             self.tempVariables[tempVariableId] = tv
 
     def printTable(self):
-		for tempVariable in self.tempVariables:
-			print(tempVariable, self.tempVariables[tempVariable].tempVariableType,
-                                self.tempVariables[tempVariable].tempVariableAddress)
+        for tempVariable in self.tempVariables:
+            print(tempVariable, self.tempVariables[tempVariable].tempVariableType, self.tempVariables[tempVariable].tempVariableAddress)
