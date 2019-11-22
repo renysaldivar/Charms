@@ -139,16 +139,13 @@ class VirtualMachine:
 	def setValue(self, addr, value, scope): # scope refers to global, local, temp, const
 		if scope == 'global':
 			currentMemory = self.memoryStack[0]
-			currentMemory[addr] = value
 		elif scope == 'local':
 			currentMemory = self.memoryStack[1]
-			currentMemory[addr] = value
 		elif scope == 'temp':
 			currentMemory = self.memoryStack[2]
-			currentMemory[addr] = value
 		else: #const
 			currentMemory = self.memoryStack[3]
-			currentMemory[self.CONSTINT + addr] = value
+		currentMemory[addr] = value
 
 	def getValue(self, addr, scope):
 		index = self.getIndexFromScope(scope)
