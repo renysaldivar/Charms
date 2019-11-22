@@ -25,6 +25,12 @@ class VirtualMachine:
 		self.constantTable = constantTable
 		self.varTable = varTable
 
+		# Initialize memory stack
+		self.memoryStack[0] = [None]*900
+		self.memoryStack[1] = [None]*900
+		self.memoryStack[2] = [None]*900
+		self.memoryStack[3] = [None]*900
+
 		# Update addresses in constant, global, and local tables
 		self.updateConstantAddresses(self.constantTable)
 		self.updateVarAddresses(self.varTable)
