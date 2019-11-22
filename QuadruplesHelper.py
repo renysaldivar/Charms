@@ -31,14 +31,15 @@ def convertQuadruples(quadruples, functionDirectory, constantTable, varTable):
                 quad.leftOperand = tempVariableTable[leftOperand].tempVariableAddress
 
             # Right operand
-            if rightOperand in parameterTable:
-                quad.rightOperand = parameterTable[rightOperand].parameterAddress
-            elif rightOperand in constants:
-                quad.rightOperand = constants[rightOperand].constantAddress
-            elif rightOperand in variables:
-                quad.rightOperand = variables[rightOperand].varAddress
-            elif rightOperand in tempVariableTable:
-                quad.rightOperand = tempVariableTable[rightOperand].tempVariableAddress
+            if quad.operator != 'gotoF':
+                if rightOperand in parameterTable:
+                    quad.rightOperand = parameterTable[rightOperand].parameterAddress
+                elif rightOperand in constants:
+                    quad.rightOperand = constants[rightOperand].constantAddress
+                elif rightOperand in variables:
+                    quad.rightOperand = variables[rightOperand].varAddress
+                elif rightOperand in tempVariableTable:
+                    quad.rightOperand = tempVariableTable[rightOperand].tempVariableAddress
 
             # Result
             if result in parameterTable:
