@@ -42,7 +42,7 @@ class VirtualMachine:
 			parameterTable = function.parameterTable
 			self.updateLocalMemoryStack(parameterTable)
 			tempVariableTable = function.tempVariableTable
-			self.updateTemporalMemoryStack(tempVariableTable)V
+			self.updateTemporalMemoryStack(tempVariableTable)
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
