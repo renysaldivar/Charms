@@ -60,7 +60,6 @@ class VirtualMachine:
 		printQuadruples(quadruples)
 
 		# Print memory stack
-		self.printMemoryStack()
 		self.printCharmsMemoryStack()
 
 	def updateConstantAddresses(self, constantTable):
@@ -171,12 +170,6 @@ class VirtualMachine:
 		index = self.getIndexFromScope(scope)
 		currentMemory = self.memoryStack[index]
 		print(currentMemory)
-
-	def printMemoryStack(self):
-		memoryList = ['global', 'local', 'temp', 'const']
-		for memory in memoryList:
-			print(memory+" memory")
-			self.printMemory(memory)
 
 	def printCharmsMemoryStack(self):
 		for value in self.charmsMemoryStack:
