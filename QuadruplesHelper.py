@@ -11,7 +11,7 @@ def convertQuadruples(quadruples, functionDirectory, constantTable, varTable):
         key = functionDirectoryList[currentFunctionIndex]
         currentFunction = functionDirectory.dictionary[key]
 
-        if quad.operator != 'ERA' and quad.operator != 'GOSUB':
+        if quad.operator != 'ERA' and quad.operator != 'GOSUB' and quad.operator != 'goto':
             leftOperand = quad.leftOperand
             rightOperand = quad.rightOperand
             result = quad.result
