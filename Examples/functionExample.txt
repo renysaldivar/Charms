@@ -3,7 +3,10 @@ int a, b, c;
 
 function void main()
 {
+	b = 1;
+	c = 2;
 	a = b + c;
+	print(a);
 }
 
 # Example 2
