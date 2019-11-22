@@ -150,8 +150,6 @@ class CharmsPrintListener(CharmsParserListener):
 		operator = str(operator)
 		if operator != "None":
 			stackOperators.append(operator)
-		# print("stackOperator:")
-		# print(stackOperators)
 
 	def exitE(self, ctx):
 		if len(stackOperators) > 0:
