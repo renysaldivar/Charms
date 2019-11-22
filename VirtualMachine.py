@@ -67,7 +67,8 @@ class VirtualMachine:
 		for key in constants:
 			constant = constants[key]
 			currentAddr = constant.constantAddress
-			newAddr = self.CONSTINT + currentAddr
+			startingPoint = self.memoryStartingPoint['const']
+			newAddr = startingPoint + self.CONSTINT + currentAddr
 			constant.updateAddress(newAddr)
 
 	def updateVarAddresses(self, varTable):
@@ -75,13 +76,14 @@ class VirtualMachine:
 		for key in vars:
 			var = vars[key]
 			currentAddr = var.varAddress
+			startingPoint = self.memoryStartingPoint['global']
 			varType = var.varType
 			if varType == 'int':
-				newAddr = self.GLOBALINT + currentAddr
+				newAddr = startingPoint + self.GLOBALINT + currentAddr
 			elif varType == 'bool':
-				newAddr = self.GLOBALBOOL + currentAddr
+				newAddr = startingPoint + self.GLOBALBOOL + currentAddr
 			else:
-				newAddr = self.GLOBALCHAR + currentAddr
+				newAddr = startingPoint + self.GLOBALCHAR + currentAddr
 			var.updateAddress(newAddr)
 
 	def updateParameterAddresses(self, parameterTable):
@@ -89,13 +91,14 @@ class VirtualMachine:
 		for key in parameters:
 			parameter = parameters[key]
 			currentAddr = parameter.parameterAddress
+			startingPoint = self.memoryStartingPoint['local']
 			parameterType = parameter.parameterType
 			if parameterType == 'int':
-				newAddr = self.LOCALINT + currentAddr
+				newAddr = startingPoint + self.LOCALINT + currentAddr
 			elif parameterType == 'bool':
-				newAddr = self.LOCALBOOL + currentAddr
+				newAddr = startingPoint + self.LOCALBOOL + currentAddr
 			else:
-				newAddr = self.LOCALCHAR + currentAddr
+				newAddr = startingPoint + self.LOCALCHAR + currentAddr
 			parameter.updateAddress(newAddr)
 
 	def updateTempVariableAddresses(self, tempVariableTable):
@@ -103,13 +106,14 @@ class VirtualMachine:
 		for key in tempVariables:
 			tempVariable = tempVariables[key]
 			currentAddr = tempVariable.tempVariableAddress
+			startingPoint = self.memoryStartingPoint['temp']
 			tempVariableType = tempVariable.tempVariableType
 			if tempVariableType == 'int':
-				newAddr = self.TEMPINT + currentAddr
+				newAddr = startingPoint + self.TEMPINT + currentAddr
 			elif tempVariableType == 'bool':
-				newAddr = self.TEMPBOOL + currentAddr
+				newAddr = startingPoint + self.TEMPBOOL + currentAddr
 			else:
-				newAddr = self.TEMPCHAR + currentAddr
+				newAddr = startingPoint + self.TEMPCHAR + currentAddr
 			tempVariable.updateAddress(newAddr)
 
 	def updateGlobalMemoryStack(self, varTable):
@@ -147,9 +151,9 @@ class VirtualMachine:
 			currentMemory = self.memoryStack[2]
 		else: #const
 			currentMemory = self.memoryStack[3]
-		currentMemory[addr] = value
 		startingPoint = self.memoryStartingPoint[scope]
-		self.charmsMemoryStack[startingPoint + addr] = value
+		currentMemory[addr-startingPoint] = value
+		self.charmsMemoryStack[addr] = value
 
 	def getValue(self, addr, scope):
 		index = self.getIndexFromScope(scope)
@@ -172,7 +176,8 @@ class VirtualMachine:
 		print(currentMemory)
 
 	def printCharmsMemoryStack(self):
-		for value in self.charmsMemoryStack:
+		charmsMemoryStack = self.charmsMemoryStack
+		for value in charmsMemoryStack:
 			if value != None:
 				addr = charmsMemoryStack.index(value)
 				print(addr, value)
