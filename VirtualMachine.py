@@ -7,6 +7,8 @@ class VirtualMachine:
 	constants = {}
 	memory = [None]*900
 	memoryStack = [memory] * 4
+	charmsMemoryStack = [None]*3000
+	memoryStartingPoint = { 'global': 0, 'local': 900, 'temp': 1800, 'const': 2700 }
 
 	GLOBALINT = 0
 	GLOBALBOOL = 300
@@ -59,6 +61,7 @@ class VirtualMachine:
 
 		# Print memory stack
 		self.printMemoryStack()
+		self.printCharmsMemoryStack()
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
@@ -146,6 +149,8 @@ class VirtualMachine:
 		else: #const
 			currentMemory = self.memoryStack[3]
 		currentMemory[addr] = value
+		startingPoint = self.memoryStartingPoint[scope]
+		self.charmsMemoryStack[startingPoint + addr] = value
 
 	def getValue(self, addr, scope):
 		index = self.getIndexFromScope(scope)
@@ -172,3 +177,9 @@ class VirtualMachine:
 		for memory in memoryList:
 			print(memory+" memory")
 			self.printMemory(memory)
+
+	def printCharmsMemoryStack(self):
+		for value in self.charmsMemoryStack:
+			if value != None:
+				addr = charmsMemoryStack.index(value)
+				print(addr, value)
