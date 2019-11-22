@@ -1,3 +1,6 @@
+from QuadruplesHelper import printQuadruples
+from QuadruplesHelper import convertQuadruples
+
 class VirtualMachine:
 	quadruples = []
 	functionDirectory = {}
@@ -43,6 +46,9 @@ class VirtualMachine:
 			self.updateLocalMemoryStack(parameterTable)
 			tempVariableTable = function.tempVariableTable
 			self.updateTemporalMemoryStack(tempVariableTable)
+
+		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
+		printQuadruples(quadruples)
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants

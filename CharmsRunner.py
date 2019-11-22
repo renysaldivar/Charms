@@ -17,7 +17,6 @@ from Function import Function
 from FunctionDirectory import FunctionDirectory
 from ParameterTable import ParameterTable
 from VirtualMachine import VirtualMachine
-from QuadruplesHelper import printQuadruples
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
@@ -518,7 +517,6 @@ def main(argv):
 	tree = parser.program()
 	walker.walk(printer, tree)
 	virtualMachine = VirtualMachine(queueQuads, functionDirectory, constantTable, varTable)
-	printQuadruples(queueQuads)
 	# print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':
