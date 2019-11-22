@@ -30,10 +30,19 @@ class VirtualMachine:
 			function = functions[key]
 			parameterTable = function.parameterTable
 			self.updateParameterAddresses(parameterTable)
+			tempVariableTable = function.tempVariableTable
+			self.updateTempVariableAddresses(tempVariableTable)
 
-		# for type, variables in constants.items():
-		# 	for value, addr in variables.items():
-		# 		self.setValue(addr, int(value), type, 'const')
+		# Update memory stack
+		self.updateConstantMemoryStack(constantTable)
+		self.updateGlobalMemoryStack(varTable)
+		functions = self.functionDirectory.dictionary
+		for key in functions:
+			function = functions[key]
+			parameterTable = function.parameterTable
+			self.updateLocalMemoryStack(parameterTable)
+			tempVariableTable = function.tempVariableTable
+			self.updateTemporalMemoryStack(tempVariableTable)V
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
@@ -71,35 +80,59 @@ class VirtualMachine:
 				newAddr = self.LOCALCHAR + currentAddr
 			parameter.updateAddress(newAddr)
 
-	def setValue(self, addr, value, type, scope): # scope refers to global, local, temp, const
+	def updateTempVariableAddresses(self, tempVariableTable):
+		tempVariables = tempVariableTable.tempVariables
+		for key in tempVariables:
+			tempVariable = tempVariables[key]
+			currentAddr = tempVariable.tempVariableAddress
+			tempVariableType = tempVariable.tempVariableType
+			if tempVariableType == 'int':
+				newAddr = self.TEMPINT + currentAddr
+			elif tempVariableType == 'bool':
+				newAddr = self.TEMPBOOL + currentAddr
+			else:
+				newAddr = self.TEMPCHAR + currentAddr
+			tempVariable.updateAddress(newAddr)
+
+	def updateGlobalMemoryStack(self, varTable):
+		vars = varTable.vars
+		for key in vars:
+			var = vars[key]
+			self.setValue(var.varAddress, key, 'global')
+
+	def updateLocalMemoryStack(self, parameterTable):
+		self.memoryStack[1] = [None]*900
+		parameters = parameterTable.parameters
+		for key in parameters:
+			parameter = parameters[key]
+			self.setValue(parameter.parameterAddress, key, 'local')
+
+	def updateTemporalMemoryStack(self, tempVariableTable):
+		self.memoryStack[2] = [None]*900
+		tempVariables = tempVariableTable.tempVariables
+		for key in tempVariables:
+			tempVariable = tempVariables[key]
+			self.setValue(tempVariable.tempVariableAddress, key, 'temp')
+
+	def updateConstantMemoryStack(self, constantTable):
+		constants = constantTable.constants
+		for key in constants:
+			constant = constants[key]
+			self.setValue(constant.constantAddress, key, 'const')
+
+	def setValue(self, addr, value, scope): # scope refers to global, local, temp, const
 		if scope == 'global':
 			currentMemory = self.memoryStack[0]
-			if type == 'int':
-				currentMemory[self.GLOBALINT + addr] = value
-			elif type == 'bool':
-				currentMemory[self.GLOBALBOOL + addr] = value
-			else:
-				currentMemory[self.GLOBALCHAR + addr] = value
+			currentMemory[addr] = value
 		elif scope == 'local':
 			currentMemory = self.memoryStack[1]
-			if type == 'int':
-				currentMemory[self.LOCALINT + addr] = value
-			elif type == 'bool':
-				currentMemory[self.LOCALBOOL + addr] = value
-			else:
-				currentMemory[self.LOCALCHAR + addr] = value
+			currentMemory[addr] = value
 		elif scope == 'temp':
 			currentMemory = self.memoryStack[2]
-			if type == 'int':
-				currentMemory[self.TEMPINT + addr] = value
-			elif type == 'bool':
-				currentMemory[self.TEMPBOOL + addr] = value
-			else:
-				currentMemory[self.TEMPCHAR + addr] = value
+			currentMemory[addr] = value
 		else: #const
-			if type == 'int':
-				currentMemory = self.memoryStack[3]
-				currentMemory[self.CONSTINT + addr] = value
+			currentMemory = self.memoryStack[3]
+			currentMemory[self.CONSTINT + addr] = value
 
 	def getValue(self, addr, scope):
 		index = self.getIndexFromScope(scope)
