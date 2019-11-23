@@ -243,7 +243,7 @@ class CharmsPrintListener(CharmsParserListener):
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
-		queueQuads[end-1].rightOperand = qCount+1
+		queueQuads[end-1].result = qCount+1
 
 	def enterSection(self, ctx):
 		global executionSource
@@ -282,7 +282,7 @@ class CharmsPrintListener(CharmsParserListener):
 			queueQuads.append(quad)
 			false = stackJumps.pop()
 			stackJumps.append(qCount)
-			queueQuads[false-1].rightOperand = qCount+1
+			queueQuads[false-1].result = qCount+1
 
 	def exitC(self, ctx):
 		end = stackJumps.pop()

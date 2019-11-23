@@ -31,25 +31,25 @@ def convertQuadruples(quadruples, functionDirectory, constantTable, varTable):
                 quad.leftOperand = tempVariableTable[leftOperand].tempVariableAddress
 
             # Right operand
-            if quad.operator != 'gotoF':
-                if rightOperand in parameterTable:
-                    quad.rightOperand = parameterTable[rightOperand].parameterAddress
-                elif rightOperand in constants:
-                    quad.rightOperand = constants[rightOperand].constantAddress
-                elif rightOperand in variables:
-                    quad.rightOperand = variables[rightOperand].varAddress
-                elif rightOperand in tempVariableTable:
-                    quad.rightOperand = tempVariableTable[rightOperand].tempVariableAddress
+            if rightOperand in parameterTable:
+                quad.rightOperand = parameterTable[rightOperand].parameterAddress
+            elif rightOperand in constants:
+                quad.rightOperand = constants[rightOperand].constantAddress
+            elif rightOperand in variables:
+                quad.rightOperand = variables[rightOperand].varAddress
+            elif rightOperand in tempVariableTable:
+                quad.rightOperand = tempVariableTable[rightOperand].tempVariableAddress
 
             # Result
-            if result in parameterTable:
-                quad.result = parameterTable[result].parameterAddress
-            elif result in constants:
-                quad.result = constants[result].constantAddress
-            elif result in variables:
-                quad.result = variables[result].varAddress
-            elif result in tempVariableTable:
-                quad.result = tempVariableTable[result].tempVariableAddress
+            if quad.operator != 'gotoF':
+                if result in parameterTable:
+                    quad.result = parameterTable[result].parameterAddress
+                elif result in constants:
+                    quad.result = constants[result].constantAddress
+                elif result in variables:
+                    quad.result = variables[result].varAddress
+                elif result in tempVariableTable:
+                    quad.result = tempVariableTable[result].tempVariableAddress
 
         if quad.operator == 'ENDPROC' or quad.operator == 'END':
             currentFunctionIndex += 1
