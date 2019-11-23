@@ -49,7 +49,10 @@ class VirtualMachine:
 
 		# Convert quadruples
 		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
-		printQuadruples(quadruples)
+		# printQuadruples(quadruples)
+
+		# Execute quadruples
+		self.executeQuadruples()
 
 		# Print memory stack
 		self.printMemoryStack()
@@ -149,6 +152,29 @@ class VirtualMachine:
 			memorySection = range(2700, 3000)
 		for addr in memorySection:
 			self.memoryStack[addr] = None
+
+	def executeQuadruples(self):
+		quadruples = self.quadruples
+		self.executeQuad(quadruples[0])
+		# for quad in quadruples:
+		# 	self.executeQuad(quad)
+
+	def executeQuad(self, quad):
+		operator = quad.operator
+		leftOperand = quad.leftOperand
+		rightOperand = quad.rightOperand
+		result = quad.result
+		if operator == 'goto':
+			newQuad = self.quadruples[result-1]
+			self.executeQuad(newQuad)
+		elif operator == '=':
+			# Get value
+			value = self.memoryStack[leftOperand]
+			self.memoryStack[rightOperand] = value
+		else:
+			print("hola")
+
+
 
 	def printMemoryStack(self):
 		memoryStack = self.memoryStack
