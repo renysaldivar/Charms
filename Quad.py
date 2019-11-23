@@ -8,4 +8,4 @@ class Quad:
         self.result = result
 
     def printQuad(self):
-        print(self.operator, self.leftOperand, self.rightOperand, self.result)
+        print(self.operator, '\t', self.leftOperand, '\t', self.rightOperand, '\t', self.result)
