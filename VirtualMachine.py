@@ -1,6 +1,5 @@
 from QuadruplesHelper import printQuadruples
 from QuadruplesHelper import convertQuadruples
-import ctypes
 
 class VirtualMachine:
 	quadruples = []
