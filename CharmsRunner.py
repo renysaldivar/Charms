@@ -52,8 +52,9 @@ class CharmsPrintListener(CharmsParserListener):
 			stackOperands.append(constantInt)
 			stackTypes.append("int")
 			global constIntAddr
-			constantTable.insertConstant(constantInt, 'int', constIntAddr)
-			constIntAddr = constIntAddr + 1
+			if constantInt not in constantTable.constants:
+				constantTable.insertConstant(constantInt, 'int', constIntAddr)
+				constIntAddr = constIntAddr + 1
 
 	def enterE1(self, ctx):
 		operator = ctx.PLUS() or ctx.MINUS()
