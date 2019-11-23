@@ -173,8 +173,6 @@ class VirtualMachine:
 			# Get value
 			value = self.memoryStack[leftOperand]
 			self.memoryStack[rightOperand] = value
-		else:
-			print("hola")
 
 	def printMemoryStack(self):
 		memoryStack = self.memoryStack
