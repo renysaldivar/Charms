@@ -414,7 +414,7 @@ class CharmsPrintListener(CharmsParserListener):
 		funcCallParamsList = list(funcCallParamTable.parameters)
 		key = funcCallParamsList[pCount-1]
 		if argumentType == funcCallParamTable.parameters[key].parameterType:
-			operator = "PARAMETER"
+			operator = "PARAM"
 			left_operand = argument
 			right_operand = ""
 			result = "parameter"+str(pCount);
