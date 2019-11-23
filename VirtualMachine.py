@@ -51,7 +51,7 @@ class VirtualMachine:
 
 		# Convert quadruples
 		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
-		# printQuadruples(quadruples)
+		printQuadruples(quadruples)
 
 		# Execute quadruples
 		self.executeQuadruples()
@@ -157,9 +157,9 @@ class VirtualMachine:
 
 	def executeQuadruples(self):
 		quadruples = self.quadruples
-		self.executeQuad(quadruples[0])
-		# for quad in quadruples:
-		# 	self.executeQuad(quad)
+		# self.executeQuad(quadruples[0])
+		for quad in quadruples:
+			self.executeQuad(quad)
 
 	def executeQuad(self, quad):
 		operator = quad.operator
@@ -169,10 +169,24 @@ class VirtualMachine:
 		if operator == 'goto':
 			newQuad = self.quadruples[result-1]
 			self.executeQuad(newQuad)
+		elif operator == '+':
+			value = self.memoryStack[leftOperand] + self.memoryStack[rightOperand]
+			self.memoryStack[result] = value
+		elif operator == '-':
+			value = self.memoryStack[leftOperand] - self.memoryStack[rightOperand]
+			self.memoryStack[result] = value
+		elif operator == '*':
+			value = self.memoryStack[leftOperand] * self.memoryStack[rightOperand]
+			self.memoryStack[result] = value
+		elif operator == '/':
+			value = self.memoryStack[leftOperand] / self.memoryStack[rightOperand]
+			self.memoryStack[result] = int(value)
 		elif operator == '=':
 			# Get value
-			value = self.memoryStack[leftOperand]
-			self.memoryStack[rightOperand] = value
+			self.memoryStack[rightOperand] = self.memoryStack[leftOperand]
+		elif operator == 'ERA':
+			self.clearMemorySection('local')
+			self.clearMemorySection('temp')
 
 	def printMemoryStack(self):
 		memoryStack = self.memoryStack
