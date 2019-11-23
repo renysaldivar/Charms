@@ -1,11 +1,14 @@
 from QuadruplesHelper import printQuadruples
 from QuadruplesHelper import convertQuadruples
+import ctypes
 
 class VirtualMachine:
 	quadruples = []
 	functionDirectory = {}
 	constants = {}
-	memoryStack = [None]*3000
+	memoryStack = {}
+	for key in range(0, 3000):
+		memoryStack[key] = None
 	memoryStartingPoint = { 'global': 0, 'local': 900, 'temp': 1800, 'const': 2700 }
 
 	GLOBALINT = 0
@@ -174,11 +177,8 @@ class VirtualMachine:
 		else:
 			print("hola")
 
-
-
 	def printMemoryStack(self):
 		memoryStack = self.memoryStack
-		for value in memoryStack:
-			if value != None:
-				addr = memoryStack.index(value)
-				print(addr, value)
+		for key in memoryStack:
+			if memoryStack[key] != None:
+				print(key, memoryStack[key])
