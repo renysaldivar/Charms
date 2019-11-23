@@ -5,9 +5,7 @@ class VirtualMachine:
 	quadruples = []
 	functionDirectory = {}
 	constants = {}
-	memory = [None]*900
-	memoryStack = [memory] * 4
-	charmsMemoryStack = [None]*3000
+	memoryStack = [None]*3000
 	memoryStartingPoint = { 'global': 0, 'local': 900, 'temp': 1800, 'const': 2700 }
 
 	GLOBALINT = 0
@@ -26,12 +24,6 @@ class VirtualMachine:
 		self.functionDirectory = functionDirectory
 		self.constantTable = constantTable
 		self.varTable = varTable
-
-		# Initialize memory stack
-		self.memoryStack[0] = [None]*900
-		self.memoryStack[1] = [None]*900
-		self.memoryStack[2] = [None]*900
-		self.memoryStack[3] = [None]*900
 
 		# Update addresses in constant, global, and local tables
 		self.updateConstantAddresses(self.constantTable)
@@ -60,7 +52,7 @@ class VirtualMachine:
 		printQuadruples(quadruples)
 
 		# Print memory stack
-		self.printCharmsMemoryStack()
+		self.printMemoryStack()
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
@@ -120,64 +112,47 @@ class VirtualMachine:
 		vars = varTable.vars
 		for key in vars:
 			var = vars[key]
-			self.setValue(var.varAddress, key, 'global')
+			addr = var.varAddress
+			self.memoryStack[addr] = key
 
 	def updateLocalMemoryStack(self, parameterTable):
-		self.memoryStack[1] = [None]*900
+		self.clearMemorySection('local')
 		parameters = parameterTable.parameters
 		for key in parameters:
 			parameter = parameters[key]
-			self.setValue(parameter.parameterAddress, key, 'local')
+			addr = parameter.parameterAddress
+			self.memoryStack[addr] = key
 
 	def updateTemporalMemoryStack(self, tempVariableTable):
-		self.memoryStack[2] = [None]*900
+		self.clearMemorySection('temp')
 		tempVariables = tempVariableTable.tempVariables
 		for key in tempVariables:
 			tempVariable = tempVariables[key]
-			self.setValue(tempVariable.tempVariableAddress, key, 'temp')
+			addr = tempVariable.tempVariableAddress
+			self.memoryStack[addr] = key
 
 	def updateConstantMemoryStack(self, constantTable):
 		constants = constantTable.constants
 		for key in constants:
 			constant = constants[key]
-			self.setValue(constant.constantAddress, key, 'const')
+			addr = constant.constantAddress
+			self.memoryStack[addr] = key
 
-	def setValue(self, addr, value, scope): # scope refers to global, local, temp, const
+	def clearMemorySection(self, scope):
 		if scope == 'global':
-			currentMemory = self.memoryStack[0]
+			memorySection = range(0, 900)
 		elif scope == 'local':
-			currentMemory = self.memoryStack[1]
+			memorySection = range(900, 1800)
 		elif scope == 'temp':
-			currentMemory = self.memoryStack[2]
+			memorySection = range(1800, 2700)
 		else: #const
-			currentMemory = self.memoryStack[3]
-		startingPoint = self.memoryStartingPoint[scope]
-		currentMemory[addr-startingPoint] = value
-		self.charmsMemoryStack[addr] = value
+			memorySection = range(2700, 3000)
+		for addr in memorySection:
+			self.memoryStack[addr] = None
 
-	def getValue(self, addr, scope):
-		index = self.getIndexFromScope(scope)
-		currentMemory = self.memoryStack[index]
-		return currentMemory[addr]
-
-	def getIndexFromScope(self, scope):
-		if scope == 'global':
-			return 0
-		elif scope == 'local':
-			return 1
-		elif scope == 'temp':
-			return 2
-		else:
-			return 3
-
-	def printMemory(self, scope):
-		index = self.getIndexFromScope(scope)
-		currentMemory = self.memoryStack[index]
-		print(currentMemory)
-
-	def printCharmsMemoryStack(self):
-		charmsMemoryStack = self.charmsMemoryStack
-		for value in charmsMemoryStack:
+	def printMemoryStack(self):
+		memoryStack = self.memoryStack
+		for value in memoryStack:
 			if value != None:
-				addr = charmsMemoryStack.index(value)
+				addr = memoryStack.index(value)
 				print(addr, value)
