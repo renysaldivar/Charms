@@ -365,7 +365,10 @@ class CharmsPrintListener(CharmsParserListener):
 		global parameterIntAddr
 		global parameterBoolAddr
 		global parameterCharAddr
-		operator = "ENDPROC"
+		if functionName == 'main':
+			operator = "END"
+		else:
+			operator = "ENDPROC"
 		left_operand = ""
 		right_operand = ""
 		result = ""
@@ -444,21 +447,21 @@ class CharmsPrintListener(CharmsParserListener):
 		if funcReturnType != "void":
 			operator = "="
 			left_operand = functionId
-			right_operand = ""
+			result = ""
 			if funcReturnType == 'int':
 				global tempVarIntAddr
-				result = "ti"+str(tempVarIntAddr+1)
-				tempVariableTable.insertTempVariable(result, 'int', tempVarIntAddr)
+				right_operand = "ti"+str(tempVarIntAddr+1)
+				tempVariableTable.insertTempVariable(right_operand, 'int', tempVarIntAddr)
 				tempVarIntAddr += 1
 			else: #bool
 				global tempVarBoolAddr
-				result = "tb"+str(tempVarBoolAddr+1)
-				tempVariableTable.insertTempVariable(result, 'bool', tempVarBoolAddr)
+				right_operand = "tb"+str(tempVarBoolAddr+1)
+				tempVariableTable.insertTempVariable(right_operand, 'bool', tempVarBoolAddr)
 				tempVarBoolAddr += 1
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
-			stackOperands.append(result)
+			stackOperands.append(right_operand)
 
 def main(argv):
 	global stackOperands

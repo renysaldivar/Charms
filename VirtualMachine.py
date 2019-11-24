@@ -53,6 +53,9 @@ class VirtualMachine:
 		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
 		printQuadruples(quadruples)
 
+		# Print memory stack
+		# self.printMemoryStack()
+
 		# Execute quadruples
 		self.executeQuadruples()
 
@@ -157,36 +160,79 @@ class VirtualMachine:
 
 	def executeQuadruples(self):
 		quadruples = self.quadruples
-		# self.executeQuad(quadruples[0])
-		for quad in quadruples:
-			self.executeQuad(quad)
+		self.executeQuad(quadruples[0])
 
 	def executeQuad(self, quad):
+		global currentFunction
+		global currentFunctionName
+		global gosubIndex
 		operator = quad.operator
 		leftOperand = quad.leftOperand
 		rightOperand = quad.rightOperand
 		result = quad.result
-		if operator == 'goto':
-			newQuad = self.quadruples[result-1]
+		# print("-----------")
+		# quad.printQuad()
+		# print("-----------")
+		index = self.quadruples.index(quad)
+		if operator != 'END':
+
+			if operator == 'goto':
+				newQuad = self.quadruples[result-1]
+			elif operator == '+':
+				value = self.memoryStack[leftOperand] + self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '-':
+				value = self.memoryStack[leftOperand] - self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '*':
+				value = self.memoryStack[leftOperand] * self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '/':
+				value = self.memoryStack[leftOperand] / self.memoryStack[rightOperand]
+				self.memoryStack[result] = int(value)
+				newQuad = self.quadruples[index+1]
+			elif operator == '=':
+				# Get value
+				self.memoryStack[rightOperand] = self.memoryStack[leftOperand]
+				newQuad = self.quadruples[index+1]
+			elif operator == 'ERA':
+				self.clearMemorySection('local')
+				self.clearMemorySection('temp')
+				currentFunction = self.functionDirectory.dictionary[leftOperand]
+				currentFunctionName = leftOperand
+				newQuad = self.quadruples[index+1]
+			elif operator == 'PARAM':
+				parameterValue = self.memoryStack[leftOperand]
+				parameterIndex = int(result[-1:])
+				parameterTable = currentFunction.parameterTable.parameters
+				parameterTableList = list(parameterTable)
+				parameter = parameterTableList[parameterIndex-1]
+				parameterType = parameterTable[parameter].parameterType
+				if parameterType == 'int':
+					startingPoint = 0
+				elif parameterType == 'bool':
+					startingPoint = 300
+				else:
+					startingPoint = 600
+				addr = self.memoryStartingPoint['local'] + startingPoint + parameterIndex - 1
+				self.memoryStack[addr] = parameterValue
+				newQuad = self.quadruples[index+1]
+			elif operator == 'GOSUB':
+				functionStartingPoint = currentFunction.startPosition
+				newQuad = self.quadruples[functionStartingPoint]
+				gosubIndex = index
+			elif operator == 'ENDPROC':
+				self.clearMemorySection('local')
+				self.clearMemorySection('temp')
+				newQuad = self.quadruples[gosubIndex+1]
+			elif operator == 'RETURN':
+				currentFunctionAddr = self.varTable.vars[currentFunctionName].varAddress
+				self.memoryStack[currentFunctionAddr] = self.memoryStack[leftOperand]
+				newQuad = self.quadruples[index+1]
 			self.executeQuad(newQuad)
-		elif operator == '+':
-			value = self.memoryStack[leftOperand] + self.memoryStack[rightOperand]
-			self.memoryStack[result] = value
-		elif operator == '-':
-			value = self.memoryStack[leftOperand] - self.memoryStack[rightOperand]
-			self.memoryStack[result] = value
-		elif operator == '*':
-			value = self.memoryStack[leftOperand] * self.memoryStack[rightOperand]
-			self.memoryStack[result] = value
-		elif operator == '/':
-			value = self.memoryStack[leftOperand] / self.memoryStack[rightOperand]
-			self.memoryStack[result] = int(value)
-		elif operator == '=':
-			# Get value
-			self.memoryStack[rightOperand] = self.memoryStack[leftOperand]
-		elif operator == 'ERA':
-			self.clearMemorySection('local')
-			self.clearMemorySection('temp')
 
 	def printMemoryStack(self):
 		memoryStack = self.memoryStack
