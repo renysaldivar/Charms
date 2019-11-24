@@ -1,0 +1,13 @@
+# Example 1
+
+int i;
+
+function int uno()
+{
+  return(5);
+}
+
+function void main()
+{
+  i = uno();
+}
