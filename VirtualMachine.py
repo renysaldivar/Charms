@@ -232,6 +232,15 @@ class VirtualMachine:
 				currentFunctionAddr = self.varTable.vars[currentFunctionName].varAddress
 				self.memoryStack[currentFunctionAddr] = self.memoryStack[leftOperand]
 				newQuad = self.quadruples[index+1]
+			elif operator == 'PRINT':
+				print("----- print operator ------")
+				print(self.memoryStack[leftOperand])
+				print("----- print operator ------")
+				newQuad = self.quadruples[index+1]
+			elif operator == 'READ':
+				value = input()
+				self.memoryStack[leftOperand] = value
+				newQuad = self.quadruples[index+1]
 			self.executeQuad(newQuad)
 
 	def printMemoryStack(self):

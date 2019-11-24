@@ -106,3 +106,22 @@ function void main()
 	i = 8;
 	j = i / 5;
 }
+
+
+# Example print
+
+int i;
+function void main()
+{
+	i = 7;
+	print(i);
+}
+
+# Example read
+
+char i;
+function void main()
+{
+	read(i);
+	print(i);
+}

@@ -222,7 +222,7 @@ class CharmsPrintListener(CharmsParserListener):
 			if stackOperators[-1] == 'read':
 				left_operand = stackOperands.pop()
 				right_operand = ""
-				operator = stackOperators.pop()
+				operator = stackOperators.pop().upper()
 				result = ""
 				global qCount
 				qCount += 1
