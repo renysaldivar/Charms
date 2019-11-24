@@ -119,7 +119,7 @@ function void main()
 
 # Example read
 
-char i;
+int i;
 function void main()
 {
 	read(i);
