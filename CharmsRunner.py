@@ -61,13 +61,9 @@ class CharmsPrintListener(CharmsParserListener):
 		myCTE_INT = str(ctx.CTE_INT())
 		if myId != "None":
 			stackOperands.append(myId)
-			if executionSourceReturn == False:
-				stackTypes.append(varTable.getVariableType(myId))
 		else:
 			constantInt = int(myCTE_INT)
 			stackOperands.append(constantInt)
-			if executionSourceReturn == False:
-				stackTypes.append("int")
 			global constIntAddr
 			if constantInt not in constantTable.constants:
 				constantTable.insertConstant(constantInt, 'int', constIntAddr)
@@ -89,9 +85,9 @@ class CharmsPrintListener(CharmsParserListener):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '+' or stackOperators[-1] == '-':
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
+				right_type = self.checkType(right_operand)
+				left_type = self.checkType(left_operand)
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
 				if result_type == "int":
@@ -104,7 +100,6 @@ class CharmsPrintListener(CharmsParserListener):
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
-					stackTypes.append(result_type)
 				else:
 					Exception("Type mismatch")
 
@@ -120,9 +115,9 @@ class CharmsPrintListener(CharmsParserListener):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
+				right_type = self.checkType(right_operand)
+				left_type = self.checkType(left_operand)
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
 				if result_type == "int":
@@ -135,7 +130,6 @@ class CharmsPrintListener(CharmsParserListener):
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
-					stackTypes.append(result_type)
 				else:
 					Exception("Type mismatch")
 
@@ -172,9 +166,9 @@ class CharmsPrintListener(CharmsParserListener):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '<' or stackOperators[-1] == '>':
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
+				right_type = self.checkType(right_operand)
+				left_type = self.checkType(left_operand)
 				operator = stackOperators.pop()
 				result_type = relationalOperators(operator, right_type, left_type)
 				if result_type == "bool":
@@ -187,7 +181,6 @@ class CharmsPrintListener(CharmsParserListener):
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
-					stackTypes.append(result_type)
 				else:
 					Exception("Type mismatch")
 
@@ -197,16 +190,12 @@ class CharmsPrintListener(CharmsParserListener):
 			assignmentId = str(ctx.ID())
 			stackOperators.append(operator)
 			stackOperands.append(assignmentId)
-			stackTypes.append(varTable.getVariableType(assignmentId))
 
 	def exitAssignment(self, ctx):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '=':
 				left_operand = stackOperands.pop()
 				right_operand = stackOperands.pop()
-
-				# left_type = stackTypes.pop()
-				# right_type = stackTypes.pop()
 				left_type = self.checkType(left_operand)
 				right_type = self.checkType(right_operand)
 
@@ -258,9 +247,9 @@ class CharmsPrintListener(CharmsParserListener):
 	def exitLoop(self, ctx):
 		end = stackJumps.pop()
 		operator = "goto"
-		left_operand = stackJumps.pop()
+		left_operand = ""
 		right_operand = ""
-		result = ""
+		result = stackJumps.pop()
 		global qCount
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
@@ -270,18 +259,18 @@ class CharmsPrintListener(CharmsParserListener):
 	def enterSection(self, ctx):
 		global executionSource
 		if executionSource == "loop" or executionSource == "condition":
-			exp_type = stackTypes.pop()
-			if exp_type == "bool":
-				operator = "gotoF"
-				left_operand = stackOperands.pop()
-				right_operand = ""
-				result = ""
-				global qCount
-				qCount += 1
-				quad = Quad(operator, left_operand, right_operand, result)
-				queueQuads.append(quad)
-				stackJumps.append(qCount)
-				executionSource = ""
+			# exp_type = stackTypes.pop()
+			# if exp_type == "bool":
+			operator = "gotoF"
+			left_operand = stackOperands.pop()
+			right_operand = ""
+			result = ""
+			global qCount
+			qCount += 1
+			quad = Quad(operator, left_operand, right_operand, result)
+			queueQuads.append(quad)
+			stackJumps.append(qCount)
+			executionSource = ""
 		if executionSource == "function":
 			functionDirectory.dictionary[functionName].startPosition = qCount
 			executionSource = ""
@@ -439,7 +428,7 @@ class CharmsPrintListener(CharmsParserListener):
 	def enterMore_args(self, ctx):
 		global pCount
 		argument = stackOperands.pop()
-		argumentType = stackTypes.pop()
+		argumentType = self.checkType(argument)
 		funcCallParamTable = functionDirectory.dictionary[functionId].parameterTable
 		funcCallParamsList = list(funcCallParamTable.parameters)
 		key = funcCallParamsList[pCount-1]
@@ -493,7 +482,6 @@ class CharmsPrintListener(CharmsParserListener):
 def main(argv):
 	global stackOperands
 	global stackOperators
-	global stackTypes
 	global stackJumps
 	global queueQuads
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
@@ -520,7 +508,6 @@ def main(argv):
 	pCount = 0
 	stackOperands = []
 	stackOperators = []
-	stackTypes = []
 	stackJumps = []
 	queueQuads = []
 	executionSource = ""
