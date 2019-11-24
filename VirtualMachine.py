@@ -239,8 +239,11 @@ class VirtualMachine:
 				newQuad = self.quadruples[index+1]
 			elif operator == 'READ':
 				value = input()
-				self.memoryStack[leftOperand] = value
-				newQuad = self.quadruples[index+1]
+				if type(self.memoryStack[leftOperand] != type(value)):
+					Exception("Type mismatch")
+				else:
+					self.memoryStack[leftOperand] = value
+					newQuad = self.quadruples[index+1]
 			self.executeQuad(newQuad)
 
 	def printMemoryStack(self):
