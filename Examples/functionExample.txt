@@ -22,14 +22,16 @@ function void uno(int c, int d, int e)
 int i, j, b;
 function int dos(int b, int j)
 {
-	b = b*i+j;
+	b = i+j;
 	return(b*2);
 }
 
 function void main()
 {
+	i = 1;
 	j = 5;
-	dos(2, 6);
+	b = 9;
+	i = dos(2, 6);
 }
 
 # Example hoja completo
@@ -93,4 +95,14 @@ function void main()
 	j = i*2-1;
 	uno(x);
 	print(i, dos(y));
+}
+
+
+# Example suma
+int i, j;
+
+function void main()
+{
+	i = 8;
+	j = i / 5;
 }
