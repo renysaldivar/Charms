@@ -54,7 +54,7 @@ class CharmsPrintListener(CharmsParserListener):
 		elif ctx.BOOL():
 			varType = "bool"
 		else:
-			Exception("{} is not a valid data type".format(varType))
+			raise Exception("{} is not a valid data type".format(varType))
 
 	def exitVar_cte(self, ctx):
 		myId = str(ctx.ID())
@@ -101,7 +101,7 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 					stackOperands.append(result)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def enterFactor(self, ctx):
 		operator = str(ctx.LPARENTHESES())
@@ -131,7 +131,7 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 					stackOperands.append(result)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def addVar(self, ctx):
 		global varId
@@ -182,7 +182,7 @@ class CharmsPrintListener(CharmsParserListener):
 					queueQuads.append(quad)
 					stackOperands.append(result)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def enterAssignment(self, ctx):
 		operator = str(ctx.ASSIGN())
@@ -208,7 +208,7 @@ class CharmsPrintListener(CharmsParserListener):
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def exitW1(self, ctx):
 		left_operand = stackOperands.pop()
@@ -445,13 +445,13 @@ class CharmsPrintListener(CharmsParserListener):
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
 		else:
-			Exception("Type mismatch")
+			raise Exception("Type mismatch")
 		pCount += 1
 
 	def exitArguments(self, ctx):
 		parameterTableSize = len(parameterTable.parameters)
 		if pCount != parameterTableSize:
-			Exception("Argument size is different from function parameter size")
+			raise Exception("Argument size is different from function parameter size")
 
 	def enterFc(self, ctx):
 		operator = "GOSUB"

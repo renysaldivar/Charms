@@ -6,7 +6,7 @@ class ParameterTable:
 
 	def insertParameter(self, parameterName, parameterType, parameterAddress):
 		if parameterName in self.parameters:
-			Exception("{} already exists in the directory".format(parameterName))
+			raise Exception("{} already exists in the directory".format(parameterName))
 		else:
 			parameter = Parameter(parameterType, parameterAddress)
 			self.parameters[parameterName] = parameter
@@ -19,7 +19,7 @@ class ParameterTable:
 		if parameterName in self.parameters.keys():
 			return sef.parameters[parameterName]
 		else:
-			Exception("{} does not exist in the directory".format(parameterName))
+			raise Exception("{} does not exist in the directory".format(parameterName))
 
 	def getParameterType(self, parameterName):
 		parameter = self.getParameter(parameterName)

@@ -6,7 +6,7 @@ class ConstantTable:
 
     def insertConstant(self, constantValue, constantType, constantAddress):
         if constantValue in self.constants:
-            Exception("{} already exists in the directory".format(constantValue))
+            raise Exception("{} already exists in the directory".format(constantValue))
         else:
             c = Constant(constantType, constantAddress)
             self.constants[constantValue] = c

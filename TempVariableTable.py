@@ -6,7 +6,7 @@ class TempVariableTable:
 
     def insertTempVariable(self, tempVariableId, tempVariableType, tempVariableAddress):
         if tempVariableId in self.tempVariables:
-            Exception("{} already exists in the directory".format(varId))
+            raise Exception("{} already exists in the directory".format(varId))
         else:
             tv = TempVariable(tempVariableType, tempVariableAddress)
             self.tempVariables[tempVariableId] = tv
