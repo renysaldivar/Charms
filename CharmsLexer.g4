@@ -33,6 +33,6 @@
  RETURN       : 'return' ;
  FUNCTION     : 'function' ;
  ID           : [a-zA-Z]+ ;
- CTE_INT      : [1-9][0-9]* ;
+ CTE_INT      : [0-9][0-9]* ;
  CTE_STRING   : [A-Za-z]+ ;
  WHITESPACE   : [ \t\r\n]+ -> skip ;
