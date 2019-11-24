@@ -20,6 +20,21 @@ from VirtualMachine import VirtualMachine
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
+	def checkType(self, operand):
+		if operand in varTable.vars:
+			variableType = varTable.vars[operand].varType
+		elif type(operand) == int:
+			variableType = 'int'
+		else:
+			char = operand[1]
+			if char == 'i':
+				variableType = 'int'
+			elif char == 'b':
+				variableType = 'bool'
+			else:
+				variableType = 'char'
+		return variableType
+
 	def enterProgram(self, ctx):
 		operator = "goto"
 		left_operand = ""
@@ -46,7 +61,8 @@ class CharmsPrintListener(CharmsParserListener):
 		myCTE_INT = str(ctx.CTE_INT())
 		if myId != "None":
 			stackOperands.append(myId)
-			stackTypes.append(varTable.getVariableType(myId))
+			if executionSourceFunction == False:
+				stackTypes.append(varTable.getVariableType(myId))
 		else:
 			constantInt = int(myCTE_INT)
 			stackOperands.append(constantInt)
@@ -186,9 +202,13 @@ class CharmsPrintListener(CharmsParserListener):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '=':
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
+
+				# left_type = stackTypes.pop()
+				# right_type = stackTypes.pop()
+				left_type = self.checkType(left_operand)
+				right_type = self.checkType(right_operand)
+
 				operator = stackOperators.pop()
 				result_type = assignmentOperator(operator, right_type, left_type)
 				if result_type == "true":
@@ -291,8 +311,10 @@ class CharmsPrintListener(CharmsParserListener):
 
 	def enterFunction(self, ctx):
 		global executionSource
+		global executionSourceFunction
 		global functionName
 		executionSource = "function"
+		executionSourceFunction = True
 		functionName = str(ctx.ID())
 		if functionName == 'main':
 			firstQuad = queueQuads[0]
@@ -365,6 +387,7 @@ class CharmsPrintListener(CharmsParserListener):
 		global parameterIntAddr
 		global parameterBoolAddr
 		global parameterCharAddr
+		global executionSourceFunction
 		if functionName == 'main':
 			operator = "END"
 		else:
@@ -383,6 +406,7 @@ class CharmsPrintListener(CharmsParserListener):
 		parameterCharAddr = 0
 		functionDirectory.dictionary[functionName].parameterTable = parameterTable
 		functionDirectory.dictionary[functionName].tempVariableTable = tempVariableTable
+		executionSourceFunction = False
 
 	def exitFunction_return(self, ctx):
 		operator = "RETURN"
@@ -470,6 +494,7 @@ def main(argv):
 	global stackJumps
 	global queueQuads
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
+	global executionSourceFunction
 	global qCount # quadruple count
 	global pCount # parameter count (for functions)
 
