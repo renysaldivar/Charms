@@ -1,0 +1,29 @@
+int i, j;
+bool x, y;
+
+function int uno(int j)
+{
+    i = j;
+    return(6);
+}
+
+function bool dos(bool y)
+{
+    return(y);
+}
+
+function void main()
+{
+    i = 5;
+    i = uno(7);
+    if(i > 2)
+    {
+        print(3);
+    }
+    else
+    {
+        print(6);
+    }
+    y = 5 > 4;
+    x = dos(y);
+}  
