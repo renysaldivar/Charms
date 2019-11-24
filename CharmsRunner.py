@@ -61,12 +61,13 @@ class CharmsPrintListener(CharmsParserListener):
 		myCTE_INT = str(ctx.CTE_INT())
 		if myId != "None":
 			stackOperands.append(myId)
-			if executionSourceFunction == False:
+			if executionSourceReturn == False:
 				stackTypes.append(varTable.getVariableType(myId))
 		else:
 			constantInt = int(myCTE_INT)
 			stackOperands.append(constantInt)
-			stackTypes.append("int")
+			if executionSourceReturn == False:
+				stackTypes.append("int")
 			global constIntAddr
 			if constantInt not in constantTable.constants:
 				constantTable.insertConstant(constantInt, 'int', constIntAddr)
@@ -311,10 +312,8 @@ class CharmsPrintListener(CharmsParserListener):
 
 	def enterFunction(self, ctx):
 		global executionSource
-		global executionSourceFunction
 		global functionName
 		executionSource = "function"
-		executionSourceFunction = True
 		functionName = str(ctx.ID())
 		if functionName == 'main':
 			firstQuad = queueQuads[0]
@@ -387,7 +386,6 @@ class CharmsPrintListener(CharmsParserListener):
 		global parameterIntAddr
 		global parameterBoolAddr
 		global parameterCharAddr
-		global executionSourceFunction
 		if functionName == 'main':
 			operator = "END"
 		else:
@@ -406,15 +404,20 @@ class CharmsPrintListener(CharmsParserListener):
 		parameterCharAddr = 0
 		functionDirectory.dictionary[functionName].parameterTable = parameterTable
 		functionDirectory.dictionary[functionName].tempVariableTable = tempVariableTable
-		executionSourceFunction = False
+
+	def enterFunction_return(self, ctx):
+		global executionSourceReturn
+		executionSourceReturn = True
 
 	def exitFunction_return(self, ctx):
+		global qCount
+		global executionSourceReturn
 		operator = "RETURN"
 		left_operand = stackOperands.pop()
 		right_operand = ""
 		result = ""
-		global qCount
 		qCount += 1
+		executionSourceReturn = False
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
 
@@ -494,7 +497,7 @@ def main(argv):
 	global stackJumps
 	global queueQuads
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
-	global executionSourceFunction
+	global executionSourceReturn # to indicate if the execution source is function return
 	global qCount # quadruple count
 	global pCount # parameter count (for functions)
 
@@ -521,6 +524,7 @@ def main(argv):
 	stackJumps = []
 	queueQuads = []
 	executionSource = ""
+	executionSourceReturn = False
 
 	# Memory address
 	constIntAddr = 0
