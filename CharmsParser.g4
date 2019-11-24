@@ -56,6 +56,6 @@
  function_return	: RETURN exp SEMICOLON ;
 
  function_call		: ID LPARENTHESES arguments RPARENTHESES fc;
- arguments			: exp more_args ;
+ arguments			: exp more_args | /* epsilon */ ;
  more_args			: COMMA exp more_args | /* epsilon */ ;
  fc 				: SEMICOLON | /* epsilon */ ;
