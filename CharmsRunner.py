@@ -259,18 +259,21 @@ class CharmsPrintListener(CharmsParserListener):
 	def enterSection(self, ctx):
 		global executionSource
 		if executionSource == "loop" or executionSource == "condition":
-			# exp_type = stackTypes.pop()
-			# if exp_type == "bool":
-			operator = "gotoF"
-			left_operand = stackOperands.pop()
-			right_operand = ""
-			result = ""
-			global qCount
-			qCount += 1
-			quad = Quad(operator, left_operand, right_operand, result)
-			queueQuads.append(quad)
-			stackJumps.append(qCount)
-			executionSource = ""
+			tempVariable = tempVariableTable.tempVariables[stackOperands[-1]]
+			tempVariableType = tempVariable.tempVariableType
+			if tempVariableType == "bool":
+				operator = "gotoF"
+				left_operand = stackOperands.pop()
+				right_operand = ""
+				result = ""
+				global qCount
+				qCount += 1
+				quad = Quad(operator, left_operand, right_operand, result)
+				queueQuads.append(quad)
+				stackJumps.append(qCount)
+				executionSource = ""
+			else:
+				raise Exception("Type mismatch")
 		if executionSource == "function":
 			functionDirectory.dictionary[functionName].startPosition = qCount
 			executionSource = ""
