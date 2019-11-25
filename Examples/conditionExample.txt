@@ -19,3 +19,11 @@ else
 	b = a - c;
 }
 b = c * a;
+
+function void main()
+{
+	if(4 < 5)
+	{
+		print(5);
+	}
+}

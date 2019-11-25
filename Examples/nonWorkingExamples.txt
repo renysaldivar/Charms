@@ -1,0 +1,48 @@
+# Example 1
+int a, b, i;
+function void uno(int a)
+{
+	a = a+b*a;
+	print(a, b, a+b);
+}
+
+function void dos(int a, int b)
+{
+	i = b;
+	while(i > 0)
+	{
+		a = a+b*i+b;
+		print(i);
+		uno(i*2); # SI QUITAS ESTA LÍNEA YA FUNCIONA
+		print(a);
+		i = i-1;
+	}
+}
+
+function void main()
+{
+	a = 3;
+	b = a + 1;
+	print(a, b);
+	dos(a+b*2, b);
+	print(a, b);
+}
+
+# Example 2
+int a, b, c, d;
+
+function int uno(a)
+{
+  return(a);
+}
+
+function int dos(b)
+{
+  b = uno(b);
+  return(b);
+}
+
+function void main()
+{
+  d = dos(b);
+}

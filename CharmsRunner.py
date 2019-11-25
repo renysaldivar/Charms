@@ -9,12 +9,34 @@ from SemanticCube import relationalOperators
 from SemanticCube import assignmentOperator
 from Variable import Variable
 from VariableTable import VariableTable
+from TempVariable import TempVariable
+from TempVariableTable import TempVariableTable
+from Constant import Constant
+from ConstantTable import ConstantTable
 from Function import Function
 from FunctionDirectory import FunctionDirectory
 from ParameterTable import ParameterTable
+from VirtualMachine import VirtualMachine
 import sys
 
 class CharmsPrintListener(CharmsParserListener):
+	def checkType(self, operand):
+		if operand in varTable.vars:
+			variableType = varTable.vars[operand].varType
+		elif type(operand) == int:
+			variableType = 'int'
+		elif type(operand) == bool:
+			variableType = 'bool'
+		else:
+			char = operand[1]
+			if char == 'i':
+				variableType = 'int'
+			elif char == 'b':
+				variableType = 'bool'
+			else:
+				variableType = 'char'
+		return variableType
+
 	def enterProgram(self, ctx):
 		operator = "goto"
 		left_operand = ""
@@ -34,17 +56,28 @@ class CharmsPrintListener(CharmsParserListener):
 		elif ctx.BOOL():
 			varType = "bool"
 		else:
-			Exception("{} is not a valid data type".format(varType))
+			raise Exception("{} is not a valid data type".format(varType))
 
 	def exitVar_cte(self, ctx):
+		myCTE_BOOL = str(ctx.CTE_BOOL())
 		myId = str(ctx.ID())
 		myCTE_INT = str(ctx.CTE_INT())
-		if myId != "None":
+		if myCTE_BOOL != "None":
+			constantBool = bool(myCTE_BOOL)
+			stackOperands.append(constantBool)
+			global constBoolAddr
+			if constantBool not in constantTable.constants:
+				constantTable.insertConstant(constantBool, 'bool', constBoolAddr)
+				constBoolAddr = constBoolAddr + 1
+		elif myId != "None":
 			stackOperands.append(myId)
-			stackTypes.append(varTable.getVariableType(myId))
 		else:
-			stackOperands.append(int(myCTE_INT))
-			stackTypes.append("int")
+			constantInt = int(myCTE_INT)
+			stackOperands.append(constantInt)
+			global constIntAddr
+			if constantInt not in constantTable.constants:
+				constantTable.insertConstant(constantInt, 'int', constIntAddr)
+				constIntAddr = constIntAddr + 1
 
 	def enterE1(self, ctx):
 		operator = ctx.PLUS() or ctx.MINUS()
@@ -62,23 +95,23 @@ class CharmsPrintListener(CharmsParserListener):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '+' or stackOperators[-1] == '-':
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
+				right_type = self.checkType(right_operand)
+				left_type = self.checkType(left_operand)
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
 				if result_type == "int":
-					global tCount
-					tCount +=1
-					result = "t"+str(tCount)
+					global tempVarIntAddr
+					result = "ti"+str(tempVarIntAddr+1)
+					tempVariableTable.insertTempVariable(result, 'int', tempVarIntAddr)
+					tempVarIntAddr += 1
 					global qCount
 					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
-					stackTypes.append(result_type)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def enterFactor(self, ctx):
 		operator = str(ctx.LPARENTHESES())
@@ -92,29 +125,40 @@ class CharmsPrintListener(CharmsParserListener):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '*' or stackOperators[-1] == '/':
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
+				right_type = self.checkType(right_operand)
+				left_type = self.checkType(left_operand)
 				operator = stackOperators.pop()
 				result_type = arithmeticOperators(operator, right_type, left_type)
 				if result_type == "int":
-					global tCount
-					tCount +=1
-					result = "t"+str(tCount)
+					global tempVarIntAddr
+					result = "ti"+str(tempVarIntAddr+1)
+					tempVariableTable.insertTempVariable(result, 'int', tempVarIntAddr)
+					tempVarIntAddr += 1
 					global qCount
 					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
-					stackTypes.append(result_type)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def addVar(self, ctx):
 		global varId
 		varId = str(ctx.ID()) # cast to string to avoid dealing with TerminalNode objects
 		if varId != "None":
-			varTable.insertVariable(varId, varType, "global")
+			if varType == 'int':
+				global varIntAddr
+				varTable.insertVariable(varId, varType, "global", varIntAddr)
+				varIntAddr = varIntAddr + 1
+			elif varType == 'bool':
+				global varBoolAddr
+				varTable.insertVariable(varId, varType, "global", varBoolAddr)
+				varBoolAddr = varBoolAddr + 1
+			else:
+				global varCharAddr
+				varTable.insertVariable(varId, varType, "global", varCharAddr)
+				varCharAddr = varCharAddr + 1
 
 	def enterV(self, ctx):
 		self.addVar(ctx)
@@ -127,30 +171,28 @@ class CharmsPrintListener(CharmsParserListener):
 		operator = str(operator)
 		if operator != "None":
 			stackOperators.append(operator)
-		# print("stackOperator:")
-		# print(stackOperators)
 
 	def exitE(self, ctx):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '<' or stackOperators[-1] == '>':
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
+				right_type = self.checkType(right_operand)
+				left_type = self.checkType(left_operand)
 				operator = stackOperators.pop()
 				result_type = relationalOperators(operator, right_type, left_type)
 				if result_type == "bool":
-					global tCount
-					tCount +=1
-					result = "t"+str(tCount)
+					global tempVarBoolAddr
+					result = "tb"+str(tempVarBoolAddr+1)
+					tempVariableTable.insertTempVariable(result, 'bool', tempVarBoolAddr)
+					tempVarBoolAddr += 1
 					global qCount
 					qCount += 1
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 					stackOperands.append(result)
-					stackTypes.append(result_type)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def enterAssignment(self, ctx):
 		operator = str(ctx.ASSIGN())
@@ -158,15 +200,15 @@ class CharmsPrintListener(CharmsParserListener):
 			assignmentId = str(ctx.ID())
 			stackOperators.append(operator)
 			stackOperands.append(assignmentId)
-			stackTypes.append(varTable.getVariableType(assignmentId))
 
 	def exitAssignment(self, ctx):
 		if len(stackOperators) > 0:
 			if stackOperators[-1] == '=':
 				left_operand = stackOperands.pop()
-				left_type = stackTypes.pop()
 				right_operand = stackOperands.pop()
-				right_type = stackTypes.pop()
+				left_type = self.checkType(left_operand)
+				right_type = self.checkType(right_operand)
+
 				operator = stackOperators.pop()
 				result_type = assignmentOperator(operator, right_type, left_type)
 				if result_type == "true":
@@ -176,7 +218,7 @@ class CharmsPrintListener(CharmsParserListener):
 					quad = Quad(operator, left_operand, right_operand, result)
 					queueQuads.append(quad)
 				else:
-					Exception("Type mismatch")
+					raise Exception("Type mismatch")
 
 	def exitW1(self, ctx):
 		left_operand = stackOperands.pop()
@@ -200,7 +242,7 @@ class CharmsPrintListener(CharmsParserListener):
 			if stackOperators[-1] == 'read':
 				left_operand = stackOperands.pop()
 				right_operand = ""
-				operator = stackOperators.pop()
+				operator = stackOperators.pop().upper()
 				result = ""
 				global qCount
 				qCount += 1
@@ -215,20 +257,21 @@ class CharmsPrintListener(CharmsParserListener):
 	def exitLoop(self, ctx):
 		end = stackJumps.pop()
 		operator = "goto"
-		left_operand = stackJumps.pop()
+		left_operand = ""
 		right_operand = ""
-		result = ""
+		result = stackJumps.pop()
 		global qCount
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
-		queueQuads[end-1].rightOperand = qCount+1
+		queueQuads[end-1].result = qCount+1
 
 	def enterSection(self, ctx):
 		global executionSource
 		if executionSource == "loop" or executionSource == "condition":
-			exp_type = stackTypes.pop()
-			if exp_type == "bool":
+			tempVariable = tempVariableTable.tempVariables[stackOperands[-1]]
+			tempVariableType = tempVariable.tempVariableType
+			if tempVariableType == "bool":
 				operator = "gotoF"
 				left_operand = stackOperands.pop()
 				right_operand = ""
@@ -239,6 +282,8 @@ class CharmsPrintListener(CharmsParserListener):
 				queueQuads.append(quad)
 				stackJumps.append(qCount)
 				executionSource = ""
+			else:
+				raise Exception("Type mismatch")
 		if executionSource == "function":
 			functionDirectory.dictionary[functionName].startPosition = qCount
 			executionSource = ""
@@ -261,71 +306,128 @@ class CharmsPrintListener(CharmsParserListener):
 			queueQuads.append(quad)
 			false = stackJumps.pop()
 			stackJumps.append(qCount)
-			queueQuads[false-1].rightOperand = qCount+1
+			queueQuads[false-1].result = qCount+1
 
 	def exitC(self, ctx):
 		end = stackJumps.pop()
 		queueQuads[end-1].result = qCount+1
 
 	def enterFunction(self, ctx):
-		global tCount
-		tCount = 0
 		global executionSource
-		executionSource = "function"
 		global functionName
+		executionSource = "function"
 		functionName = str(ctx.ID())
 		if functionName == 'main':
 			firstQuad = queueQuads[0]
 			firstQuad.result = qCount+1
 		if functionName != "None":
 			global parameterTable
+			global tempVariableTable
 			parameterTable = ParameterTable({})
-			function = Function(0, parameterTable, "")
+			tempVariableTable = TempVariableTable({})
+			function = Function(0, parameterTable, tempVariableTable, "")
 			functionDirectory.insertFunc(functionName, function)
 
-	def enterF(self, ctx):
+	def exitF(self, ctx):
 		returnType = str(ctx.VOID())
 		if returnType == "None":
 			returnType = varType
-			varTable.insertVariable(functionName, varType, "global")
+			if returnType == 'int':
+				global varIntAddr
+				varTable.insertVariable(functionName, varType, "global", varIntAddr)
+				varIntAddr = varIntAddr + 1
+			elif returnType == 'bool':
+				global varBoolAddr
+				varTable.insertVariable(functionName, varType, "global", varBoolAddr)
+				varBoolAddr = varBoolAddr + 1
+			else:
+				global varCharAddr
+				returnType.insertVariable(functionName, varType, "global", varCharAddr)
+				varCharAddr = varCharAddr + 1
 		functionDirectory.dictionary[functionName].funcReturnType = returnType
 
 	def enterF1(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
-			parameterType = varType
-			parameterTable.insertParameter(parameterId, parameterType)
+			parameterType = varTable.vars[parameterId].varType
+			if parameterType == 'int':
+				global parameterIntAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterIntAddr)
+				parameterIntAddr = parameterIntAddr + 1
+			elif parameterType == 'bool':
+				global parameterBoolAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterBoolAddr)
+				parameterBoolAddr = parameterBoolAddr + 1
+			else:
+				global parameterCharAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterCharAddr)
+				parameterCharAddr = parameterCharAddr + 1
 
 	def enterF2(self, ctx):
 		parameterId = str(ctx.ID())
 		if parameterId != "None":
-			parameterType = varType
-			parameterTable.insertParameter(parameterId, parameterType)
+			parameterType = varTable.vars[parameterId].varType
+			if parameterType == 'int':
+				global parameterIntAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterIntAddr)
+				parameterIntAddr = parameterIntAddr + 1
+			elif parameterType == 'bool':
+				global parameterBoolAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterBoolAddr)
+				parameterBoolAddr = parameterBoolAddr + 1
+			else:
+				global parameterCharAddr
+				parameterTable.insertParameter(parameterId, parameterType, parameterCharAddr)
+				parameterCharAddr = parameterCharAddr + 1
 
 	def exitFunction(self, ctx):
-		operator = "ENDPROC"
+		global qCount
+		global tempVarIntAddr
+		global tempVarBoolAddr
+		global tempVarCharAddr
+		global parameterIntAddr
+		global parameterBoolAddr
+		global parameterCharAddr
+		if functionName == 'main':
+			operator = "END"
+		else:
+			operator = "ENDPROC"
 		left_operand = ""
 		right_operand = ""
 		result = ""
-		global qCount
 		qCount += 1
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
+		tempVarIntAddr = 0
+		tempVarBoolAddr = 0
+		tempVarCharAddr = 0
+		parameterIntAddr = 0
+		parameterBoolAddr = 0
+		parameterCharAddr = 0
 		functionDirectory.dictionary[functionName].parameterTable = parameterTable
+		functionDirectory.dictionary[functionName].tempVariableTable = tempVariableTable
+
+	def enterFunction_return(self, ctx):
+		global executionSourceReturn
+		executionSourceReturn = True
 
 	def exitFunction_return(self, ctx):
+		global qCount
+		global executionSourceReturn
 		operator = "RETURN"
 		left_operand = stackOperands.pop()
 		right_operand = ""
 		result = ""
-		global qCount
 		qCount += 1
+		executionSourceReturn = False
 		quad = Quad(operator, left_operand, right_operand, result)
 		queueQuads.append(quad)
 
 	def enterFunction_call(self, ctx):
 		global functionId
+		global functionCallParameterTable
 		functionId = str(ctx.ID())
+		functionCallParameterTable = functionDirectory.dictionary[functionId].parameterTable
 		if functionId in functionDirectory.dictionary:
 			operator = "ERA"
 			left_operand = functionId
@@ -333,35 +435,39 @@ class CharmsPrintListener(CharmsParserListener):
 			result = ""
 			global qCount
 			qCount += 1
-			global pCount
-			pCount = 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
+
+	def enterArguments(self, ctx):
+		global pCount
+		pCount = 0
+
+	def exitArguments(self, ctx):
+		global pCount
+		parameterTableSize = len(functionCallParameterTable.parameters)
+		if pCount != parameterTableSize:
+			raise Exception("Argument size is different from function parameter size")
+		pCount = 0
 
 	def enterMore_args(self, ctx):
 		global pCount
 		argument = stackOperands.pop()
-		argumentType = stackTypes.pop()
+		argumentType = self.checkType(argument)
 		funcCallParamTable = functionDirectory.dictionary[functionId].parameterTable
 		funcCallParamsList = list(funcCallParamTable.parameters)
-		key = funcCallParamsList[pCount-1]
+		key = funcCallParamsList[pCount]
 		if argumentType == funcCallParamTable.parameters[key].parameterType:
-			operator = "PARAMETER"
+			operator = "PARAM"
 			left_operand = argument
 			right_operand = ""
-			result = "parameter"+str(pCount);
+			result = "parameter"+str(pCount+1);
 			global qCount
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
 		else:
-			Exception("Type mismatch")
+			raise Exception("Type mismatch")
 		pCount += 1
-
-	def exitArguments(self, ctx):
-		parameterTableSize = len(parameterTable.parameters)
-		if pCount != parameterTableSize:
-			Exception("Argument size is different from function parameter size")
 
 	def enterFc(self, ctx):
 		operator = "GOSUB"
@@ -376,39 +482,74 @@ class CharmsPrintListener(CharmsParserListener):
 		if funcReturnType != "void":
 			operator = "="
 			left_operand = functionId
-			right_operand = ""
-			global tCount
-			tCount +=1
-			result = "t"+str(tCount)
+			result = ""
+			if funcReturnType == 'int':
+				global tempVarIntAddr
+				right_operand = "ti"+str(tempVarIntAddr+1)
+				tempVariableTable.insertTempVariable(right_operand, 'int', tempVarIntAddr)
+				tempVarIntAddr += 1
+			else: #bool
+				global tempVarBoolAddr
+				right_operand = "tb"+str(tempVarBoolAddr+1)
+				tempVariableTable.insertTempVariable(right_operand, 'bool', tempVarBoolAddr)
+				tempVarBoolAddr += 1
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
-			stackOperands.append(result)
+			stackOperands.append(right_operand)
 
 def main(argv):
-	global tCount
-	global varTable
-	global functionDirectory
 	global stackOperands
 	global stackOperators
-	global stackTypes
 	global stackJumps
 	global queueQuads
 	global executionSource # to indicate if "Section" block is being called from a condition or loop
+	global executionSourceReturn # to indicate if the execution source is function return
 	global qCount # quadruple count
 	global pCount # parameter count (for functions)
-	tCount = 0
+
+	# Memory address
+	global functionDirectory
+	global constantTable
+	global varTable
+	global constIntAddr
+	global constBoolAddr
+	global varIntAddr
+	global varBoolAddr
+	global varCharAddr
+	global tempVarIntAddr
+	global tempVarBoolAddr
+	global tempVarCharAddr
+	global parameterIntAddr
+	global parameterBoolAddr
+	global parameterCharAddr
+
 	qCount = 0
 	pCount = 0
 	stackOperands = []
 	stackOperators = []
-	stackTypes = []
 	stackJumps = []
 	queueQuads = []
 	executionSource = ""
+	executionSourceReturn = False
 
-	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+	# Memory address
+	constIntAddr = 0
+	constBoolAddr = 0
+	varIntAddr = 0
+	varBoolAddr = 0
+	varCharAddr = 0
+	tempVarIntAddr = 0
+	tempVarBoolAddr = 0
+	tempVarCharAddr = 0
+	parameterIntAddr = 0
+	parameterBoolAddr = 0
+	parameterCharAddr = 0
+
 	functionDirectory = FunctionDirectory()
+	constantTable = ConstantTable({})
+	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
+
 	lexer = CharmsLexer(StdinStream())
 	stream = CommonTokenStream(lexer)
 	parser = CharmsParser(stream)
@@ -416,8 +557,7 @@ def main(argv):
 	walker = ParseTreeWalker()
 	tree = parser.program()
 	walker.walk(printer, tree)
-	for quad in queueQuads:
-		quad.printQuad()
+	virtualMachine = VirtualMachine(queueQuads, functionDirectory, constantTable, varTable)
 	# print(Trees.toStringTree(tree, None, parser))
 
 if __name__ == '__main__':

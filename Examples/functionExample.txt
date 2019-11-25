@@ -1,9 +1,12 @@
 # Example 1
-int a, b, c, d;
+int a, b, c;
 
-function void uno()
+function void main()
 {
+	b = 1;
+	c = 2;
 	a = b + c;
+	print(a);
 }
 
 # Example 2
@@ -19,18 +22,21 @@ function void uno(int c, int d, int e)
 int i, j, b;
 function int dos(int b, int j)
 {
-	b = b*i+j;
+	b = i+j;
 	return(b*2);
 }
 
 function void main()
 {
-	j = 1;
-	dos(2, 6);
+	i = 1;
+	j = 5;
+	b = 9;
+	i = dos(2, 6);
 }
 
 # Example hoja completo
 int i, j, a, b;
+bool z;
 
 function void uno(int a)
 {
@@ -48,10 +54,74 @@ function int dos(int b)
 	return(b*2);
 }
 
+function bool tres(bool z)
+{
+	return z;
+}
+
 function void main()
 {
 	i = 2;
 	j = i*2-1;
 	uno(j);
+	print(tres(z));
 	print(i, dos(i+j));
+}
+
+# Example hoja completo con bool
+int i, j, a, b;
+bool x;
+char y;
+
+function void uno(bool x)
+{
+	i = a*2;
+	if(i<a+4)
+	{
+		uno(a+1);
+	}
+	print(i);
+}
+
+function int dos(char y)
+{
+	b=b*i+j;
+	return(b*2);
+}
+
+function void main()
+{
+	i = 2;
+	j = i*2-1;
+	uno(x);
+	print(i, dos(y));
+}
+
+
+# Example suma
+int i, j;
+
+function void main()
+{
+	i = 8;
+	j = i / 5;
+}
+
+
+# Example print
+
+int i;
+function void main()
+{
+	i = 7;
+	print(i);
+}
+
+# Example read
+
+int i;
+function void main()
+{
+	read(i);
+	print(i);
 }

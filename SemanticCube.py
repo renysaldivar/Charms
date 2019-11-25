@@ -33,4 +33,4 @@ def validOperation(operator, type1, type2):
         return logicalOperators(operator, type1, type2)
     if operator == '=':
         return assignmentOperator(operator, type1, type2)
-    Exception("{} does not exist".format(operator))
+    raise Exception("{} does not exist".format(operator))

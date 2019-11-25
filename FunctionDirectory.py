@@ -7,15 +7,15 @@ class FunctionDirectory:
 
 	def getFunc(self, funcId):
 		if funcId not in self.dictionary:
-			Exception("{} does not exist in the directory".format(funcId))
+			raise Exception("{} does not exist in the directory".format(funcId))
 		else:
 			self.dictionary[funcId]
 
 	def insertFunc(self, funcId, func):
 		if funcId in self.dictionary:
-			Exception("{} already exists in the directory".format(funcId))
+			raise Exception("{} already exists in the directory".format(funcId))
 		else:
-			self.dictionary[funcId] = Function(func.startPosition, func.parameterTable, func.funcReturnType)
+			self.dictionary[funcId] = Function(func.startPosition, func.parameterTable, func.tempVariableTable, func.funcReturnType)
 
 	def clearDictionary():
 		self.dictionary.clear()

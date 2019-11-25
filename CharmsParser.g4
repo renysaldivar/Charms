@@ -44,18 +44,18 @@
 
  loop       : WHILE LPARENTHESES expression RPARENTHESES LCURLY section RCURLY ;
 
- read       : READ LPARENTHESES ID RPARENTHESES ;
+ read       : READ LPARENTHESES ID RPARENTHESES SEMICOLON ;
 
  write      : PRINT LPARENTHESES w RPARENTHESES SEMICOLON ;
  w          : w1 w2;
  w1         : expression | CTE_STRING | function_call ;
  w2         : COMMA w | /* epsilon */ ;
 
- var_cte    : ID | CTE_INT ;
+ var_cte    : CTE_BOOL | ID | CTE_INT ;
 
  function_return	: RETURN exp SEMICOLON ;
 
  function_call		: ID LPARENTHESES arguments RPARENTHESES fc;
- arguments			: exp more_args ;
+ arguments			: exp more_args | /* epsilon */ ;
  more_args			: COMMA exp more_args | /* epsilon */ ;
  fc 				: SEMICOLON | /* epsilon */ ;

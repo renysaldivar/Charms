@@ -9,27 +9,24 @@ class VariableTable:
 		if varId in self.vars.keys():
 			return self.vars[varId]
 		else:
-			Exception("{} does not exist in the directory".format(varId))
+			raise Exception("{} does not exist in the directory".format(varId))
 
 	def getVariableType(self, varId):
 		variable = self.getVariable(varId)
 		return variable.varType
 
-	def insertVariable(self, varId, varType, varScope):
+	def insertVariable(self, varId, varType, varScope, varAddress):
 		if varId in self.vars:
-			# print("Variables not added successfully!")
-			Exception("{} already exists in the directory".format(varId))
+			raise Exception("{} already exists in the directory".format(varId))
 		elif varId in self.keywords:
-			# print("Variables not added successfully!")
-			Exception("{} is a reserved word".format(varId))
+			raise Exception("{} is a reserved word".format(varId))
 		else:
-			# print("Variables added successfully!")
-			v = Variable(varType, varScope)
+			v = Variable(varType, varScope, varAddress)
 			self.vars[varId] = v
 
 	def printTable(self):
 		for var in self.vars:
-			print(var, self.vars[var].varType)
+			print(var, self.vars[var].varType, self.vars[var].varScope, self.vars[var].varAddress)
 
 	def clearVariableTable(self):
 		self.vars = {}
