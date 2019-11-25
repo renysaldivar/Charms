@@ -51,7 +51,7 @@
  w1         : expression | CTE_STRING | function_call ;
  w2         : COMMA w | /* epsilon */ ;
 
- var_cte    : ID | CTE_INT ;
+ var_cte    : CTE_BOOL | ID | CTE_INT ;
 
  function_return	: RETURN exp SEMICOLON ;
 

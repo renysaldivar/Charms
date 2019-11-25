@@ -32,6 +32,7 @@
  READ         : 'read' ;
  RETURN       : 'return' ;
  FUNCTION     : 'function' ;
+ CTE_BOOL     : 'True' | 'False' ;
  ID           : [a-zA-Z]+ ;
  CTE_INT      : [0-9][0-9]* ;
  CTE_STRING   : [A-Za-z]+ ;

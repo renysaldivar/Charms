@@ -25,6 +25,8 @@ class CharmsPrintListener(CharmsParserListener):
 			variableType = varTable.vars[operand].varType
 		elif type(operand) == int:
 			variableType = 'int'
+		elif type(operand) == bool:
+			variableType = 'bool'
 		else:
 			char = operand[1]
 			if char == 'i':
@@ -57,9 +59,17 @@ class CharmsPrintListener(CharmsParserListener):
 			raise Exception("{} is not a valid data type".format(varType))
 
 	def exitVar_cte(self, ctx):
+		myCTE_BOOL = str(ctx.CTE_BOOL())
 		myId = str(ctx.ID())
 		myCTE_INT = str(ctx.CTE_INT())
-		if myId != "None":
+		if myCTE_BOOL != "None":
+			constantBool = bool(myCTE_BOOL)
+			stackOperands.append(constantBool)
+			global constBoolAddr
+			if constantBool not in constantTable.constants:
+				constantTable.insertConstant(constantBool, 'bool', constBoolAddr)
+				constBoolAddr = constBoolAddr + 1
+		elif myId != "None":
 			stackOperands.append(myId)
 		else:
 			constantInt = int(myCTE_INT)
@@ -503,6 +513,7 @@ def main(argv):
 	global constantTable
 	global varTable
 	global constIntAddr
+	global constBoolAddr
 	global varIntAddr
 	global varBoolAddr
 	global varCharAddr
@@ -524,6 +535,7 @@ def main(argv):
 
 	# Memory address
 	constIntAddr = 0
+	constBoolAddr = 0
 	varIntAddr = 0
 	varBoolAddr = 0
 	varCharAddr = 0
