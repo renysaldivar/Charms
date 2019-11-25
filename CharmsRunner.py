@@ -415,7 +415,9 @@ class CharmsPrintListener(CharmsParserListener):
 
 	def enterFunction_call(self, ctx):
 		global functionId
+		global functionCallParameterTable
 		functionId = str(ctx.ID())
+		functionCallParameterTable = functionDirectory.dictionary[functionId].parameterTable
 		if functionId in functionDirectory.dictionary:
 			operator = "ERA"
 			left_operand = functionId
@@ -423,10 +425,19 @@ class CharmsPrintListener(CharmsParserListener):
 			result = ""
 			global qCount
 			qCount += 1
-			global pCount
-			pCount = 1
 			quad = Quad(operator, left_operand, right_operand, result)
 			queueQuads.append(quad)
+
+	def enterArguments(self, ctx):
+		global pCount
+		pCount = 0
+
+	def exitArguments(self, ctx):
+		global pCount
+		parameterTableSize = len(functionCallParameterTable.parameters)
+		if pCount != parameterTableSize:
+			raise Exception("Argument size is different from function parameter size")
+		pCount = 0
 
 	def enterMore_args(self, ctx):
 		global pCount
@@ -434,12 +445,12 @@ class CharmsPrintListener(CharmsParserListener):
 		argumentType = self.checkType(argument)
 		funcCallParamTable = functionDirectory.dictionary[functionId].parameterTable
 		funcCallParamsList = list(funcCallParamTable.parameters)
-		key = funcCallParamsList[pCount-1]
+		key = funcCallParamsList[pCount]
 		if argumentType == funcCallParamTable.parameters[key].parameterType:
 			operator = "PARAM"
 			left_operand = argument
 			right_operand = ""
-			result = "parameter"+str(pCount);
+			result = "parameter"+str(pCount+1);
 			global qCount
 			qCount += 1
 			quad = Quad(operator, left_operand, right_operand, result)
@@ -447,15 +458,6 @@ class CharmsPrintListener(CharmsParserListener):
 		else:
 			raise Exception("Type mismatch")
 		pCount += 1
-
-	def exitMore_args(self, ctx):
-		global pCount
-		pCount = 0
-
-	def exitArguments(self, ctx):
-		parameterTableSize = len(parameterTable.parameters)
-		if pCount != parameterTableSize:
-			raise Exception("Argument size is different from function parameter size")
 
 	def enterFc(self, ctx):
 		operator = "GOSUB"
