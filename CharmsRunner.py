@@ -448,6 +448,10 @@ class CharmsPrintListener(CharmsParserListener):
 			raise Exception("Type mismatch")
 		pCount += 1
 
+	def exitMore_args(self, ctx):
+		global pCount
+		pCount = 0
+
 	def exitArguments(self, ctx):
 		parameterTableSize = len(parameterTable.parameters)
 		if pCount != parameterTableSize:
