@@ -1,5 +1,22 @@
-{% load bootstrap3 %}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-{% bootstrap_messages %}
-<h1>Test</h1>
+{% load static %}
+<!DOCTYPE html>
+<html>
+   <head>
+     <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+   </head>
+   <body>
+     {% load bootstrap3 %}
+     {% bootstrap_css %}
+     {% bootstrap_javascript %}
+     {% bootstrap_messages %}
+     <div id='charms'>
+       <div id='blocks'></div>
+       <div id='instructions'></div>
+       <div id='canvas'>
+         Charms
+       </div>
+       <div id='output'></div>
+     </div>
+   </body>
+</html>

@@ -1,0 +1,30 @@
+#blocks {
+  background-color: blue;
+  float: right;
+  height: 100%;
+  width: 20%;
+}
+
+#canvas {
+  background-color: pink;
+  height: 70%;
+  margin-left: 20%;
+  width: 60%;
+}
+
+#charms {
+  height: 100vh;
+}
+
+#instructions {
+  background-color: green;
+  float: left;
+  height: 70%;
+  width: 20%;
+}
+
+#output {
+  background-color: red;
+  height: 30%;
+  width: 80%;
+}
