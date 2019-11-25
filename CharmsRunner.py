@@ -550,7 +550,7 @@ def main(argv):
 	constantTable = ConstantTable({})
 	varTable = VariableTable({}, ["int", "void", "bool", "char", "if", "else", "while", "print", "read", "return", "function", "id"])
 
-	lexer = CharmsLexer(StdinStream())
+	lexer = CharmsLexer(FileStream(argv[1]))
 	stream = CommonTokenStream(lexer)
 	parser = CharmsParser(stream)
 	printer = CharmsPrintListener()
