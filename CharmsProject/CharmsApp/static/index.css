@@ -1,3 +1,15 @@
+.block-section {
+  height: 20%;
+}
+
+.block-section-title {
+  background-color: #ffc0cb;
+  text-align: center;
+}
+
+.block-section-content {
+}
+
 #blocks {
   border-style: solid;
   border-width: 1px;
