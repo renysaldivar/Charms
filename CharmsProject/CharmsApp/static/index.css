@@ -6,9 +6,12 @@
   background-color: #ffc0cb;
   font-family: 'Kalam', cursive;
   text-align: center;
+  height: 10%;
 }
 
 .block-section-content {
+  background-color: #fff2f4;
+  height: 90%;
 }
 
 #blocks {
