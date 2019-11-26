@@ -3,6 +3,7 @@ $(document).ready(function () {
     var result = [];
     var canvas = document.getElementById('block-canvas').childNodes;
     var canvasLength = canvas.length;
+    var functionLine = "";
     for (var i = 0; i < canvasLength; i ++) {
       block = canvas[i];
       blockId = block.id;
@@ -41,6 +42,37 @@ $(document).ready(function () {
         var variableValue = assignmentVariable.value;
         var resultValue = assignmentResult.value;
         result.push(`${variableValue} = ${resultValue};`);
+      } else if (blockClassName == 'block-function') {
+        var functionType = blockId.split("-")[1];
+        if (functionType == 'function') {
+          var functionReturn = block.childNodes[3];
+          var functionName = block.childNodes[5];
+          var returnValue = functionReturn.value;
+          var nameValue = functionName.value;
+          functionLine += `function ${returnValue} ${nameValue}`;
+        } else if (functionType == 'startp') {
+          functionLine += `(`;
+        } else if (functionType == 'parameter') {
+          var parameterType = block.childNodes[3];
+          var parameterName = block.childNodes[5];
+          var typeValue = parameterType.value;
+          var nameValue = parameterName.value;
+          functionLine += `${typeValue} ${nameValue}, `;
+        } else if (functionType == 'endp') {
+          functionLine = functionLine.substring(0, functionLine.length - 2);
+          functionLine += `)`;
+          result.push(functionLine);
+          result.push(`{`);
+        } else if (functionType == 'return') {
+          var returnInput = block.childNodes[3];
+          var inputValue = returnInput.value;
+          result.push(`return(${inputValue});`);
+        } else if (functionType == 'end') {
+          result.push(`}`);
+          functionLine = "";
+        } else {
+          // Function call
+        }
       }
       console.log(result);
     }
