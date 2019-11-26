@@ -146,7 +146,7 @@
 }
 
 .canvas-header {
-  background-color: #ffc0cb;
+  background-color: #FF8C94;
   font-size: 40px;
   text-align: center;
   margin-bottom: 12px;
@@ -262,11 +262,47 @@
 }
 
 #output {
-  background-color: #F8F8F8;
   border-radius: 10px;
-  margin: 10px 5px;
-  height: 30%;
   width: 80%;
+  height: 30%;
+}
+
+.output-left {
+  margin: 10px 10px;
+  border-radius: 10px;
+  float: left;
+  width: 22.5%;
+  height: 90%;
+}
+
+.house-score {
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  margin-top: 9px;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 50px;
+  font-size: 30px;
+  height: 75%;
+}
+
+.house-header {
+  background-color: #A8E6CE;
+  border-radius: 10px;
+  padding-top: 5px;
+  font-size: 25px;
+  text-align: center;
+  height: 20%;
+  width: 100%;
+}
+
+.output-right {
+  background-color: #F8F8F8;
+  margin-top: 10px;
+  border-radius: 10px;
+  float: right;
+  width: 75%;
+  height: 90%;
 }
 
 .output-header {
