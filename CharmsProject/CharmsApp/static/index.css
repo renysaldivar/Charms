@@ -182,33 +182,46 @@
 }
 
 .instructions-header {
-  background-color: #fff2f4;
   height: 10%;
-  width: 100%;
+  margin: 0px 10px;
+  width: 90%;
 }
 
 .instructions-title {
+  padding-top: 8px;
   font-size: 30px;
   text-align:center;
 }
 
 .instructions-body {
-  background-color: pink;
   height: 90%;
   padding: 20px 10px;
-  width: 100%;
+  margin: 0px 10px;
+  width: 90%;
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  border-radius: 5px;
 }
 
 .instructions-spell {
   background-color: white;
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  border-radius: 5px;
   margin-top: 10%;
   height: 80%;
   width: 100%;
 }
 
+.instructions-dropdown {
+  width: 100%;
+}
+
 .spell-name {
-  background-color: #fff2f4;
+  background-color: #A8E6CE;
   font-size: 25px;
+  margin-top: 1px;
+  border-radius: 3px;
   height: 10%;
   text-align:center;
   width: 100%;
@@ -238,7 +251,14 @@
 }
 
 .arrows {
+  margin-top: 10px;
   margin-left: 35%;
+}
+
+.arrow-button {
+  padding-top: 3px;
+  border-radius: 10px;
+  background-color: #FFFFEE;
 }
 
 #output {
