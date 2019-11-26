@@ -9,7 +9,9 @@ var blockCountEndCondition = 0;
 var blockCountWhile = 0;
 var blockCountEndLoop = 0;
 var blockCountFunction = 0;
+var blockCountStartParameters = 0;
 var blockCountParameter = 0;
+var blockCountEndParameters = 0;
 var blockCountEndFunction = 0;
 var blockCountReturn = 0;
 var blockCountCall = 0;
@@ -74,9 +76,17 @@ function drop(ev) {
             newBlock.id = data + "-" + blockCountFunction;
             blockCountFunction += 1;
             break;
+        case 'block-startp-parameters':
+            newBlock.id = data + "-" + blockCountStartParameters;
+            blockCountStartParameters += 1;
+            break;
         case 'block-parameter':
             newBlock.id = data + "-" + blockCountParameter;
             blockCountParameter += 1;
+            break;
+        case 'block-endp-parameters':
+            newBlock.id = data + "-" + blockCountEndParameters;
+            blockCountEndParameters += 1;
             break;
         case 'block-end-function':
             newBlock.id = data + "-" + blockCountEndFunction;
@@ -100,6 +110,12 @@ function drop(ev) {
 }
 
 $(document).ready(function () {
+    $("#btn-execute").click(function(){
+        $('#block-canvas').each(function () {
+            console.log($("#block-canvas").children());
+        });
+    });
+
     $('#btn-clear').click(function(){
         $('#block-canvas').empty();
         blockCountRead = 0;
@@ -113,7 +129,9 @@ $(document).ready(function () {
         blockCountWhile = 0;
         blockCountEndLoop = 0;
         blockCountFunction = 0;
+        blockCountStartParameters = 0;
         blockCountParameter = 0;
+        blockCountEndParameters = 0;
         blockCountEndFunction = 0;
         blockCountReturn = 0;
         blockCountCall = 0;
