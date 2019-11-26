@@ -1,0 +1,38 @@
+{% load static %}
+<script src="{% static "instructions.js" %}"></script>
+<div class='instructions-header'>
+  <div class='instructions-title'>
+    <label>Choose a spell</label>
+  </div>
+</div>
+
+<div class='instructions-body'>
+  <select id="dropdown-spell">
+    <option value=""></option>
+    <option value="levitation">Levitation</option>
+    <option value="freezing">Freezing</option>
+  </select>
+  <div class='instructions-spell'>
+    <div class='spell-name'>
+      <label id='spell-name'></label>
+    </div>
+    <div class='spell-content'>
+      <div id='spell-description'>
+        <label id='description-label'></label>
+      </div>
+      <div id='spell-todo'>
+        <label id='todo-label'></label>
+      </div>
+    </div>
+  </div>
+  <div class='instructions-navigator'>
+    <div class='arrows'>
+      <button type="button" class="btn btn-default btn-sm" id='left-button'>
+        <span class="glyphicon glyphicon-arrow-left"></span>
+      </button>
+      <button type="button" class="btn btn-default btn-sm" id='right-button'>
+        <span class="glyphicon glyphicon-arrow-right"></span>
+      </button>
+    </div>
+  </div>
+</div>
