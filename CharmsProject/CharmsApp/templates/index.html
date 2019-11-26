@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+   <head>
+     <link rel="stylesheet" type="text/css" href="{% static 'index.css' %}">
+     <link rel="stylesheet" type="text/css" href="{% static 'canvas.css' %}">
+     <link href="https://fonts.googleapis.com/css?family=Kalam&display=swap" rel="stylesheet">
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+     <script src="{% static 'canvas.js' %}"></script>
+     <script src="{% static 'compile.js' %}"></script>
+     <script src="{% static 'output.js' %}"></script>
+   </head>
+   <body>
+     {% load bootstrap3 %}
+     {% bootstrap_css %}
+     {% bootstrap_javascript %}
+     {% bootstrap_messages %}
+     <div id='charms'>
+       <div id='blocks'>
+         {% include "blocks.html" %}
+       </div>
+       <div id='instructions'>
+         {% include "instructions.html" %}
+       </div>
+       <div id='canvas'>
+         {% include "canvas.html" %}
+       </div>
+       <div id='output'>
+         {% include "output.html" %}
+       </div>
+     </div>
+   </body>
+</html>

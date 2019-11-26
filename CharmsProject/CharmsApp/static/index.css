@@ -1,0 +1,327 @@
+#blocks {
+  float: right;
+  padding-top: 4px;
+  height: 100%;
+  width: 20%;
+}
+
+.block-section-input-output {
+  height: 13%;
+}
+
+.block-section-variables {
+  height: 17.5%;
+}
+
+.block-section-condition {
+  height: 17.5%;
+}
+
+.block-section-loop {
+  height: 13.5%;
+}
+
+.block-section-function {
+  height: 30.5%;
+}
+
+.block-section-assignment {
+  height: 7%;
+}
+
+.block-section-title {
+  background-color: white;
+  text-align: center;
+  height: 15px;
+}
+
+.block-section-content {
+  background-color: white;
+  height: 90%;
+  overflow: auto;
+}
+
+.block-input-output {
+  background-color: #A8E6CE;
+  border-radius: 5px;
+  margin: 6px 4px;
+  padding-top: 2.5px;
+  padding-left: 2.5px;
+  height: 30px;
+  width: 275px;
+}
+
+.block-read-input {
+  border-radius: 5px;
+  width: 30%;
+}
+
+.block-print-input {
+  border-radius: 5px;
+  width: 80%;
+}
+
+.block-variable {
+  background-color: #DCEDC2;
+  border-radius: 5px;
+  margin: 6px 4px;
+  padding-top: 2.5px;
+  padding-left: 2.5px;
+  height: 30px;
+  width: 275px;
+}
+
+.block-variable-input {
+  border-radius: 5px;
+  width: 60%;
+}
+
+.block-condition {
+  background-color: #FFD3B5;
+  border-radius: 5px;
+  margin: 6px 4px;
+  padding-top: 2.5px;
+  padding-left: 2.5px;
+  height: 30px;
+  width: 275px;
+}
+
+.block-condition-input {
+  border-radius: 5px;
+  width: 60%;
+}
+
+.block-loop {
+  background-color: #FFAAA6;
+  border-radius: 5px;
+  margin: 6px 4px;
+  padding-top: 2.5px;
+  padding-left: 2.5px;
+  height: 30px;
+  width: 275px;
+}
+
+.block-loop-input {
+  border-radius: 5px;
+  width: 60%;
+}
+
+.block-function {
+  background-color: #FF8C94;
+  border-radius: 5px;
+  margin: 6px 4px;
+  padding-top: 2.5px;
+  padding-left: 2.5px;
+  height: 30px;
+  width: 275px;
+}
+
+.block-function-input {
+  border-radius: 5px;
+  width: 35%;
+}
+
+.block-assignment {
+  background-color: #355C7D;
+  border-radius: 5px;
+  margin: 6px 4px;
+  padding-top: 2.5px;
+  padding-left: 2.5px;
+  height: 30px;
+  width: 275px;
+}
+
+.block-assignment-input {
+  border-radius: 5px;
+  width: 45%;
+}
+
+#canvas {
+  height: 70%;
+  margin-left: 20%;
+  width: 60%;
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  border-radius: 5px;
+}
+
+.canvas-header {
+  background-color: #FFFFEE;
+  border-radius: 5px;
+  font-size: 40px;
+  text-align: center;
+  margin-bottom: 12px;
+  width: 100%;
+  height: 10%;
+}
+
+.canvas-footer {
+  width: 100%;
+  height: 30px;
+}
+
+.canvas-footer-buttons {
+  margin-top: 5px;
+  margin-left: 32%;
+}
+
+.canvas-button {
+  background-color: #FFFFEE;
+  border-radius: 10px;
+  padding-top: 3px;
+}
+
+#charms {
+  font-family: 'Kalam', cursive;
+  height: 100vh;
+}
+
+#instructions {
+  float: left;
+  height: 70%;
+  width: 20%;
+}
+
+.instructions-header {
+  height: 10%;
+  margin: 0px 10px;
+  width: 90%;
+}
+
+.instructions-title {
+  padding-top: 8px;
+  font-size: 30px;
+  text-align:center;
+}
+
+.instructions-body {
+  height: 90%;
+  padding: 20px 10px;
+  margin: 0px 10px;
+  width: 90%;
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  border-radius: 5px;
+}
+
+.instructions-spell {
+  background-color: white;
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  border-radius: 5px;
+  margin-top: 10%;
+  height: 80%;
+  width: 100%;
+}
+
+.instructions-dropdown {
+  width: 100%;
+}
+
+.spell-name {
+  background-color: #A8E6CE;
+  font-size: 25px;
+  margin-top: 1px;
+  border-radius: 3px;
+  height: 10%;
+  text-align:center;
+  width: 100%;
+}
+
+.spell-content {
+  background-color: #0000;
+  height: 90%;
+  width: 100%;
+}
+
+#spell-description {
+  font-size: 20px;
+  padding: 10% 5%;
+  display: none;
+}
+
+#spell-todo {
+  font-size: 15px;
+  padding: 10% 5%;
+  display: none;
+}
+
+.instructions-navigator {
+  height: 10%;
+  width: 100%;
+}
+
+.arrows {
+  margin-top: 10px;
+  margin-left: 35%;
+}
+
+.arrow-button {
+  padding-top: 3px;
+  border-radius: 10px;
+  background-color: #FFFFEE;
+}
+
+#output {
+  border-radius: 10px;
+  width: 80%;
+  height: 30%;
+}
+
+.output-left {
+  margin: 10px 10px;
+  border-radius: 10px;
+  float: left;
+  width: 22.5%;
+  height: 90%;
+}
+
+.house-score {
+  border: 1px solid #000000;
+  border-color: #E0E0E0;
+  margin-top: 9px;
+  border-radius: 10px;
+  text-align: center;
+  padding-top: 50px;
+  font-size: 30px;
+  height: 75%;
+}
+
+.house-header {
+  background-color: #FF8C94;
+  border-radius: 10px;
+  padding-top: 5px;
+  font-size: 25px;
+  text-align: center;
+  height: 20%;
+  width: 100%;
+}
+
+.output-right {
+  background-color: #FFFFEE;
+  margin-top: 10px;
+  border-radius: 10px;
+  float: right;
+  width: 75%;
+  height: 90%;
+}
+
+.output-header {
+  height: 20%;
+  width: 100%;
+}
+
+.output-body {
+  height: 80%;
+  width: 100%;
+}
+
+.output-title {
+  font-size: 25px;
+  text-align:center;
+}
+
+.output-body {
+  font-size: 20px;
+  text-align:center;
+}
