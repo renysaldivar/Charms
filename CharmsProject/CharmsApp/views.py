@@ -19,8 +19,8 @@ def button(request):
     return render(request, "index.html")
 
 def external(request):
-    inp = "HOLAAA"
-    out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//test.py", inp], shell=False, stdout=PIPE)
+    inp = "/Users/Lorraine/Documents/AD19/Compiladores/Charms/Examples/text.txt"
+    out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//CharmsRunner.py", inp], shell=False, stdout=PIPE)
     print(out)
 
     return render(request, 'index.html', {'data1': out})
