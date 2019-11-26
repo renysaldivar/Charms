@@ -16,11 +16,11 @@ import sys
 #     return HttpResponse(index)
 
 def button(request):
-    return render(request, "home.html")
+    return render(request, "index.html")
 
 def external(request):
     inp = request.POST.get('param')
     out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//test.py", inp], shell=False, stdout=PIPE)
     print(out)
 
-    return render(request, 'home.html', {'data1': out})
+    return render(request, 'index.html', {'data1': out})
