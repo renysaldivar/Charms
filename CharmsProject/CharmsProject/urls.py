@@ -16,8 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from CharmsApp import views as CharmsViews
+from django.urls import path
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', CharmsViews.index, name='index')
+    # url(r'^$', CharmsViews.index, name='index'),
+    url(r'^output', CharmsViews.output, name='script'),
+    url(r'^$', CharmsViews.button),
+    url(r'^external', CharmsViews.external),
 ]
