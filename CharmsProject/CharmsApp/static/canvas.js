@@ -100,13 +100,6 @@ function drop(ev) {
 }
 
 $(document).ready(function () {
-    // print id's inside div
-    $("#btn-execute").click(function(){
-        $('#block-canvas').each(function () {
-            console.log($("#block-canvas").children());
-        });
-    });
-
     $('#btn-clear').click(function(){
         $('#block-canvas').empty();
         blockCountRead = 0;
