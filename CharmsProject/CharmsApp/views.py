@@ -19,8 +19,18 @@ def button(request):
     return render(request, "index.html")
 
 def external(request):
-    inp = "/Users/Lorraine/Documents/AD19/Compiladores/Charms/Examples/text.txt"
+    inp = "/Users/Lorraine/Documents/AD19/Compiladores/Charms/Examples/test.txt"
     out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//CharmsRunner.py", inp], shell=False, stdout=PIPE)
-    print(out)
+    stdout = str(out.stdout)
+    wasSuccessful= stdout.find('Success') != -1
 
-    return render(request, 'index.html', {'data1': out})
+    if wasSuccessful:
+        return render(request, 'index.html', {'data1': getSuccessMessage()})
+    else:
+        return render(request, 'index.html', {'data1': getErrorMessage()})
+
+def getSuccessMessage():
+    return "You've managed to perform the spell correctly. Thanks to you, your house has earned 200 points."
+
+def getErrorMessage():
+    return "It looks like you're missing something. Read the instructions and run your code again."
