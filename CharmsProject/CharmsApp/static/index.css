@@ -25,8 +25,8 @@
 
 .block-input-output {
   background-color: red;
-  height: 30%;
-  width: 80%;
+  height: 30px;
+  width: 250px;
 }
 
 .block-read-input {
@@ -39,8 +39,8 @@
 
 .block-variable {
   background-color: blue;
-  height: 30%;
-  width: 40%;
+  height: 30px;
+  width: 125px;
 }
 
 .block-variable-input {
@@ -49,8 +49,8 @@
 
 .block-condition {
   background-color: yellow;
-  height: 30%;
-  width: 40%;
+  height: 30px;
+  width: 125px;
 }
 
 .block-condition-input {
@@ -59,8 +59,8 @@
 
 .block-loop {
   background-color: purple;
-  height: 30%;
-  width: 40%;
+  height: 30px;
+  width: 125px;
 }
 
 .block-loop-input {
@@ -69,8 +69,8 @@
 
 .block-function {
   background-color: orange;
-  height: 30%;
-  width: 95%;
+  height: 30px;
+  width: 296px;
 }
 
 .block-function-input {
@@ -79,8 +79,8 @@
 
 .block-assignment {
   background-color: white;
-  height: 30%;
-  width: 95%;
+  height: 30px;
+  width: 296px;
 }
 
 .block-assignment-input {

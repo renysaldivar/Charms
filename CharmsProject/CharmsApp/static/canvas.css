@@ -1,0 +1,16 @@
+h1 {
+    text-align: center;
+    font-family: 'Kalam', cursive !important;
+    background-color: #ffc0cb;
+}
+
+#block-canvas {
+    margin: auto;
+    width: 80%;
+    height: 80%;
+    border: 1px solid #000000;
+}
+
+#btn-execute {
+    margin-top: 0.5%;
+}
