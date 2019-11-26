@@ -1,17 +1,82 @@
 .block-section {
-  height: 20%;
+  height: 16.6%;
 }
 
 .block-section-title {
   background-color: #ffc0cb;
   font-family: 'Kalam', cursive;
   text-align: center;
-  height: 10%;
+  height: 15%;
 }
 
 .block-section-content {
   background-color: #fff2f4;
   height: 90%;
+  overflow: auto;
+}
+
+.block-input-output {
+  background-color: red;
+  height: 30%;
+  width: 80%;
+}
+
+.block-read-input {
+  width: 30%;
+}
+
+.block-print-input {
+  width: 80%;
+}
+
+.block-variable {
+  background-color: blue;
+  height: 30%;
+  width: 40%;
+}
+
+.block-variable-input {
+  width: 60%;
+}
+
+.block-condition {
+  background-color: yellow;
+  height: 30%;
+  width: 40%;
+}
+
+.block-condition-input {
+  width: 60%;
+}
+
+.block-loop {
+  background-color: purple;
+  height: 30%;
+  width: 40%;
+}
+
+.block-loop-input {
+  width: 60%;
+}
+
+.block-function {
+  background-color: orange;
+  height: 30%;
+  width: 95%;
+}
+
+.block-function-input {
+  width: 35%;
+}
+
+.block-assignment {
+  background-color: white;
+  height: 30%;
+  width: 95%;
+}
+
+.block-assignment-input {
+  width: 30%;
 }
 
 #blocks {
