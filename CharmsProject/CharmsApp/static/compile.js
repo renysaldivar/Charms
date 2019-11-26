@@ -5,7 +5,7 @@ $(document).ready(function () {
     var canvasLength = canvas.length;
     var functionLine = "";
     var parameterFound = false;
-    var enterTab = false;
+    var varTabArray = [];
     for (var i = 0; i < canvasLength; i ++) {
       block = canvas[i];
       blockId = block.id;
@@ -87,17 +87,11 @@ $(document).ready(function () {
     inputFile.href = "data:application/octet-stream,"
     for(var i = 0; i < result.length; i++) {
       if (result[i] == '}') {
-        enterTab = false;
+        varTabArray.pop();
       }
-
-      if (enterTab) {
-        inputFile.href += encodeURIComponent(`\t${result[i]}\n`);
-      } else {
-        inputFile.href += encodeURIComponent(`${result[i]}\n`);
-      }
-
+      inputFile.href += encodeURIComponent(`${varTabArray.join("")}${result[i]}\n`);
       if (result[i] == '{') {
-        enterTab = true;
+        varTabArray.push('\t');
       }
     }
     inputFile.download = 'inputFile.txt';
