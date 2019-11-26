@@ -21,7 +21,6 @@ from django.urls import path
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^$', CharmsViews.index, name='index'),
-    url(r'^output', CharmsViews.output, name='script'),
     url(r'^$', CharmsViews.button),
     url(r'^external', CharmsViews.external),
 ]

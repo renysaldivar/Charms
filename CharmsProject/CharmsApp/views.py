@@ -18,12 +18,6 @@ import sys
 def button(request):
     return render(request, "home.html")
 
-def output(request):
-    data=request.get("https://www.google.com/")
-    print(data.text)
-    data=data.text
-    return render(request,'home.html',{'data':data})
-
 def external(request):
     inp = request.POST.get('param')
     out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//test.py", inp], shell=False, stdout=PIPE)
