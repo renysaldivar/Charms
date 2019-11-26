@@ -4,6 +4,7 @@ $(document).ready(function () {
     var canvas = document.getElementById('block-canvas').childNodes;
     var canvasLength = canvas.length;
     var functionLine = "";
+    var parameterFound = false;
     for (var i = 0; i < canvasLength; i ++) {
       block = canvas[i];
       blockId = block.id;
@@ -53,13 +54,16 @@ $(document).ready(function () {
         } else if (functionType == 'startp') {
           functionLine += `(`;
         } else if (functionType == 'parameter') {
+          parameterFound = true;
           var parameterType = block.childNodes[3];
           var parameterName = block.childNodes[5];
           var typeValue = parameterType.value;
           var nameValue = parameterName.value;
           functionLine += `${typeValue} ${nameValue}, `;
         } else if (functionType == 'endp') {
-          functionLine = functionLine.substring(0, functionLine.length - 2);
+          if (parameterFound) {
+            functionLine = functionLine.substring(0, functionLine.length - 2);
+          }
           functionLine += `)`;
           result.push(functionLine);
           result.push(`{`);
@@ -70,11 +74,20 @@ $(document).ready(function () {
         } else if (functionType == 'end') {
           result.push(`}`);
           functionLine = "";
+          parameterFound = false;
         } else {
           // Function call
         }
       }
       console.log(result);
     }
+
+    let inputFile = document.createElement('a');
+    inputFile.href = "data:application/octet-stream,"
+    for(var i = 0; i < result.length; i++) {
+      inputFile.href += encodeURIComponent(`${result[i]}\n`);
+    }
+    inputFile.download = 'inputFile.txt';
+    inputFile.click();
   });
 });
