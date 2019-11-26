@@ -162,13 +162,22 @@
 
 .canvas-footer-buttons {
   margin-top: 5px;
-  margin-left: 32%;
+  margin-left: 10%;
 }
 
 .canvas-button {
+  float: left;
+  background-color: #FFFFEE;
+  margin-top: 4px;
+  border-radius: 10px;
+  padding-top: 3px;
+}
+
+.canvas-form-buttom {
   background-color: #FFFFEE;
   border-radius: 10px;
   padding-top: 3px;
+  height: 24.5px;
 }
 
 #charms {
