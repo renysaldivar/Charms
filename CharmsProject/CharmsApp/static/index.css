@@ -262,6 +262,9 @@
 }
 
 #output {
+  background-color: #F8F8F8;
+  border-radius: 10px;
+  margin: 10px 5px;
   height: 30%;
   width: 80%;
 }
