@@ -62,6 +62,8 @@ class VirtualMachine:
 		# Print memory stack
 		self.printMemoryStack()
 
+		print("Success")
+
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
 		for key in constants:
