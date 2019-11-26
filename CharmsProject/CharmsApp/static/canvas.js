@@ -12,8 +12,8 @@ var blockCountFunction = 0;
 var blockCountStartParameters = 0;
 var blockCountParameter = 0;
 var blockCountEndParameters = 0;
-var blockCountEndFunction = 0;
 var blockCountReturn = 0;
+var blockCountEndFunction = 0;
 var blockCountCall = 0;
 var blockCountAssignment = 0;
 
@@ -88,13 +88,13 @@ function drop(ev) {
             newBlock.id = data + "-" + blockCountEndParameters;
             blockCountEndParameters += 1;
             break;
-        case 'block-end-function':
-            newBlock.id = data + "-" + blockCountEndFunction;
-            blockCountEndFunction += 1;
-            break;
         case 'block-return':
             newBlock.id = data + "-" + blockCountReturn;
             blockCountReturn += 1;
+            break;
+        case 'block-end-function':
+            newBlock.id = data + "-" + blockCountEndFunction;
+            blockCountEndFunction += 1;
             break;
         case 'block-call':
             newBlock.id = data + "-" + blockCountCall;
@@ -110,12 +110,6 @@ function drop(ev) {
 }
 
 $(document).ready(function () {
-    $("#btn-execute").click(function(){
-        $('#block-canvas').each(function () {
-            console.log($("#block-canvas").children());
-        });
-    });
-
     $('#btn-clear').click(function(){
         $('#block-canvas').empty();
         blockCountRead = 0;
@@ -132,8 +126,8 @@ $(document).ready(function () {
         blockCountStartParameters = 0;
         blockCountParameter = 0;
         blockCountEndParameters = 0;
-        blockCountEndFunction = 0;
         blockCountReturn = 0;
+        blockCountEndFunction = 0;
         blockCountCall = 0;
         blockCountAssignment = 0;
     })
