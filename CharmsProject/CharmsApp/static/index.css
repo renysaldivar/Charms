@@ -133,6 +133,44 @@
   width: 100%;
 }
 
+.spell-name {
+  background-color: #fff2f4;
+  font-family: 'Kalam', cursive;
+  font-size: 25px;
+  height: 10%;
+  text-align:center;
+  width: 100%;
+}
+
+.spell-content {
+  background-color: #0000;
+  height: 90%;
+  width: 100%;
+}
+
+#spell-description {
+  font-family: 'Kalam', cursive;
+  font-size: 20px;
+  padding: 10% 5%;
+  display: none;
+}
+
+#spell-todo {
+  font-family: 'Kalam', cursive;
+  font-size: 15px;
+  padding: 10% 5%;
+  display: none;
+}
+
+.instructions-navigator {
+  height: 10%;
+  width: 100%;
+}
+
+.arrows {
+  margin-left: 35%;
+}
+
 #output {
   border-style: solid;
   border-width: 1px;
