@@ -19,7 +19,7 @@ def button(request):
     return render(request, "index.html")
 
 def external(request):
-    inp = request.POST.get('param')
+    inp = "HOLAAA"
     out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//test.py", inp], shell=False, stdout=PIPE)
     print(out)
 

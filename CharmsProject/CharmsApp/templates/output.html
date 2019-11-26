@@ -13,13 +13,6 @@
     </div>
   </div>
   <div class='output-body'>
-      <form action="/executeInputOutput/" method="post">
-        {% csrf_token %}
-        Input Text:
-        <input type="text" name="param" required><br><br>
-        {{data1}}
-        <br><br>
-        <input type="submit" value="Execute external python script">
-    </form>
+      {{data1}}
   </div>
 <div>

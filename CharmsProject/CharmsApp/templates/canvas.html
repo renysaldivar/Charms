@@ -5,7 +5,10 @@
 <div class='canvas-footer'>
   <div class='canvas-footer-buttons'>
     <button class='canvas-button' type="button" id='btn-compile'>Compile code</button>
-    <button class='canvas-button' type="button" id='btn-execute'>Execute code</button>
+    <form action="/executeInputOutput/" method="post">
+      {% csrf_token %}
+      <button class='canvas-button' type="submit" id='btn-execute'>Execute code</button>
+    </form>
     <button class='canvas-button' type="button" id='btn-clear'>Clear canvas</button>
   </div>
 </div>
