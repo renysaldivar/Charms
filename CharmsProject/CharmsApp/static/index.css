@@ -169,26 +169,15 @@
   float: left;
   background-color: #FFFFEE;
   margin-top: 4px;
-  margin-left: 10px;
   border-radius: 10px;
   padding-top: 3px;
-}
-
-.form-buttons {
-  margin-left: 37%;
-  display: inline-block;
 }
 
 .canvas-form-button {
   background-color: #FFFFEE;
   border-radius: 10px;
-  margin-top: 2px;
   padding-top: 3px;
-  height: 26px;
-}
-
-form {
-  display: inline-block;
+  height: 24.5px;
 }
 
 #charms {

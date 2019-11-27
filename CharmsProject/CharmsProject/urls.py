@@ -22,6 +22,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     # url(r'^$', CharmsViews.index, name='index'),
     url(r'^$', CharmsViews.button),
-    url(r'^result', CharmsViews.result),
     url(r'^executeInputOutput', CharmsViews.external),
 ]
