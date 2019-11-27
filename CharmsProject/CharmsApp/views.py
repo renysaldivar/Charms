@@ -22,7 +22,7 @@ def button(request):
     return render(request, "index.html")
 
 def external(request):
-    inp = "/Users/Lorraine/Documents/AD19/Compiladores/Charms/Examples/test.txt"
+    inp = "//Users//Lorraine//Downloads//inputFile.txt"
     out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//CharmsRunner.py", inp], shell=False, stdout=PIPE)
     stdout = str(out.stdout)
     wasSuccessful= stdout.find('Success') != -1

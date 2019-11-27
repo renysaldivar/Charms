@@ -1,3 +1,5 @@
+# Class that stores the function directory structure, composed of several functions
+
 from Function import Function
 
 class FunctionDirectory:
@@ -11,6 +13,8 @@ class FunctionDirectory:
 		else:
 			self.dictionary[funcId]
 
+	# Checks if function name has already been used.
+	# If not, creates a new function and inserts it into the table.
 	def insertFunc(self, funcId, func):
 		if funcId in self.dictionary:
 			raise Exception("{} already exists in the directory".format(funcId))

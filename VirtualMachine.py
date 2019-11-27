@@ -1,3 +1,5 @@
+# Class to handle memory management and execution of programs
+
 from QuadruplesHelper import printQuadruples
 from QuadruplesHelper import convertQuadruples
 
@@ -66,6 +68,8 @@ class VirtualMachine:
 
 		print("Success")
 
+	# Functions to update addresses in tables (variable, parameter, tempVariable and constant tables)
+	# They receive as a parameter the table to modify with new real address.
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
 		for key in constants:
@@ -123,6 +127,9 @@ class VirtualMachine:
 				newAddr = startingPoint + self.TEMPCHAR + currentAddr
 			tempVariable.updateAddress(newAddr)
 
+	# Functions to update memory stack with values.
+	# They receive as a parameter a table, and from there a value and address are obtained to 
+	# update memoryStack.
 	def updateGlobalMemoryStack(self, varTable):
 		vars = varTable.vars
 		for key in vars:
@@ -169,6 +176,9 @@ class VirtualMachine:
 		quadruples = self.quadruples
 		self.executeQuad(quadruples[0])
 
+	# Recursive function that executes quadruples.
+	# Receives a single quad, takes its operands and operator, and based on the operator performs an action.
+	# Calls itself again with a new quad based on the operator - may be the next quad or a jump to another.
 	def executeQuad(self, quad):
 		global currentFunction
 		global currentFunctionName

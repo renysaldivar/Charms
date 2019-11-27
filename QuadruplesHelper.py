@@ -1,3 +1,5 @@
+# Module that handles quadruples
+
 def printQuadruples(quadruples):
     for quad in quadruples:
         quad.printQuad()

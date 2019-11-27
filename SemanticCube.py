@@ -1,3 +1,6 @@
+# Semantic cube module
+# Checks that operations can be performed given an operator and two operand types
+
 def isLessOrGreaterThan(operator):
     return operator == '>' or operator == '<'
 

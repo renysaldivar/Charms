@@ -1,9 +1,12 @@
+# Class that stores the variable table structure, composed of several temp variables
 from TempVariable import TempVariable
 
 class TempVariableTable:
     def __init__(self, tempVariables):
         self.tempVariables = {}
 
+    # Checks if temporal variable name has already been used.
+	# If not, creates a new tempVariable and inserts it into the table.
     def insertTempVariable(self, tempVariableId, tempVariableType, tempVariableAddress):
         if tempVariableId in self.tempVariables:
             raise Exception("{} already exists in the directory".format(varId))

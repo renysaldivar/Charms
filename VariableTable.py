@@ -1,3 +1,5 @@
+# Class that stores the variable table structure, composed of several variables
+
 from Variable import Variable
 
 class VariableTable:
@@ -15,6 +17,8 @@ class VariableTable:
 		variable = self.getVariable(varId)
 		return variable.varType
 
+	# Checks if variable name has already been used or is a keyword.
+	# If not, creates a new variable and inserts it into the table.
 	def insertVariable(self, varId, varType, varScope, varAddress):
 		if varId in self.vars:
 			raise Exception("{} already exists in the directory".format(varId))
