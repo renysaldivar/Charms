@@ -253,9 +253,6 @@ class VirtualMachine:
 				self.memoryStack[currentFunctionAddr] = self.memoryStack[leftOperand]
 				newQuad = self.quadruples[index+1]
 			elif operator == 'PRINT':
-				print("left ope")
-				print(leftOperand)
-				print("********")
 				print("----- print operator ------")
 				if leftOperand in self.memoryStack:
 					print(self.memoryStack[leftOperand])
