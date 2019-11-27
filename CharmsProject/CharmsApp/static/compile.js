@@ -103,11 +103,24 @@ $(document).ready(function () {
 });
 
 function createMain(result) {
-  result.unshift('int height, result;');
-  result.push('function void main()');
-  result.push('{');
-  result.push('height = 1;');
-  result.push('result = Levitation(height);');
-  result.push('print(result);');
-  result.push('}');
+  spellName = document.getElementById("spell-name").textContent;
+  console.log(spellName);
+
+  if (spellName == 'Levitation') {
+    result.unshift('int height, result;');
+    result.push('function void main()');
+    result.push('{');
+    result.push('height = 1;');
+    result.push('result = Levitation(height);');
+    result.push('print(result);');
+    result.push('}');
+  }
+  else if (spellName == 'Freezing') {
+    result.unshift('bool dangerousMagicalCreature;');
+    result.push('function void main()');
+    result.push('{');
+    result.push('dangerousMagicalCreature = False;');
+    result.push('Freeze(dangerousMagicalCreature);');
+    result.push('}');
+  }
 }
