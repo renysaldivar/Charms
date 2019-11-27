@@ -54,7 +54,7 @@ $(document).ready(function () {
 
   function getDescriptionText() {
     if (spellName == "Levitation") {
-      return "There is not better way to test your magical skills, than trying to do this spell. The Levitation charm is used to make any object fly, or levitate."
+      return "There is no better way to test your magical skills, than trying to do this spell. The Levitation charm is used to make any object fly, or levitate."
     } else {
       return "If you ever want to immobilize any target, this is the spell you want to try. The Freezing charm can stop the actions of any object or living thing."
     }
