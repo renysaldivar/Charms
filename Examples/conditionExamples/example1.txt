@@ -1,0 +1,7 @@
+function void main()
+{
+  if(5>4)
+  {
+    print("hola");
+  }
+}

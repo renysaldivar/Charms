@@ -1,0 +1,14 @@
+int i;
+bool j;
+
+function int uno(int i)
+{
+  j = True;
+  return(i*j);
+}
+
+function void main()
+{
+  i = 2;
+  print(uno(i));
+}

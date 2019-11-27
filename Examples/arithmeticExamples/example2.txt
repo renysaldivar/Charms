@@ -1,0 +1,8 @@
+int i, j;
+
+function void main()
+{
+  i = 1;
+  j = 2;
+  print(i+j);
+}

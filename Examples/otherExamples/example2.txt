@@ -1,0 +1,14 @@
+int i, j, b;
+function int dos(int b, int j)
+{
+	b = i+j;
+	return(b*2);
+}
+
+function void main()
+{
+	i = 1;
+	j = 5;
+	b = 9;
+	i = dos(2, 6);
+}

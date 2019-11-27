@@ -1,0 +1,19 @@
+bool b;
+
+function bool uno()
+{
+  return(5>4);
+}
+
+function void main()
+{
+  b = uno();
+  if(b == False)
+  {
+    print("verdadero");
+  }
+  else
+  {
+    print("falso");
+  }
+}

@@ -26,4 +26,4 @@ function void main()
     }
     y = 5 > 4;
     x = dos(y);
-}  
+}

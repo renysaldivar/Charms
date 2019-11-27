@@ -1,0 +1,13 @@
+int i, j, k;
+
+function int uno(int i, int j)
+{
+  return(i*j);
+}
+
+function void main()
+{
+  i = 2;
+  j = 2;
+  print(uno(i,j));
+}
