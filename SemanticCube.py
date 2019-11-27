@@ -7,22 +7,22 @@ def isEqualOrNotEqual(operator):
 def arithmeticOperators(operator, type1, type2):
     if type1 == 'int' and type2 == 'int':
         return 'int'
-    raise TypeError(TYPE_ERROR.format(operator, type1, type2))
+    raise Exception("Type Error")
 
 def relationalOperators(operator, type1, type2):
     if (isLessOrGreaterThan(operator) and type1 == 'int' and type2 == 'int') or (isEqualOrNotEqual(operator) and type1 == type2):
         return 'bool'
-    raise TypeError(TYPE_ERROR.format(operator, type1, type2))
+    raise Exception("Type Error")
 
 def logicalOperators(operator, type1, type2):
     if type1 == 'bool' and type2 == 'bool':
         return 'bool'
-    raise TypeError(TYPE_ERROR.format(operator, type1, type2))
+    raise Exception("Type Error")
 
 def assignmentOperator(operator, type1, type2):
     if type1 == type2:
         return 'true'
-    raise TypeError(TYPE_ERROR.format(operator, type1, type2))
+    raise Exception("Type Error")
 
 def validOperation(operator, type1, type2):
     if operator == '+' or operator == '-' or operator == '*' or operator == '/':

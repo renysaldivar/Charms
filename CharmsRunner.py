@@ -63,7 +63,10 @@ class CharmsPrintListener(CharmsParserListener):
 		myId = str(ctx.ID())
 		myCTE_INT = str(ctx.CTE_INT())
 		if myCTE_BOOL != "None":
-			constantBool = bool(myCTE_BOOL)
+			if myCTE_BOOL == 'True':
+				constantBool = bool(True)
+			else:
+				constantBool = bool(False)
 			stackOperands.append(constantBool)
 			global constBoolAddr
 			if constantBool not in constantTable.constants:
