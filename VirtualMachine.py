@@ -6,7 +6,7 @@ class VirtualMachine:
 	functionDirectory = {}
 	constants = {}
 	memoryStack = {}
-	for key in range(0, 3000):
+	for key in range(0, 3300):
 		memoryStack[key] = None
 	memoryStartingPoint = { 'global': 0, 'local': 900, 'temp': 1800, 'const': 2700 }
 
@@ -20,6 +20,7 @@ class VirtualMachine:
 	TEMPBOOL = 300
 	TEMPCHAR = 600
 	CONSTINT = 0
+	CONSTBOOL = 300
 
 	def __init__(self, quadruples, functionDirectory, constantTable, varTable):
 		self.quadruples = quadruples
@@ -50,6 +51,7 @@ class VirtualMachine:
 			self.updateTemporalMemoryStack(tempVariableTable)
 
 		# Convert quadruples
+		# self.printMemoryStack()
 		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
 		printQuadruples(quadruples)
 
@@ -60,7 +62,9 @@ class VirtualMachine:
 		self.executeQuadruples()
 
 		# Print memory stack
-		self.printMemoryStack()
+		# self.printMemoryStack()
+
+		print("Success")
 
 	def updateConstantAddresses(self, constantTable):
 		constants = constantTable.constants
@@ -68,7 +72,10 @@ class VirtualMachine:
 			constant = constants[key]
 			currentAddr = constant.constantAddress
 			startingPoint = self.memoryStartingPoint['const']
-			newAddr = startingPoint + self.CONSTINT + currentAddr
+			if constant.constantType == 'int':
+				newAddr = startingPoint + self.CONSTINT + currentAddr
+			else:
+				newAddr = startingPoint + self.CONSTBOOL + currentAddr
 			constant.updateAddress(newAddr)
 
 	def updateVarAddresses(self, varTable):
@@ -154,7 +161,7 @@ class VirtualMachine:
 		elif scope == 'temp':
 			memorySection = range(1800, 2700)
 		else: #const
-			memorySection = range(2700, 3000)
+			memorySection = range(2700, 3300)
 		for addr in memorySection:
 			self.memoryStack[addr] = None
 
@@ -170,9 +177,6 @@ class VirtualMachine:
 		leftOperand = quad.leftOperand
 		rightOperand = quad.rightOperand
 		result = quad.result
-		# print("-----------")
-		# quad.printQuad()
-		# print("-----------")
 		index = self.quadruples.index(quad)
 		if operator != 'END':
 			if operator == 'goto':
@@ -188,6 +192,14 @@ class VirtualMachine:
 				newQuad = self.quadruples[index+1]
 			elif operator == '<':
 				value = self.memoryStack[leftOperand] < self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '==':
+				value = self.memoryStack[leftOperand] == self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '!=':
+				value = self.memoryStack[leftOperand] != self.memoryStack[rightOperand]
 				self.memoryStack[result] = value
 				newQuad = self.quadruples[index+1]
 			elif operator == '+':
@@ -245,9 +257,12 @@ class VirtualMachine:
 				self.memoryStack[currentFunctionAddr] = self.memoryStack[leftOperand]
 				newQuad = self.quadruples[index+1]
 			elif operator == 'PRINT':
-				print("----- print operator ------")
-				print(self.memoryStack[leftOperand])
-				print("----- print operator ------")
+				print("*")
+				if leftOperand in self.memoryStack:
+					print(self.memoryStack[leftOperand])
+				else:
+					print(leftOperand)
+				print("*")
 				newQuad = self.quadruples[index+1]
 			elif operator == 'READ':
 				value = input()

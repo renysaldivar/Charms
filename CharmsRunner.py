@@ -63,7 +63,10 @@ class CharmsPrintListener(CharmsParserListener):
 		myId = str(ctx.ID())
 		myCTE_INT = str(ctx.CTE_INT())
 		if myCTE_BOOL != "None":
-			constantBool = bool(myCTE_BOOL)
+			if myCTE_BOOL == 'True':
+				constantBool = bool(True)
+			else:
+				constantBool = bool(False)
 			stackOperands.append(constantBool)
 			global constBoolAddr
 			if constantBool not in constantTable.constants:
@@ -167,14 +170,14 @@ class CharmsPrintListener(CharmsParserListener):
 		self.addVar(ctx)
 
 	def enterE(self, ctx):
-		operator = ctx.GREATERTHAN() or ctx.LESSTHAN()
+		operator = ctx.GREATERTHAN() or ctx.LESSTHAN() or ctx.EQUAL() or ctx.NOTEQUAL()
 		operator = str(operator)
 		if operator != "None":
 			stackOperators.append(operator)
 
 	def exitE(self, ctx):
 		if len(stackOperators) > 0:
-			if stackOperators[-1] == '<' or stackOperators[-1] == '>':
+			if stackOperators[-1] == '<' or stackOperators[-1] == '>' or stackOperators[-1] == '==' or stackOperators[-1] == '!=':
 				right_operand = stackOperands.pop()
 				left_operand = stackOperands.pop()
 				right_type = self.checkType(right_operand)
