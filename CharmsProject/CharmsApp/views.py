@@ -21,6 +21,12 @@ score = 0
 def button(request):
     return render(request, "index.html")
 
+def result(request):
+    inp = "/Users/renysg/Downloads/inputFile.txt"
+    out = run([sys.executable, "//Users//renysg//Documents//ITESM//9noSemestre//Compiladores//Charms//CharmsRunner.py", inp], shell=False, stdout=PIPE)
+    stdout = str(out.stdout)
+    return render(request, "result.html", {'code': stdout})
+
 def external(request):
     inp = "/Users/Lorraine/Documents/AD19/Compiladores/Charms/Examples/test.txt"
     out = run([sys.executable, "//Users//Lorraine//Documents//AD19//Compiladores//Charms//CharmsRunner.py", inp], shell=False, stdout=PIPE)

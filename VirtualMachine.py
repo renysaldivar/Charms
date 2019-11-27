@@ -257,12 +257,12 @@ class VirtualMachine:
 				self.memoryStack[currentFunctionAddr] = self.memoryStack[leftOperand]
 				newQuad = self.quadruples[index+1]
 			elif operator == 'PRINT':
-				print("----- print operator ------")
+				print("*")
 				if leftOperand in self.memoryStack:
 					print(self.memoryStack[leftOperand])
 				else:
 					print(leftOperand)
-				print("----- print operator ------")
+				print("*")
 				newQuad = self.quadruples[index+1]
 			elif operator == 'READ':
 				value = input()

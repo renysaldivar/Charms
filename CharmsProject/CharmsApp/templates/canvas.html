@@ -6,9 +6,15 @@
   <div class='canvas-footer-buttons'>
     <button class='canvas-button' type="button" id='btn-clear'>Clear canvas</button>
     <button class='canvas-button' type="button" id='btn-compile'>Compile code</button>
-    <form action="/executeInputOutput/" method="get">
-      {% csrf_token %}
-      <button class='canvas-form-buttom' type="submit" id='btn-execute'>Execute code</button>
-    </form>
+    <div class='form-buttons'>
+      <form action="/executeInputOutput/" method="get">
+        {% csrf_token %}
+        <button class='canvas-form-button' type="submit" id='btn-execute'>Execute code</button>
+      </form>
+      <form action="/result/" method="post" target="_blank">
+        {% csrf_token %}
+        <button class='canvas-form-button' type="submit" id='btn-show'>Show code</button>
+      </form>
+    </div>
   </div>
 </div>
