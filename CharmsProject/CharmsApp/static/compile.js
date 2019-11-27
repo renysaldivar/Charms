@@ -83,6 +83,8 @@ $(document).ready(function () {
       console.log(result);
     }
 
+    createMain(result);
+
     let inputFile = document.createElement('a');
     inputFile.href = "data:application/octet-stream,"
     for(var i = 0; i < result.length; i++) {
@@ -94,7 +96,18 @@ $(document).ready(function () {
         varTabArray.push('\t');
       }
     }
+
     inputFile.download = 'inputFile.txt';
     inputFile.click();
   });
 });
+
+function createMain(result) {
+  result.unshift('int height, result;');
+  result.push('function void main()');
+  result.push('{');
+  result.push('height = 1;');
+  result.push('result = Levitation(height);');
+  result.push('print(result);');
+  result.push('}');
+}
