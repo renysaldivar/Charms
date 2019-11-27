@@ -102,4 +102,4 @@ $ python3 CharmsRunner.py *your input file here*
 ### Tips
 For best results, run the project using Google Chrome not on incognito and download the following extensions:
 * [Downloads Overwrite Already Existing Files](https://chrome.google.com/webstore/detail/downloads-overwrite-alrea/lddjgfpjnifpeondafidennlcfagekbp)
-* [Disable Download Bar] (https://chrome.google.com/webstore/detail/disable-download-bar/gjdldigdojpjlmphnogmcmhojfadfmem?hl=en-GB)
+* [Disable Download Bar](https://chrome.google.com/webstore/detail/disable-download-bar/gjdldigdojpjlmphnogmcmhojfadfmem?hl=en-GB)
