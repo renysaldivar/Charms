@@ -15,6 +15,9 @@ import sys
 #     index = template.render(context, request)
 #     return HttpResponse(index)
 
+global score
+score = 0
+
 def button(request):
     return render(request, "index.html")
 
@@ -25,12 +28,17 @@ def external(request):
     wasSuccessful= stdout.find('Success') != -1
 
     if wasSuccessful:
-        return render(request, 'index.html', {'data1': getSuccessMessage()})
+        return render(request, 'index.html', {'data1': getSuccessMessage(), 'scorep': addScore() })
     else:
-        return render(request, 'index.html', {'data1': getErrorMessage()})
+        return render(request, 'index.html', {'data1': getErrorMessage(), 'scorep': score })
 
 def getSuccessMessage():
     return "You've managed to perform the spell correctly. Thanks to you, your house has earned 200 points."
 
 def getErrorMessage():
     return "It looks like you're missing something. Read the instructions and run your code again."
+
+def addScore():
+    global score
+    score = score + 100
+    return score
