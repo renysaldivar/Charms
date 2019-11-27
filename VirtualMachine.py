@@ -50,6 +50,7 @@ class VirtualMachine:
 			self.updateTemporalMemoryStack(tempVariableTable)
 
 		# Convert quadruples
+		# self.printMemoryStack()
 		convertQuadruples(quadruples, functionDirectory, constantTable, varTable)
 		printQuadruples(quadruples)
 
@@ -60,7 +61,7 @@ class VirtualMachine:
 		self.executeQuadruples()
 
 		# Print memory stack
-		self.printMemoryStack()
+		# self.printMemoryStack()
 
 		print("Success")
 
@@ -247,8 +248,14 @@ class VirtualMachine:
 				self.memoryStack[currentFunctionAddr] = self.memoryStack[leftOperand]
 				newQuad = self.quadruples[index+1]
 			elif operator == 'PRINT':
+				print("left ope")
+				print(leftOperand)
+				print("********")
 				print("----- print operator ------")
-				print(self.memoryStack[leftOperand])
+				if leftOperand in self.memoryStack:
+					print(self.memoryStack[leftOperand])
+				else:
+					print(leftOperand)
 				print("----- print operator ------")
 				newQuad = self.quadruples[index+1]
 			elif operator == 'READ':
