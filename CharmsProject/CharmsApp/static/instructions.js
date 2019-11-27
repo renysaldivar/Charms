@@ -64,7 +64,7 @@ $(document).ready(function () {
     if (spellName == "Levitation") {
       return "Create a function called Levitation that receives an int variable called height as a parameter. This function should return the height times 2."
     } else {
-      return "Create a function called Freeze that receives a bool variable called dangerousMagicalCreature as a parameter. If the variable is equal to true, print the following statement: 'Immobulus'. On the other hand, if the variable is equal to false, print the following: 'No need to freeze this magical creature'."
+      return "Create a function called Freeze that receives a bool variable called dangerousMagicalCreature as a parameter. If the variable is equal to true, print the following statement: 'Immobulus'. On the other hand, if the variable is equal to false, print the following: 'Stop'."
     }
   }
 });
