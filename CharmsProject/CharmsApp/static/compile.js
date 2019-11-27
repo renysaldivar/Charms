@@ -119,7 +119,7 @@ function createMain(result) {
     result.unshift('bool dangerousMagicalCreature;');
     result.push('function void main()');
     result.push('{');
-    result.push('dangerousMagicalCreature = False;');
+    result.push('dangerousMagicalCreature = True;');
     result.push('Freeze(dangerousMagicalCreature);');
     result.push('}');
   }
