@@ -173,9 +173,6 @@ class VirtualMachine:
 		leftOperand = quad.leftOperand
 		rightOperand = quad.rightOperand
 		result = quad.result
-		# print("-----------")
-		# quad.printQuad()
-		# print("-----------")
 		index = self.quadruples.index(quad)
 		if operator != 'END':
 			if operator == 'goto':
@@ -191,6 +188,14 @@ class VirtualMachine:
 				newQuad = self.quadruples[index+1]
 			elif operator == '<':
 				value = self.memoryStack[leftOperand] < self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '==':
+				value = self.memoryStack[leftOperand] == self.memoryStack[rightOperand]
+				self.memoryStack[result] = value
+				newQuad = self.quadruples[index+1]
+			elif operator == '!=':
+				value = self.memoryStack[leftOperand] != self.memoryStack[rightOperand]
 				self.memoryStack[result] = value
 				newQuad = self.quadruples[index+1]
 			elif operator == '+':

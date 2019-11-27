@@ -28,7 +28,7 @@
  a : expression | function_call ;
 
  expression : exp e ;
- e 			    : GREATERTHAN exp | LESSTHAN exp | /* epsilon */ ;
+ e 			: GREATERTHAN exp | LESSTHAN exp | EQUAL exp | NOTEQUAL exp | /* epsilon */ ;
 
  exp        : term e1 ;
  e1         : PLUS exp | MINUS exp | /* epsilon */ ;
